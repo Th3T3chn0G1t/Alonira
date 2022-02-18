@@ -1,0 +1,67 @@
+# TODO
+
+- Add github actions
+	- CI
+	- Docs autogen
+- Kernel
+	- Protocol-agnostic entry point
+		- Stivale
+		- Custom?
+		- Grub?
+	- Terminal driver
+		- UBSan
+		- ASAN
+		- ANSI codes?
+			- glog/f
+				- Genstone-style Error propogation
+		- Serial output
+	- Segmentation
+	- Interrupts
+		- Keyboard driver
+			- Layouts?
+		- Timer
+		- Mouse?
+	- Memory management
+		- pmemm/vmemm
+		- gzalloc/gfree
+	- Disk IO
+		- IDE driver
+		- Filesystem
+			- USTAR
+	- Better timer
+		- Graphics
+		- Sound?
+	- USB
+	- PCIe
+	- Networking
+	- Start work on userland
+		- Context switching
+			- Syscalls
+		- Executable-loading
+			- LLVM backend for Alonira
+			- Scheduling
+				- Multiprocessing
+					- Threads
+					- Processes
+						- IPC
+		- Rings
+		- Permissions and users?
+			- Filesystem permissions
+	- Floating point
+		- HW accel. graphics
+	- Better disk IO
+		- Parsing sectors
+		- AHCI
+		- ExtFS
+		- Disk identification and discovery
+			- Hotplugging?
+	- Misc
+		- HWinfo
+			- CPU speed
+			- Disks
+			- Amount of RAM
+- Userspace
+	- Write some programs!
+    - OSLib
+    - Shell
+    - WM
