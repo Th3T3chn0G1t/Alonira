@@ -1,5 +1,7 @@
 CLANG = clang
 AR = ar
+CLANG_FORMAT = clang-format
+XORRISO = xorriso
 
 BUILD_MODE = DEBUG
 

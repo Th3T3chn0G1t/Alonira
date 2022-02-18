@@ -80,7 +80,7 @@ STATIC_LIB_TOOL = $(AR) -r -c $@ $(filter %$(OBJECT_SUFFIX),$^)
 	@$(ECHO) "$(ACTION_PREFIX)$(STATIC_LIB_TOOL)$(ACTION_SUFFIX)"
 	@$(STATIC_LIB_TOOL)
 
-%$(OBJECT_SUFFIX): %.c build/config.mk
+%$(OBJECT_SUFFIX): %.c build/config.mk | tmp
 	@$(ECHO) "$(ACTION_PREFIX)$(CLANG) -c $(GLOBAL_C_FLAGS) $(CFLAGS) -o $@ $<$(ACTION_SUFFIX)"
 	@$(CLANG) -c $(GLOBAL_C_FLAGS) $(CFLAGS) -o $@ $<
 
