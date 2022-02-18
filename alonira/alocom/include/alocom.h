@@ -4,14 +4,20 @@
 #ifndef ALO_COMMON_H
 #define ALO_COMMON_H
 
+#define NULL ((void*) 0)
+typedef _Bool bool;
+#define true ((bool) 1)
+#define false ((bool) 0)
+
+#define noreturn _Noreturn
 #define pragma _Pragma
 #define generic _Generic
 
-#define ALO_DIAG_REGION_BEGIN pragma("clang diagnostic push")
-#define ALO_DIAG_REGION_END pragma("clang diagnostic pop")
-#define ALO_DIAG_IGNORE_ALL pragma("clang diagnostic ignored \"-Weverything\"")
+#define ALO_DIAGNOSTIC_REGION_BEGIN pragma("clang diagnostic push")
+#define ALO_DIAGNOSTIC_REGION_END pragma("clang diagnostic pop")
+#define ALO_DIAGNOSTIC_IGNORE_ALL pragma("clang diagnostic ignored \"-Weverything\"")
 
-ALO_DIAG_REGION_BEGIN
+ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
 #ifndef __unused
 #define __unused __attribute__((unused))
@@ -25,7 +31,7 @@ ALO_DIAG_REGION_BEGIN
 #ifndef __nodiscard
 #define __nodiscard __attribute__((warn_unused_result))
 #endif
-ALO_DIAG_REGION_END
+ALO_DIAGNOSTIC_REGION_END
 
 typedef enum {
 	ALO_OK = 0,

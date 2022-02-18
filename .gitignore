@@ -12,6 +12,11 @@
 *.out
 *.exe
 *.app
+*.elf
+*.bin
+
+*.sys
+*.EFI
 
 *.def
 *.exp
@@ -29,12 +34,14 @@
 *.gcno
 *.profraw
 
+*.iso
+
 docs/*
 out/*
 tmp/*
 vulkan/*
 
-genstone/vendor/tmp/*
+alonira/vendor/tmp/*
 
 filename
 test.c
