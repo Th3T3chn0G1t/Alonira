@@ -13,6 +13,10 @@ typedef _Bool bool;
 #define pragma _Pragma
 #define generic _Generic
 
+#ifndef restrict
+#define restrict __restrict
+#endif
+
 #define ALO_DIAGNOSTIC_REGION_BEGIN pragma("clang diagnostic push")
 #define ALO_DIAGNOSTIC_REGION_END pragma("clang diagnostic pop")
 #define ALO_DIAGNOSTIC_IGNORE_ALL pragma("clang diagnostic ignored \"-Weverything\"")
@@ -69,11 +73,6 @@ extern const char* alo_error_description(const alo_error_t error);
 	} while(0)
 #define ALO_ERROR_OUT_IF(error, message) if(error != ALO_OK) ALO_ERROR_OUT(error, message)
 #define ALO_NULL_CHECK(param) if(!param) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`" #param "` was NULL")
-
-ALO_DIAGNOSTIC_REGION_BEGIN
-#pragma clang diagnostic ignored "-Wlanguage-extension-token"
-static noreturn __forceinline void hang(void) { while(true) asm("hlt"); }
-ALO_DIAGNOSTIC_REGION_END
 
 #define ALO_FRAME_BEGIN(function) (void) NULL
 

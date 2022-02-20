@@ -56,11 +56,11 @@ CLANG_STATIC_ANALYZER_FLAGS += -Xanalyzer -analyzer-checker=alpha.core # This on
 CLANG_STATIC_ANALYZER_FLAGS += -Xanalyzer -analyzer-checker=alpha.deadcode -Xanalyzer -analyzer-checker=alpha.security
 
 ifeq ($(BUILD_MODE),RELEASE)
-	GLOBAL_C_FLAGS += -Ofast -ffast-math -DNDEBUG -flto -mllvm -polly -fsanitize=undefined,address
-	GLOBAL_L_FLAGS += -flto -Wl,-s -fsanitize=undefined,address
+	GLOBAL_C_FLAGS += -Ofast -ffast-math -DNDEBUG -flto -mllvm -polly
+	GLOBAL_L_FLAGS += -flto -Wl,-s
 else
-	GLOBAL_C_FLAGS += -O0 -glldb -fstandalone-debug -fno-eliminate-unused-debug-types -fdebug-macro -fno-lto
-	GLOBAL_L_FLAGS += -fno-lto
+	GLOBAL_C_FLAGS += -O0 -glldb -fstandalone-debug -fno-eliminate-unused-debug-types -fdebug-macro -fno-lto -fsanitize=undefined -fno-omit-frame-pointer
+	GLOBAL_L_FLAGS += -fno-lto -fsanitize=undefined
 endif
 
 LIB_PREFIX = lib

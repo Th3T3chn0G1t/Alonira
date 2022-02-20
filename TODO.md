@@ -4,8 +4,13 @@
 	- CI
 	- Docs autogen
 - Kernel
+	- Protocol-agnostic boot
+		- Stivale
+		- Grub
+		- Other?
 	- Terminal driver
 		- UBSan
+			- More sophisticated handler
 		- ASAN
 		- ANSI codes?
 			- glog/f

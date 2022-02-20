@@ -10,7 +10,7 @@ build_message_alokern:
 alokern: $(ALOKERN_OUT)
 
 $(ALOKERN_OUT): CFLAGS = $(ALOCOM_C_FLAGS) $(STIVALE_C_FLAGS)
-$(ALOKERN_OUT): LFLAGS = -static -Talonira/alokern/kernel.ld
+$(ALOKERN_OUT): LFLAGS = $(ALOCOM_L_FLAGS) -static -Talonira/alokern/kernel.ld
 $(ALOKERN_OUT): $(ALOKERN_OBJECTS)
 
 clean_alokern:

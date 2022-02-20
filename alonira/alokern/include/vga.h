@@ -50,6 +50,7 @@ static __forceinline alo_error_t alo_vga_put_string_at_colored(const char* const
 
     if(foreground > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`foreground` was not a valid color");
     if(background > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`background` was not a valid color");
+    ALO_NULL_CHECK(string);
     const alo_vga_offset_t offset = x + y * ALO_VGA_WIDTH;
     const alo_vga_offset_t end = length;
     if(end > ALO_VGA_LENGTH) ALO_ERROR_OUT(ALO_OUT_OF_BOUNDS, "Calculated character offset is outside of VGA buffer bounds");

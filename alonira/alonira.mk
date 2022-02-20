@@ -1,5 +1,9 @@
 ALONIRA_OUT = alonira.iso
 
+run: $(ALONIRA_OUT)
+	@$(ECHO) "$(ACTION_PREFIX)qemu-system-x86_64 -cdrom $(ALONIRA_OUT)$(ACTION_SUFFIX)"
+	@qemu-system-x86_64 -cdrom $(ALONIRA_OUT)
+
 alonira: $(ALONIRA_OUT)
 
 $(ALONIRA_OUT): $(LIMINE_INSTALL) $(ALOKERN_OUT) boot/limine.cfg

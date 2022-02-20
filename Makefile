@@ -36,7 +36,7 @@ build_message_clean:
 clean: build_message_clean $(CLEAN_TARGETS) ### @Default Cleans the repository of most build artifacts
 	@$(ECHO) "$(ACTION_SUFFIX)$(INFO_PREFIX) All clean!"
 
-tmp:
+tmp lib:
 	@$(ECHO) "$(ACTION_PREFIX)"
 	-mkdir $@
 	@$(ECHO) "$(ACTION_SUFFIX)"

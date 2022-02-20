@@ -17,15 +17,16 @@ __attribute__((section(".stivale2hdr"), used)) static struct stivale2_header sti
 	.flags = 0b00011110,
 	.tags = 0};
 
+#include "include/kdiagnostic.h"
 #include "include/vga.h"
 
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #pragma clang diagnostic ignored "-Wreserved-identifier"
 noreturn __unused void _start(__unused const struct stivale2_struct* const restrict bootdata) {
 	alo_error_t error = alo_vga_put_string_at_colored("FATAL: ", 7, ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_RED), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), 0, 0);
-	if(error) hang();
+	ALO_REQUIRE_NO_ERROR_K(error);
 	error = alo_vga_put_string_at_colored("OS not found", 12, ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), 7, 0);
-	if(error) hang();
+	ALO_REQUIRE_NO_ERROR_K(error);
 
 	hang();
 }
