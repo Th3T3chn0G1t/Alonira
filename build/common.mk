@@ -21,9 +21,6 @@ endif
 ifneq ($(OVERRIDE_BUILD_MODE),)
 BUILD_MODE = $(OVERRIDE_BUILD_MODE)
 endif
-ifneq ($(OVERRIDE_STRIP_BINARIES),)
-STRIP_BINARIES = $(OVERRIDE_STRIP_BINARIES)
-endif
 ifneq ($(OVERRIDE_GLOBAL_C_FLAGS),)
 GLOBAL_C_FLAGS = $(OVERRIDE_GLOBAL_C_FLAGS)
 endif
@@ -33,13 +30,37 @@ endif
 ifneq ($(OVERRIDE_ADDITIONAL_MODULES),)
 ADDITIONAL_MODULES = $(OVERRIDE_ADDITIONAL_MODULES)
 endif
+ifneq ($(OVERRIDE_AR),)
+AR = $(OVERRIDE_AR)
+endif
+ifneq ($(OVERRIDE_CLANG_FORMAT),)
+CLANG_FORMAT = $(OVERRIDE_CLANG_FORMAT)
+endif
+ifneq ($(OVERRIDE_XORRISO),)
+XORRISO = $(OVERRIDE_XORRISO)
+endif
+ifneq ($(OVERRIDE_BOOT_PROTOCOL),)
+BOOT_PROTOCOL = $(OVERRIDE_BOOT_PROTOCOL)
+endif
+
+ifneq ($(BUILD_MODE),RELEASE)
+ifneq ($(BUILD_MODE),DEBUG)
+ERROR = "Invalid value $(BUILD_MODE) for BUILD_MODE"
+endif
+endif
+
+ifneq ($(BOOT_PROTOCOL),STIVALE)
+ifneq ($(BOOT_PROTOCOL),ULTRA)
+ERROR = "Invalid value $(BOOT_PROTOCOL) for BOOT_PROTOCOL"
+endif
+endif
 
 CLINKER := $(CLANG) -fuse-ld=lld
 
 GLOBAL_C_FLAGS += -std=gnu2x -fcomment-block-commands=example -fmacro-backtrace-limit=0
 GLOBAL_C_FLAGS += -mcmodel=kernel -ffreestanding -fno-stack-protector -fno-pic -mno-red-zone
 GLOBAL_C_FLAGS += -march=x86-64 -m64 --target=x86_64-none-eabi
-GLOBAL_C_FLAGS += -DDEBUG=1 -DRELEASE=0 -DMODE=$(BUILD_MODE) -DENABLED=1 -DDISABLED=0
+GLOBAL_C_FLAGS += -DDEBUG=1 -DRELEASE=0 -DMODE=$(BUILD_MODE) -DENABLED=1 -DDISABLED=0 -DALO_BOOT_PROTOCOL_STIVALE=1 -DALO_BOOT_PROTOCOL_ULTRA=2 -DALO_BOOT_PROTOCOL=ALO_BOOT_PROTOCOL_$(BOOT_PROTOCOL)
 GLOBAL_C_FLAGS += -Werror -Weverything -Wthread-safety
 GLOBAL_C_FLAGS += -Wno-gnu-statement-expression -Wno-c++98-compat -Wno-redundant-parens -Wno-atomic-implicit-seq-cst -Wno-padded -Wno-poison-system-directories -Wno-unknown-warning-option  -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-register -Wno-overlength-strings -Wno-cast-qual
 # https://stackoverflow.com/questions/28516413/c11-alignas-vs-clang-wcast-align

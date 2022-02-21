@@ -12,6 +12,7 @@ typedef _Bool bool;
 #define noreturn _Noreturn
 #define pragma _Pragma
 #define generic _Generic
+#define thread_local _Thread_local
 
 #ifndef restrict
 #define restrict __restrict
@@ -25,6 +26,9 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
 #ifndef __unused
 #define __unused __attribute__((unused))
+#endif
+#ifndef __maybe_unused
+#define __maybe_unused [[maybe_unused]]
 #endif
 #ifndef __forceinline
 #define __forceinline __attribute__((always_inline)) __attribute__((artificial)) inline
@@ -74,6 +78,6 @@ extern const char* alo_error_description(const alo_error_t error);
 #define ALO_ERROR_OUT_IF(error, message) if(error != ALO_OK) ALO_ERROR_OUT(error, message)
 #define ALO_NULL_CHECK(param) if(!param) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`" #param "` was NULL")
 
-#define ALO_FRAME_BEGIN(function) (void) NULL
+#include "alotooling.h"
 
 #endif

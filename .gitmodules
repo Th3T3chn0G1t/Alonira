@@ -4,3 +4,6 @@
 [submodule "alonira/vendor/stivale"]
 	path = alonira/vendor/stivale
 	url = https://github.com/stivale/stivale
+[submodule "alonira/vendor/ultra"]
+	path = alonira/vendor/ultra
+	url = https://github.com/UltraOS/UltraProtocol

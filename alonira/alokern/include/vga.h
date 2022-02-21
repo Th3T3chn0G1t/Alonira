@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
 
-#ifndef ALO_LOG_H
-#define ALO_LOG_H
+#ifndef ALO_VGA_H
+#define ALO_VGA_H
 
 #include <alocom.h>
 
@@ -13,7 +13,7 @@ enum {
 	ALO_VGA_COLOR_CYAN,
 	ALO_VGA_COLOR_RED,
 	ALO_VGA_COLOR_MAGENTA,
-	ALO_VGA_COLOR_BROWN,
+	ALO_VGA_COLOR_YELLOW,
 	ALO_VGA_COLOR_WHITE
 };
 
@@ -51,6 +51,8 @@ static __forceinline alo_error_t alo_vga_put_string_at_colored(const char* const
     if(foreground > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`foreground` was not a valid color");
     if(background > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`background` was not a valid color");
     ALO_NULL_CHECK(string);
+    if(x > ALO_VGA_WIDTH) ALO_ERROR_OUT(ALO_OUT_OF_BOUNDS, "`x` is outside of VGA buffer bounds");
+    if(y > ALO_VGA_HEIGHT) ALO_ERROR_OUT(ALO_OUT_OF_BOUNDS, "`y` is outside of VGA buffer bounds");
     const alo_vga_offset_t offset = x + y * ALO_VGA_WIDTH;
     const alo_vga_offset_t end = length;
     if(end > ALO_VGA_LENGTH) ALO_ERROR_OUT(ALO_OUT_OF_BOUNDS, "Calculated character offset is outside of VGA buffer bounds");

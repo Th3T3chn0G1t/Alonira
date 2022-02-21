@@ -3,7 +3,10 @@
 - Add github actions
 	- CI
 	- Docs autogen
+- Common
+	- Thread-local on alotooling
 - Kernel
+	- `alog` auto-gtrace
 	- Protocol-agnostic boot
 		- Stivale
 		- Grub

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2021 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_STRING_H
 #define ALO_STRING_H

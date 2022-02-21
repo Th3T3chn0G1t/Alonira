@@ -10,12 +10,12 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wlanguage-extension-token"
 static noreturn __forceinline void hang(void) { while(true) asm("hlt"); }
 ALO_DIAGNOSTIC_REGION_END
-extern noreturn void panic(const alo_error_t error);
+extern noreturn void panic(const alo_error_t error, const char* const restrict context);
 
 #define ALO_REQUIRE_NO_ERROR_K(error) \
     do { \
         if(error != ALO_OK) { \
-            panic(error); \
+            panic(error, "Require failed - got error"); \
         } \
     } while(0)
 
