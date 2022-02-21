@@ -12,16 +12,18 @@ static alo_vga_dimension_t alo_internal_cursor_x = 0;
 static alo_vga_dimension_t alo_internal_cursor_y = 0;
 
 static const alo_vga_color_t color_table[] = {
-	ALO_VGA_COLOR_BLACK,
-	ALO_VGA_COLOR_WHITE,
-	ALO_VGA_COLOR_CYAN,
-	ALO_VGA_COLOR_BLUE,
-	ALO_VGA_COLOR_YELLOW,
-	ALO_VGA_COLOR_RED,
-	ALO_VGA_COLOR_MAGENTA};
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_BLACK),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_WHITE),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_GREEN),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_CYAN),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLUE),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_YELLOW),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_RED),
+	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_MAGENTA)};
 static const char* const level_name_table[] = {
 	"TRACE: ",
 	"PERFORMANCE: ",
+	"DEBUG: ",
 	"NOTE: ",
 	"INFO: ",
 	"WARNING: ",
@@ -44,7 +46,7 @@ void alog(const alo_log_level_t level, const char* const restrict string) {
 
 	alo_internal_cursor_x += level_name_length;
 
-	error = alo_vga_put_string_at_colored(string, string_length, color_table[level], ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x, alo_internal_cursor_y);
+	error = alo_vga_put_string_at_colored(string, string_length, ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x, alo_internal_cursor_y);
 	ALO_REQUIRE_NO_ERROR_K(error);
 
 	++alo_internal_cursor_y;

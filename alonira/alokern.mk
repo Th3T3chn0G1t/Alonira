@@ -10,6 +10,13 @@ else
 ALOKERN_C_FLAGS += $(ULTRA_C_FLAGS)
 endif
 
+ALOKERN_L_FLAGS = $(ALOCOM_L_FLAGS) -static
+ifeq ($(BOOT_PROTOCOL),STIVALE)
+ALOKERN_L_FLAGS += -Talonira/alokern/kernel-stivale.ld
+else
+ALOKERN_L_FLAGS += -Talonira/alokern/kernel-generic.ld
+endif
+
 build_message_alokern:
 	@$(ECHO) "$(SECTION_PREFIX) Alokern"
 	@$(ECHO) "$(INFO_PREFIX) Build the Alonira kernel"
@@ -17,7 +24,7 @@ build_message_alokern:
 alokern: $(ALOKERN_OUT)
 
 $(ALOKERN_OUT): CFLAGS = $(ALOKERN_C_FLAGS)
-$(ALOKERN_OUT): LFLAGS = $(ALOCOM_L_FLAGS) -static -Talonira/alokern/kernel.ld
+$(ALOKERN_OUT): LFLAGS = $(ALOKERN_L_FLAGS)
 $(ALOKERN_OUT): $(ALOKERN_OBJECTS) $(ALOCOM_OUT)
 
 clean_alokern:

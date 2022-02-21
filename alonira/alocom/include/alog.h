@@ -9,6 +9,7 @@
 typedef enum {
     TRACE,
     PERFORMANCE,
+    DEBUG,
     NOTE,
     INFO,
     WARNING,

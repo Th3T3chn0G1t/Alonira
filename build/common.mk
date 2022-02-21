@@ -60,7 +60,7 @@ CLINKER := $(CLANG) -fuse-ld=lld
 GLOBAL_C_FLAGS += -std=gnu2x -fcomment-block-commands=example -fmacro-backtrace-limit=0
 GLOBAL_C_FLAGS += -mcmodel=kernel -ffreestanding -fno-stack-protector -fno-pic -mno-red-zone
 GLOBAL_C_FLAGS += -march=x86-64 -m64 --target=x86_64-none-eabi
-GLOBAL_C_FLAGS += -DDEBUG=1 -DRELEASE=0 -DMODE=$(BUILD_MODE) -DENABLED=1 -DDISABLED=0 -DALO_BOOT_PROTOCOL_STIVALE=1 -DALO_BOOT_PROTOCOL_ULTRA=2 -DALO_BOOT_PROTOCOL=ALO_BOOT_PROTOCOL_$(BOOT_PROTOCOL)
+GLOBAL_C_FLAGS += -DENABLED=1 -DDISABLED=0 -DALO_BOOT_PROTOCOL_STIVALE=1 -DALO_BOOT_PROTOCOL_ULTRA=2 -DALO_BOOT_PROTOCOL=ALO_BOOT_PROTOCOL_$(BOOT_PROTOCOL)
 GLOBAL_C_FLAGS += -Werror -Weverything -Wthread-safety
 GLOBAL_C_FLAGS += -Wno-gnu-statement-expression -Wno-c++98-compat -Wno-redundant-parens -Wno-atomic-implicit-seq-cst -Wno-padded -Wno-poison-system-directories -Wno-unknown-warning-option  -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-register -Wno-overlength-strings -Wno-cast-qual
 # https://stackoverflow.com/questions/28516413/c11-alignas-vs-clang-wcast-align

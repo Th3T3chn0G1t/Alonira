@@ -25,7 +25,7 @@ __attribute__((section(".stivale2hdr"), used)) static struct stivale2_header sti
 };
 ALO_DIAGNOSTIC_REGION_END
 
-#define ALO_BOOT_SIGNATURE __maybe_unused const struct stivale2_struct bootdata, __maybe_unused const unsigned int magic
+#define ALO_BOOT_SIGNATURE __maybe_unused const struct stivale2_struct* const restrict bootdata
 
 #elif ALO_BOOT_PROTOCOL == ALO_BOOT_PROTOCOL_ULTRA
 
@@ -34,7 +34,7 @@ ALO_DIAGNOSTIC_IGNORE_ALL
 #include <ultra_protocol.h>
 ALO_DIAGNOSTIC_REGION_END
 
-#define ALO_BOOT_SIGNATURE __maybe_unused struct ultra_boot_context;
+#define ALO_BOOT_SIGNATURE __maybe_unused struct ultra_boot_context bootdata , __maybe_unused const unsigned int magic
 
 #endif
 #endif

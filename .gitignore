@@ -35,11 +35,14 @@
 *.profraw
 
 *.iso
+*.img
 
 docs/*
 out/*
 tmp/*
 vulkan/*
+
+mnt/
 
 alonira/vendor/tmp/*
 

@@ -18,7 +18,7 @@ else
 	@$(ECHO) "$(INFO_PREFIX) Nothing to do!"
 endif
 
-all: $(BUILD_TARGETS) ### @Default Builds default project
+all: build_message_pre_build $(BUILD_TARGETS) ### @Default Builds default project
 	@$(ECHO) "$(INFO_PREFIX) All built!"
 
 list: ### @Default Lists targets to be built for `all`

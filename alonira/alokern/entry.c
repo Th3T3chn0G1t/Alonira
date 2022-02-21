@@ -6,16 +6,25 @@
 #include "include/vga.h"
 
 #include <alocom.h>
+#include <alog.h>
+#include <alomemory.h>
 
 ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #pragma clang diagnostic ignored "-Wreserved-identifier"
 noreturn __unused void _start(ALO_BOOT_SIGNATURE) {
-	alo_error_t error = alo_vga_put_string_at_colored("FATAL: ", 7, ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_RED), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), 0, 0);
-	ALO_REQUIRE_NO_ERROR_K(error);
-	error = alo_vga_put_string_at_colored("OS not found", 12, ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), 7, 0);
+	alo_error_t error = alo_memory_set(ALO_VGA_ADDRESS, ALO_VGA_WIDTH * ALO_VGA_HEIGHT * sizeof(ALO_VGA_ADDRESS[0]), 0);
 	ALO_REQUIRE_NO_ERROR_K(error);
 
-	hang();
+	alog(TRACE, "Test");
+	alog(PERFORMANCE, "Test");
+	alog(DEBUG, "Test");
+	alog(NOTE, "Test");
+	alog(INFO, "Test");
+	alog(WARNING, "Test");
+	alog(ERROR, "Test");
+	alog(FATAL, "Test");
+
+	panic(ALO_NOT_IMPLEMENTED, "OS not found :^)");
 }
 ALO_DIAGNOSTIC_REGION_END
