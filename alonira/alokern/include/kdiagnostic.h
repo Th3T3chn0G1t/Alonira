@@ -19,4 +19,6 @@ extern noreturn void panic(const alo_error_t error, const char* const restrict c
         } \
     } while(0)
 
+#define ALO_REQUIRE_NO_REACH_K panic(ALO_INVALID_CONTROL, "Require failed - invalid control path reached")
+
 #endif

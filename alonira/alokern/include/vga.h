@@ -19,7 +19,7 @@ enum {
 
 typedef unsigned char alo_vga_color_t;
 typedef unsigned short alo_vga_dimension_t;
-typedef unsigned long alo_vga_offset_t;
+typedef size_t alo_vga_offset_t;
 typedef unsigned short alo_vga_character_t;
 
 #define ALO_VGA_ADDRESS ((unsigned short*) 0xB8000)
@@ -45,7 +45,7 @@ static __forceinline alo_error_t alo_vga_put_char_at_colored(const char c, const
     ALO_ALL_OK;
 }
 
-static __forceinline alo_error_t alo_vga_put_string_at_colored(const char* const restrict string, const unsigned long length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
+static __forceinline alo_error_t alo_vga_put_string_at_colored(const char* const restrict string, const size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
     ALO_FRAME_BEGIN(alo_vga_put_string_at_colored);
 
     if(foreground > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`foreground` was not a valid color");
@@ -57,7 +57,7 @@ static __forceinline alo_error_t alo_vga_put_string_at_colored(const char* const
     const alo_vga_offset_t end = length;
     if(end > ALO_VGA_LENGTH) ALO_ERROR_OUT(ALO_OUT_OF_BOUNDS, "Calculated character offset is outside of VGA buffer bounds");
 
-    for(unsigned long i = 0; i < length; ++i) {
+    for(size_t i = 0; i < length; ++i) {
         alo_error_t error = alo_vga_put_char_at_colored(string[i], foreground, background, (alo_vga_dimension_t) (offset + i) % ALO_VGA_WIDTH, (alo_vga_dimension_t) (offset + i) / ALO_VGA_WIDTH);
         ALO_ERROR_OUT_IF(error, "`alo_vga_put_char_colored` failed");
     }

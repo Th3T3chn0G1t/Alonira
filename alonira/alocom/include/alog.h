@@ -18,5 +18,6 @@ typedef enum {
 } alo_log_level_t;
 
 void alog(const alo_log_level_t level, const char* const restrict string);
+void alogf(const alo_log_level_t level, const char* const restrict string, ...);
 
 #endif

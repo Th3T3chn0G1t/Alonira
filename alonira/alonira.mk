@@ -1,4 +1,4 @@
-ALONIRA_QEMU_FLAGS = -monitor stdio
+ALONIRA_QEMU_FLAGS = -monitor stdio $(ADDITIONAL_QEMU_FLAGS)
 
 ifeq ($(BOOT_PROTOCOL),STIVALE)
 

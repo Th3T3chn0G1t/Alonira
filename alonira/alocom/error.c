@@ -23,6 +23,7 @@ const char* alo_error_name(const alo_error_t error) {
 		case ALO_IN_USE: return "ALO_IN_USE";
 		case ALO_NOT_IMPLEMENTED: return "ALO_NOT_IMPLEMENTED";
 		case ALO_OUT_OF_BOUNDS: return "ALO_OUT_OF_BOUNDS";
+		case ALO_INVALID_CONTROL: return "ALO_INVALID_CONTROL";
 	}
 }
 
@@ -46,5 +47,6 @@ const char* alo_error_description(const alo_error_t error) {
 		case ALO_IN_USE: return "The specified target is in use elsewhere";
 		case ALO_NOT_IMPLEMENTED: return "An unimplemented feature was used";
 		case ALO_OUT_OF_BOUNDS: return "The specified value is out of bounds";
+		case ALO_INVALID_CONTROL: return "The program reached an invalid control path";
 	}
 }

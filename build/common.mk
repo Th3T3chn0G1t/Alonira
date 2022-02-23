@@ -42,6 +42,9 @@ endif
 ifneq ($(OVERRIDE_BOOT_PROTOCOL),)
 BOOT_PROTOCOL = $(OVERRIDE_BOOT_PROTOCOL)
 endif
+ifneq ($(OVERRIDE_ADDITIONAL_QEMU_FLAGS),)
+ADDITIONAL_QEMU_FLAGS = $(OVERRIDE_ADDITIONAL_QEMU_FLAGS)
+endif
 
 ifneq ($(BUILD_MODE),RELEASE)
 ifneq ($(BUILD_MODE),DEBUG)
@@ -58,7 +61,7 @@ endif
 CLINKER := $(CLANG) -fuse-ld=lld
 
 GLOBAL_C_FLAGS += -std=gnu2x -fcomment-block-commands=example -fmacro-backtrace-limit=0
-GLOBAL_C_FLAGS += -mcmodel=kernel -ffreestanding -fno-stack-protector -fno-pic -mno-red-zone
+GLOBAL_C_FLAGS += -mcmodel=kernel -ffreestanding -fno-stack-check -fno-stack-protector -fno-pic -mno-red-zone -mno-stack-arg-probe -fthreadsafe-statics	-mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
 GLOBAL_C_FLAGS += -march=x86-64 -m64 --target=x86_64-none-eabi
 GLOBAL_C_FLAGS += -DENABLED=1 -DDISABLED=0 -DALO_BOOT_PROTOCOL_STIVALE=1 -DALO_BOOT_PROTOCOL_ULTRA=2 -DALO_BOOT_PROTOCOL=ALO_BOOT_PROTOCOL_$(BOOT_PROTOCOL)
 GLOBAL_C_FLAGS += -Werror -Weverything -Wthread-safety

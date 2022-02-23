@@ -19,7 +19,7 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wgnu-binary-literal"
 __attribute__((section(".stivale2hdr"), used)) static struct stivale2_header stivale_header = {
 	.entry_point = 0,
-	.stack = (unsigned long) stack + sizeof(stack),
+	.stack = (size_t) stack + sizeof(stack),
 	.flags = 0b00011110,
 	.tags = 0
 };

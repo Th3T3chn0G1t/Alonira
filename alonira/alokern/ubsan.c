@@ -22,7 +22,7 @@ struct type_descriptor {
 struct type_mismatch_info {
 	struct source_location location;
 	struct type_descriptor *type;
-	unsigned long alignment;
+	size_t alignment;
 	unsigned char type_check_kind;
 };
 

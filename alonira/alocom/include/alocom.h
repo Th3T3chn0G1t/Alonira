@@ -4,10 +4,18 @@
 #ifndef ALO_COMMON_H
 #define ALO_COMMON_H
 
+#include "alonum.h"
+
 #define NULL ((void*) 0)
 typedef _Bool bool;
 #define true ((bool) 1)
 #define false ((bool) 0)
+
+typedef __builtin_va_list va_list;
+#define va_start(ap, param) __builtin_va_start(ap, param)
+#define va_end(ap) __builtin_va_end(ap)
+#define va_arg(ap, type) __builtin_va_arg(ap, type)
+#define va_copy(dest, src) __builtin_va_copy(dest, src)
 
 #define noreturn _Noreturn
 #define pragma _Pragma
@@ -59,7 +67,8 @@ typedef enum {
 	ALO_BAD_OPERATION,
 	ALO_IN_USE,
 	ALO_NOT_IMPLEMENTED,
-	ALO_OUT_OF_BOUNDS
+	ALO_OUT_OF_BOUNDS,
+	ALO_INVALID_CONTROL
 } alo_error_t;
 
 #define ALO_ERRORABLE extern __nodiscard alo_error_t

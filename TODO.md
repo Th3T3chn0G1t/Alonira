@@ -6,7 +6,11 @@
 - Common
 	- Thread-local on alotooling
 - Kernel
-	- `alog` auto-gtrace
+	- Add newline support to `alog`
+	- Fix horrible mess at top of `alocom.h`
+	- `alog` auto-atrace
+	- `ALO_REQUIRE_EQUAL_K` and put in `alog` & `kdiagnostic.h` tol deal with unrecoverable runtime errors
+	- Add `alogf` properly to error handling etc.
 	- Protocol-agnostic boot
 		- Stivale
 		- Grub

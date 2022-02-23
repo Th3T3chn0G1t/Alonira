@@ -4,7 +4,7 @@
 
 #include "include/alostring.h"
 
-alo_error_t alo_string_compare(const char* const restrict a, const unsigned long a_bound, const char* const restrict b, const unsigned long b_bound, const unsigned long limit, bool* const restrict out_equal) {
+alo_error_t alo_string_compare(const char* const restrict a, const size_t a_bound, const char* const restrict b, const size_t b_bound, const size_t limit, bool* const restrict out_equal) {
 	ALO_FRAME_BEGIN(alo_string_compare);
 
 	ALO_NULL_CHECK(a);
@@ -15,15 +15,15 @@ alo_error_t alo_string_compare(const char* const restrict a, const unsigned long
 
 	if(!limit) ALO_ALL_OK;
 
-	unsigned long a_length = 0;
+	size_t a_length = 0;
 	alo_error_t error = alo_string_length(a, a_bound, limit, &a_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long b_length = 0;
+	size_t b_length = 0;
 	error = alo_string_length(b, b_bound, limit, &b_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long compare_length = a_length;
+	size_t compare_length = a_length;
 	if(limit < compare_length) compare_length = limit;
 	if(compare_length > b_length) compare_length = b_length;
 
@@ -37,7 +37,7 @@ alo_error_t alo_string_compare(const char* const restrict a, const unsigned long
 	ALO_ALL_OK;
 }
 
-alo_error_t alo_string_copy(char* const restrict destination, const unsigned long destination_bound, const char* const restrict source, const unsigned long source_bound, const unsigned long limit) {
+alo_error_t alo_string_copy(char* const restrict destination, const size_t destination_bound, const char* const restrict source, const size_t source_bound, const size_t limit) {
 	ALO_FRAME_BEGIN(alo_string_copy);
 
 	ALO_NULL_CHECK(destination);
@@ -47,15 +47,15 @@ alo_error_t alo_string_copy(char* const restrict destination, const unsigned lon
 
 	ALO_STRING_FOREACH(c, limit < destination_bound ? limit : destination_bound, destination)* c = '\0';
 
-	unsigned long destination_length = 0;
+	size_t destination_length = 0;
 	alo_error_t error = alo_string_length(destination, destination_bound, limit, &destination_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long source_length = 0;
+	size_t source_length = 0;
 	error = alo_string_length(source, source_bound, limit, &source_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long copy_length = source_length;
+	size_t copy_length = source_length;
 	if(limit < copy_length) copy_length = limit;
 
 	ALO_STRING_FOREACH(c, copy_length, destination) {
@@ -65,7 +65,7 @@ alo_error_t alo_string_copy(char* const restrict destination, const unsigned lon
 	ALO_ALL_OK;
 }
 
-alo_error_t alo_string_append(char* const restrict destination, const unsigned long destination_bound, const char* const restrict source, const unsigned long source_bound, const unsigned long limit) {
+alo_error_t alo_string_append(char* const restrict destination, const size_t destination_bound, const char* const restrict source, const size_t source_bound, const size_t limit) {
 	ALO_FRAME_BEGIN(alo_string_append);
 
 	ALO_NULL_CHECK(destination);
@@ -73,15 +73,15 @@ alo_error_t alo_string_append(char* const restrict destination, const unsigned l
 
 	if(!limit) ALO_ALL_OK;
 
-	unsigned long destination_length = 0;
+	size_t destination_length = 0;
 	alo_error_t error = alo_string_length(destination, destination_bound, ALO_STRING_NO_BOUND, &destination_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long source_length = 0;
+	size_t source_length = 0;
 	error = alo_string_length(source, source_bound, limit, &source_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long append_length = source_length;
+	size_t append_length = source_length;
 	if(limit < append_length) append_length = limit;
 
 	if(destination_length + append_length + 1 > destination_bound) ALO_ERROR_OUT(ALO_TOO_SHORT, "Length of data to append was greater than string bounds");
@@ -92,7 +92,7 @@ alo_error_t alo_string_append(char* const restrict destination, const unsigned l
 	ALO_ALL_OK;
 }
 
-alo_error_t alo_string_length(const char* const restrict string, const unsigned long string_bound, const unsigned long limit, unsigned long* const restrict out_length) {
+alo_error_t alo_string_length(const char* const restrict string, const size_t string_bound, const size_t limit, size_t* const restrict out_length) {
 	ALO_FRAME_BEGIN(alo_string_length);
 
 	ALO_NULL_CHECK(string);
@@ -113,7 +113,7 @@ alo_error_t alo_string_length(const char* const restrict string, const unsigned 
 	ALO_ALL_OK;
 }
 
-alo_error_t alo_string_character_first(const char* const restrict string, const unsigned long string_bound, const char character, const unsigned long limit, const char* restrict* const restrict out_found) {
+alo_error_t alo_string_character_first(const char* const restrict string, const size_t string_bound, const char character, const size_t limit, const char* restrict* const restrict out_found) {
 	ALO_FRAME_BEGIN(alo_string_character_first);
 
 	ALO_NULL_CHECK(string);
@@ -123,11 +123,11 @@ alo_error_t alo_string_character_first(const char* const restrict string, const 
 
 	if(!limit) ALO_ALL_OK;
 
-	unsigned long string_length = 0;
+	size_t string_length = 0;
 	alo_error_t error = alo_string_length(string, string_bound, limit, &string_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long search_length = string_length;
+	size_t search_length = string_length;
 	if(limit < search_length) search_length = limit;
 
 	ALO_STRING_FOREACH(c, search_length, string) {
@@ -140,7 +140,7 @@ alo_error_t alo_string_character_first(const char* const restrict string, const 
 	ALO_ALL_OK;
 }
 
-alo_error_t alo_string_character_last(const char* const restrict string, const unsigned long string_bound, const char character, const unsigned long limit, const char* restrict* const restrict out_found) {
+alo_error_t alo_string_character_last(const char* const restrict string, const size_t string_bound, const char character, const size_t limit, const char* restrict* const restrict out_found) {
 	ALO_FRAME_BEGIN(alo_string_character_last);
 
 	ALO_NULL_CHECK(string);
@@ -150,11 +150,11 @@ alo_error_t alo_string_character_last(const char* const restrict string, const u
 
 	if(!limit) ALO_ALL_OK;
 
-	unsigned long string_length = 0;
+	size_t string_length = 0;
 	alo_error_t error = alo_string_length(string, string_bound, limit, &string_length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
-	unsigned long search_length = string_length;
+	size_t search_length = string_length;
 	if(limit < search_length) search_length = limit;
 
 	ALO_STRING_FOREACH(c, search_length, string) {
@@ -168,19 +168,19 @@ alo_error_t alo_string_character_last(const char* const restrict string, const u
 	ALO_ALL_OK;
 }
 
-alo_error_t alo_string_number(const char* const restrict string, const unsigned long string_bound, const unsigned long limit, unsigned long* const restrict out_number) {
+alo_error_t alo_string_number(const char* const restrict string, const size_t string_bound, const size_t limit, size_t* const restrict out_number) {
 	ALO_FRAME_BEGIN(alo_string_number);
 
 	ALO_NULL_CHECK(string);
 	ALO_NULL_CHECK(out_number);
 
-	unsigned long length = 0;
+	size_t length = 0;
 	alo_error_t error = alo_string_length(string, string_bound, limit, &length);
 	ALO_ERROR_OUT_IF(error, "`alo_string_length` failed");
 
 	ALO_STRING_FOREACH(c, limit, string) {
 		if(*c > '9' || *c < '0') ALO_ERROR_OUT(ALO_BAD_CONTENT, "`string` contained a non-numeric character");
-		unsigned long digit = (unsigned long) (*c - '0');
+		size_t digit = (size_t) (*c - '0');
 		*out_number *= 10;
 		*out_number += digit;
 	}
