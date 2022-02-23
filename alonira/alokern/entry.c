@@ -30,6 +30,9 @@ noreturn __unused void _start(ALO_BOOT_SIGNATURE) {
 	static const char str[] = "Hello, world!";
 	alogf(DEBUG, "%% %c %s %p %zu", str[0], str, (void*) str, sizeof(str) - 1);
 
+	// error = alo_vga_put_string_at_colored(NULL, 0, ALO_VGA_COLOR_BLACK, ALO_VGA_COLOR_BLUE, 0, 0);
+	// ALO_REQUIRE_NO_ERROR_K(error);
+
 	// panic(ALO_NOT_IMPLEMENTED, "OS not found :^)");
 	hang();
 }

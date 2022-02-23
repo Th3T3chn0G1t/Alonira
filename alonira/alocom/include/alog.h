@@ -4,8 +4,6 @@
 #ifndef ALO_LOG_H
 #define ALO_LOG_H
 
-#include "alocom.h"
-
 typedef enum {
     TRACE,
     PERFORMANCE,

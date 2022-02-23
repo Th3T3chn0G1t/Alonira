@@ -26,6 +26,8 @@ typedef __builtin_va_list va_list;
 #define restrict __restrict
 #endif
 
+#include "alog.h"
+
 #define ALO_DIAGNOSTIC_REGION_BEGIN pragma("clang diagnostic push")
 #define ALO_DIAGNOSTIC_REGION_END pragma("clang diagnostic pop")
 #define ALO_DIAGNOSTIC_IGNORE_ALL pragma("clang diagnostic ignored \"-Weverything\"")
@@ -76,7 +78,7 @@ typedef enum {
 extern const char* alo_error_name(const alo_error_t error);
 extern const char* alo_error_description(const alo_error_t error);
 
-#define ALO_INTERNAL_OUTPUT_ERROR_MESSAGE(error, message)
+#define ALO_INTERNAL_OUTPUT_ERROR_MESSAGE(error, message) alogf(ERROR, "%s: %s", alo_error_name(error), message)
 
 #define ALO_ALL_OK return ALO_OK
 #define ALO_ERROR_OUT(error, message) \

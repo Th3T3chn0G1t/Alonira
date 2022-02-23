@@ -22,7 +22,7 @@ void alo_internal_tooling_frame_scope_end(__unused const char* const restrict pa
 }
 
 void alo_tooling_print_backtrace(void) {
-	for(size_t i = 0; i < alo_tooling_call_stack.next; ++i) {
-		alogf(TRACE, "frame #%zu: %p %s() %s", i, (void*) alo_tooling_call_stack.addresses[alo_tooling_call_stack.next - (i + 1)], alo_tooling_call_stack.functions[alo_tooling_call_stack.next - (i + 1)], alo_tooling_call_stack.files[alo_tooling_call_stack.next - (i + 1)]);
+	for(size_t i = 1; i <= alo_tooling_call_stack.next; ++i) {
+		alogf(TRACE, "frame #%zu: %p %s() %s", i - 1, (void*) alo_tooling_call_stack.addresses[alo_tooling_call_stack.next - i], alo_tooling_call_stack.functions[alo_tooling_call_stack.next - i], alo_tooling_call_stack.files[alo_tooling_call_stack.next - i]);
 	}
 }

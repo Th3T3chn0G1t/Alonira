@@ -52,6 +52,8 @@ void alog(const alo_log_level_t level, const char* const restrict string) {
 	ALO_REQUIRE_NO_ERROR_K(error);
 
 	++alo_internal_cursor_y;
+
+	if(level >= ERROR) atrace;
 }
 
 static const char hex_table[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -95,10 +97,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					long accum = va_arg(list, long);
 					char out[20] = {0};
 					size_t idx = 0;
-					while(accum) {
+					do {
 						out[idx++] = '0' + (accum % 10);
 						accum /= 10;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -112,10 +114,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					size_t idx = 0;
 					error = alo_vga_put_char_at_colored('0', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
 					ALO_REQUIRE_NO_ERROR_K(error);
-					while(accum) {
+					do {
 						out[idx++] = '0' + accum % 8;
 						accum >>= 3;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -131,10 +133,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					ALO_REQUIRE_NO_ERROR_K(error);
 					error = alo_vga_put_char_at_colored('x', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
 					ALO_REQUIRE_NO_ERROR_K(error);
-					while(accum) {
+					do {
 						out[idx++] = hex_table[accum % 16];
 						accum >>= 4;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -146,10 +148,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					size_t accum = va_arg(list, size_t);
 					char out[20] = {0};
 					size_t idx = 0;
-					while(accum) {
+					do {
 						out[idx++] = '0' + (accum % 10);
 						accum /= 10;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -189,10 +191,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					int accum = va_arg(list, int);
 					char out[10] = {0};
 					size_t idx = 0;
-					while(accum) {
+					do {
 						out[idx++] = '0' + (accum % 10);
 						accum /= 10;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -206,10 +208,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					size_t idx = 0;
 					error = alo_vga_put_char_at_colored('0', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
 					ALO_REQUIRE_NO_ERROR_K(error);
-					while(accum) {
+					do {
 						out[idx++] = '0' + accum % 8;
 						accum >>= 3;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -225,10 +227,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					ALO_REQUIRE_NO_ERROR_K(error);
 					error = alo_vga_put_char_at_colored('x', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
 					ALO_REQUIRE_NO_ERROR_K(error);
-					while(accum) {
+					do {
 						out[idx++] = hex_table[accum % 16];
 						accum >>= 4;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -240,10 +242,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					unsigned int accum = va_arg(list, unsigned int);
 					char out[10] = {0};
 					size_t idx = 0;
-					while(accum) {
+					do {
 						out[idx++] = '0' + (accum % 10);
 						accum /= 10;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						if(!out[j]) continue;
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
@@ -259,10 +261,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 					ALO_REQUIRE_NO_ERROR_K(error);
 					error = alo_vga_put_char_at_colored('x', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
 					ALO_REQUIRE_NO_ERROR_K(error);
-					while(accum) {
+					do {
 						out[idx++] = hex_table[accum % 16];
 						accum >>= 4;
-					}
+					} while(accum);
 					for(size_t j = sizeof(out) - 1; j != SIZE_MAX; --j) {
 						error = alo_vga_put_char_at_colored(out[j], ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
 						ALO_REQUIRE_NO_ERROR_K(error);
@@ -278,4 +280,6 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 
 	++alo_internal_cursor_y;
 	va_end(list);
+
+	if(level >= ERROR) atrace;
 }
