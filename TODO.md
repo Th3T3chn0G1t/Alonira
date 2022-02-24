@@ -8,11 +8,8 @@
 - Kernel
 	- Add newline support to `alog`
 	- Fix horrible mess at top of `alocom.h`
-	- `ALO_REQUIRE_EQUAL_K` and put in `alog` & `kdiagnostic.h` tol deal with unrecoverable runtime errors
+	- `ALO_REQUIRE_EQUAL_K` and put in `alog` & `kdiagnostic.h` to deal with unrecoverable runtime errors
 	- Terminal driver
-		- UBSan
-			- More sophisticated handler
-		- ANSI codes?
 		- Serial output
 	- Segmentation
 	- Interrupts

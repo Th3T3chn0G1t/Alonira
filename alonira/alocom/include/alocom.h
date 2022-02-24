@@ -70,7 +70,8 @@ typedef enum {
 	ALO_IN_USE,
 	ALO_NOT_IMPLEMENTED,
 	ALO_OUT_OF_BOUNDS,
-	ALO_INVALID_CONTROL
+	ALO_INVALID_CONTROL,
+	ALO_BAD_ALIGNMENT
 } alo_error_t;
 
 #define ALO_ERRORABLE extern __nodiscard alo_error_t
