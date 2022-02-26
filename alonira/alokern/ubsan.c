@@ -190,6 +190,26 @@ __unused noreturn void __ubsan_handle_alignment_assumption(const __ubsan_alignme
 	ALO_FRAME_BEGIN(__ubsan_handle_alignment_assumption);
 	__ubsan_handle_alignment_assumption_abort(data, pointer, alignment, offset);
 }
+// (const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char* const restrict operator, const __ubsan_value* const restrict left  SourceLocation Loc = Data->Loc.acquire();
+//   bool IsSigned = Data->Type.isSignedIntegerTy();
+//   ErrorType ET = IsSigned ? ErrorType::SignedIntegerOverflow
+//                           : ErrorType::UnsignedIntegerOverflow;
+
+//   if (ignoreReport(Loc, Opts, ET))
+//     return;
+
+//   // If this is an unsigned overflow in non-fatal mode, potentially ignore it.
+//   if (!IsSigned && !Opts.FromUnrecoverableHandler &&
+//       flags()->silence_unsigned_overflow)
+//     return;
+
+//   ScopedReport R(Opts, Loc, ET);
+
+//   Diag(Loc, DL_Error, ET, "%0 integer overflow: "
+//                           "%1 %2 %3 cannot be represented in type %4")
+//       << (IsSigned ? "signed" : "unsigned") << Value(Data->Type, LHS)
+//       << Operator << RHS << Data->Type;
+// }
 __unused noreturn void __ubsan_handle_invalid_builtin(void) {
 	ALO_FRAME_BEGIN(__ubsan_handle_invalid_builtin);
 	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_invalid_builtin");
