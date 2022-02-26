@@ -49,6 +49,9 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #ifndef __nodiscard
 #define __nodiscard __attribute__((warn_unused_result))
 #endif
+#ifndef __nosanitize
+#define __nosanitize __attribute__((no_sanitize("undefined")))
+#endif
 ALO_DIAGNOSTIC_REGION_END
 
 typedef enum {

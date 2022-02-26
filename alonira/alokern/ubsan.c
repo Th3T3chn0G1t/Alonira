@@ -151,100 +151,116 @@ typedef struct {
 	const __ubsan_type_descriptor* const type;
 } __ubsan_control_flow_integrity_check_fail_data;
 
-static const char* const __ubsan_type_check_kinds[] = {
+__unused static const char* const __ubsan_type_check_kinds[] = {
 	"Load of", "Store to", "Reference binding to", "Member access within",
 	"Member call on", "Constructor call on", "Downcast of", "Downcast of",
 	"Upcast of", "Cast to virtual base of", "`_Nonnull` binding to",
 	"Dynamic operation on"};
 
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
-__unused noreturn void __ubsan_handle_type_mismatch_v1_abort(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
-	ALO_FRAME_BEGIN(__ubsan_handle_type_mismatch_v1_abort);
-	alogf(NOTE, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	if(!pointer)
-		alogf(FATAL, "%s null pointer of type %s", __ubsan_type_check_kinds[data->kind], data->type->type_name);
-	else if((uintptr_t) pointer->value & (data->alignment - 1))
-		alogf(FATAL, "%s misaligned address %p for type %s which requires %zu", __ubsan_type_check_kinds[data->kind], pointer, data->type->type_name, 1 << data->alignment);
-	else
-		alogf(FATAL, "%s address %p with insufficient space for an object of type %s", __ubsan_type_check_kinds[data->kind], pointer, data->type->type_name);
-	panic(ALO_WRONG_OBJECT_TYPE, "`__ubsan_handle_type_mismatch_v1_abort` tripped");
-}
-__unused noreturn void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
+__nosanitize __unused noreturn void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
 	ALO_FRAME_BEGIN(__ubsan_handle_type_mismatch_v1);
-	__ubsan_handle_type_mismatch_v1_abort(data, pointer);
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) pointer;
+	// if(!pointer)
+	// 	alogf(FATAL, "%s null pointer of type %s", __ubsan_type_check_kinds[data->kind], data->type->type_name);
+	// else if((uintptr_t) pointer->value & (data->alignment - 1))
+	// 	alogf(FATAL, "%s misaligned address %p for type %s which requires %zu", __ubsan_type_check_kinds[data->kind], pointer, data->type->type_name, 1 << data->alignment);
+	// else
+	// 	alogf(FATAL, "%s address %p with insufficient space for an object of type %s", __ubsan_type_check_kinds[data->kind], pointer, data->type->type_name);
+	panic(ALO_WRONG_OBJECT_TYPE, "`__ubsan_handle_type_mismatch_v1` tripped");
 }
 
 #pragma clang diagnostic ignored "-Wpointer-arith"
-__unused noreturn void __ubsan_handle_alignment_assumption_abort(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
-	ALO_FRAME_BEGIN(__ubsan_handle_alignment_assumption_abort);
-	alogf(NOTE, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	alogf(NOTE, "From %s:%u:%u", data->from.filename, data->from.line, data->from.column);
-	const uintptr_t real_pointer = (uintptr_t) pointer->value - (uintptr_t) offset->value;
-	if(!offset->value)
-		alogf(FATAL, "Assumption of %zu byte alignment for pointer of type %s failed", alignment->value, data->type->type_name);
-	else
-		alogf(FATAL, "%p is aligned to %zu, misalignment offset is %zu", real_pointer, 1 << __builtin_ctzl(real_pointer), (uintptr_t) real_pointer & (uintptr_t) (alignment->value - 1));
-	panic(ALO_BAD_ALIGNMENT, "`__ubsan_handle_type_mismatch_v1_abort` tripped");
-}
-__unused noreturn void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
+__nosanitize __unused noreturn void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
 	ALO_FRAME_BEGIN(__ubsan_handle_alignment_assumption);
-	__ubsan_handle_alignment_assumption_abort(data, pointer, alignment, offset);
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) pointer;
+	(void) alignment;
+	(void) offset;
+	// alogf(FATAL, "From %s:%u:%u", data->from.filename, data->from.line, data->from.column);
+	// const uintptr_t real_pointer = (uintptr_t) pointer->value - (uintptr_t) offset->value;
+	// if(!offset->value)
+	// 	alogf(FATAL, "Assumption of %zu byte alignment for pointer of type %s failed", alignment->value, data->type->type_name);
+	// else
+	// 	alogf(FATAL, "%p is aligned to %zu, misalignment offset is %zu", real_pointer, 1 << __builtin_ctzl(real_pointer), (uintptr_t) real_pointer & (uintptr_t) (alignment->value - 1));
+	panic(ALO_BAD_ALIGNMENT, "`__ubsan_handle_alignment_assumption` tripped");
 }
-// (const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char* const restrict operator, const __ubsan_value* const restrict left  SourceLocation Loc = Data->Loc.acquire();
-//   bool IsSigned = Data->Type.isSignedIntegerTy();
-//   ErrorType ET = IsSigned ? ErrorType::SignedIntegerOverflow
-//                           : ErrorType::UnsignedIntegerOverflow;
 
-//   if (ignoreReport(Loc, Opts, ET))
-//     return;
-
-//   // If this is an unsigned overflow in non-fatal mode, potentially ignore it.
-//   if (!IsSigned && !Opts.FromUnrecoverableHandler &&
-//       flags()->silence_unsigned_overflow)
-//     return;
-
-//   ScopedReport R(Opts, Loc, ET);
-
-//   Diag(Loc, DL_Error, ET, "%0 integer overflow: "
-//                           "%1 %2 %3 cannot be represented in type %4")
-//       << (IsSigned ? "signed" : "unsigned") << Value(Data->Type, LHS)
-//       << Operator << RHS << Data->Type;
-// }
-__unused noreturn void __ubsan_handle_invalid_builtin(void) {
-	ALO_FRAME_BEGIN(__ubsan_handle_invalid_builtin);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_invalid_builtin");
+__unused void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const size_t right) {
+	ALO_FRAME_BEGIN(__ubsan_handle_overflow);
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) operator;
+	(void) left;
+	(void) right;
+	// if(data) panic(ALO_UNKNOWN, "???");
+	// if(data->type->type_info & 1)
+	// alogf(FATAL, "Signed integer overflow: %c %i cannot be represented in type %s", operator, right, data->type);
+	// alogf(FATAL, "Signed integer overflow: %li %c %li cannot be represented in type %s", left->value, operator, right, data->type->type_name);
+	// else
+	// 	alogf(FATAL, "Unsigned integer overflow: %lu %c %lu cannot be represented in type %s", left->value, operator, right, data->type->type_name);
 }
-__unused noreturn void __ubsan_handle_mul_overflow(void) {
+__nosanitize __unused noreturn void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	ALO_FRAME_BEGIN(__ubsan_handle_mul_overflow);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_mul_overflow");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) left;
+	(void) right;
+	// __ubsan_handle_overflow(data, left, '*', (size_t) right->value);
+	panic(ALO_TOO_LONG, "`__ubsan_handle_mul_overflow` was tripped");
 }
-__unused noreturn void __ubsan_handle_add_overflow(void) {
+__nosanitize __unused noreturn void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	ALO_FRAME_BEGIN(__ubsan_handle_add_overflow);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_add_overflow");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) left;
+	(void) right;
+	// __ubsan_handle_overflow(data, left, '+', (size_t) right->value);
+	panic(ALO_TOO_LONG, "`__ubsan_handle_add_overflow` was tripped");
 }
-__unused noreturn void __ubsan_handle_divrem_overflow(void) {
-	ALO_FRAME_BEGIN(__ubsan_handle_divrem_overflow);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_divrem_overflow");
-}
-__unused noreturn void __ubsan_handle_sub_overflow(void) {
+__nosanitize __unused noreturn void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	ALO_FRAME_BEGIN(__ubsan_handle_sub_overflow);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_sub_overflow");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) left;
+	(void) right;
+	// __ubsan_handle_overflow(data, left, '-', (size_t) right->value);
+	panic(ALO_TOO_LONG, "`__ubsan_handle_sub_overflow` was tripped");
 }
-__unused noreturn void __ubsan_handle_pointer_overflow(void) {
+
+__nosanitize __unused noreturn void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+	ALO_FRAME_BEGIN(__ubsan_handle_divrem_overflow);
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) left;
+	(void) right;
+	panic(ALO_TOO_LONG, "`__ubsan_handle_divrem_overflow` was tripped");
+}
+__nosanitize __unused noreturn void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
 	ALO_FRAME_BEGIN(__ubsan_handle_pointer_overflow);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_pointer_overflow");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) base;
+	(void) result;
+	panic(ALO_TOO_LONG, "`__ubsan_handle_pointer_overflow` was tripped");
 }
-__unused noreturn void __ubsan_handle_shift_out_of_bounds(void) {
+__nosanitize __unused noreturn void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
+	ALO_FRAME_BEGIN(__ubsan_handle_invalid_builtin);
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	panic(ALO_INVALID_PARAMETER, "`__ubsan_handle_invalid_builtin` was tripped");
+}
+__nosanitize __unused noreturn void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	ALO_FRAME_BEGIN(__ubsan_handle_shift_out_of_bounds);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_shift_out_of_bounds");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) left;
+	(void) right;
+	panic(ALO_OUT_OF_BOUNDS, "`__ubsan_handle_shift_out_of_bounds` was tripped");
 }
-__unused noreturn void __ubsan_handle_builtin_unreachable(void) {
+__nosanitize __unused noreturn void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
 	ALO_FRAME_BEGIN(__ubsan_handle_builtin_unreachable);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_builtin_unreachable");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	panic(ALO_INVALID_CONTROL, "`__ubsan_handle_builtin_unreachable` was tripped");
 }
-__unused noreturn void __ubsan_handle_out_of_bounds(void) {
+__nosanitize __unused noreturn void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
 	ALO_FRAME_BEGIN(__ubsan_handle_out_of_bounds);
-	panic(ALO_UNKNOWN, "UBSan stub: __ubsan_handle_out_of_bounds");
+	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+	(void) offset;
+	panic(ALO_OUT_OF_BOUNDS, "`__ubsan_handle_out_of_bounds` was tripped");
 }
 
 ALO_DIAGNOSTIC_REGION_END

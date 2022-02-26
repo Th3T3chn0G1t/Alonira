@@ -14,12 +14,12 @@ static alo_vga_dimension_t alo_internal_cursor_y = 0;
 static const alo_vga_color_t color_table[] = {
 	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_BLACK),
 	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_WHITE),
-	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_GREEN),
-	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_CYAN),
-	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLUE),
-	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_YELLOW),
-	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_RED),
-	ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_MAGENTA)};
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_GREEN),
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_CYAN),
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_BLUE),
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_YELLOW),
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_RED),
+	ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_MAGENTA)};
 static const char* const level_name_table[] = {
 	"TRACE: ",
 	"PERFORMANCE: ",
@@ -95,6 +95,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 				case 'i':
 				case 'd': {
 					long accum = va_arg(list, long);
+					if(accum < 0) {
+						error = alo_vga_put_char_at_colored('-', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
+						ALO_REQUIRE_NO_ERROR_K(error);
+					}
 					char out[20] = {0};
 					size_t idx = 0;
 					do {
@@ -189,6 +193,10 @@ void alogf(const alo_log_level_t level, const char* const restrict string, ...) 
 				case 'i':
 				case 'd': {
 					int accum = va_arg(list, int);
+					if(accum < 0) {
+						error = alo_vga_put_char_at_colored('-', ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_BLACK), alo_internal_cursor_x++, alo_internal_cursor_y);
+						ALO_REQUIRE_NO_ERROR_K(error);
+					}
 					char out[10] = {0};
 					size_t idx = 0;
 					do {
