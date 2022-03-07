@@ -5,8 +5,8 @@ limine: | $(LIMINE_OUT) $(LIMINE_INSTALL)
 
 $(LIMINE_OUT) $(LIMINE_INSTALL):
 	@$(ECHO) "$(ACTION_PREFIX)"
-	cd alonira/vendor/limine && ./autogen.sh
-	cd alonira/vendor/limine && ./configure
+	NOCONFIGURE=1; cd alonira/vendor/limine; ./autogen.sh
+	cd alonira/vendor/limine; ./configure LIMINE_CC="$(CLANG)" 
 	$(MAKE) -Calonira/vendor/limine
 	cp alonira/vendor/limine/bin/limine-cd.bin boot
 	cp alonira/vendor/limine/bin/limine.sys boot
