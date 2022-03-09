@@ -3,6 +3,7 @@
 
 #include "include/boot.h"
 #include "include/kdiagnostic.h"
+#include "include/serial.h"
 #include "include/vga.h"
 
 #include <alocom.h>
@@ -15,7 +16,9 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 noreturn __unused void _start(ALO_BOOT_SIGNATURE) {
 	ALO_FRAME_BEGIN(_start);
 
-	alo_error_t error = alo_memory_set(ALO_VGA_ADDRESS, ALO_VGA_WIDTH * ALO_VGA_HEIGHT * sizeof(ALO_VGA_ADDRESS[0]), 0);
+	alo_error_t error = alo_serial_set(ALO_SERIAL_COM1, 9600, ALO_SERIAL_DATA_WIDTH_8, ALO_SERIAL_STOP_BIT_1, ALO_SERIAL_PARITY_NONE, ALO_SERIAL_INTERRUPT_NONE);
+
+	error = alo_memory_set(ALO_VGA_ADDRESS, ALO_VGA_WIDTH * ALO_VGA_HEIGHT * sizeof(ALO_VGA_ADDRESS[0]), 0);
 	ALO_REQUIRE_NO_ERROR_K(error);
 
 	alog(TRACE, "Test");

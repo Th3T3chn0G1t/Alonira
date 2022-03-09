@@ -1,11 +1,13 @@
 # TODO
 
+- Do documentation you silly person!
 - Add github actions
 	- CI
 	- Docs autogen
 - Common
 	- Thread-local on alotooling
 - Kernel
+	- GDB/LLDB debugging & stubs
 	- FIX! UBSan impl does not take full advantage of provided diagnostic info
 	- Add newline support to `alog`
 	- Fix horrible mess at top of `alocom.h`

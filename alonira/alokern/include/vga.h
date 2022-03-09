@@ -32,7 +32,7 @@ typedef unsigned short alo_vga_character_t;
 #define ALO_VGA_COLOR_DARK(color) ALO_VGA_COLOR(color)
 #define ALO_VGA_COLOR_LAST ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE)
 
-static __forceinline alo_error_t alo_vga_put_char_at_colored(const char c, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
+static __forceinline __nodiscard alo_error_t alo_vga_put_char_at_colored(const char c, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
     ALO_FRAME_BEGIN(alo_vga_put_char_at_colored);
 
     if(foreground > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`foreground` was not a valid color");
@@ -45,7 +45,7 @@ static __forceinline alo_error_t alo_vga_put_char_at_colored(const char c, const
     ALO_ALL_OK;
 }
 
-static __forceinline alo_error_t alo_vga_put_string_at_colored(const char* const restrict string, const size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
+static __forceinline __nodiscard alo_error_t alo_vga_put_string_at_colored(const char* const restrict string, const size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
     ALO_FRAME_BEGIN(alo_vga_put_string_at_colored);
 
     if(foreground > ALO_VGA_COLOR_LAST) ALO_ERROR_OUT(ALO_INVALID_PARAMETER, "`foreground` was not a valid color");

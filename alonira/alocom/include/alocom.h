@@ -52,6 +52,9 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #ifndef __nosanitize
 #define __nosanitize __attribute__((no_sanitize("undefined")))
 #endif
+#ifndef __packed
+#define __packed __attribute__((packed))
+#endif
 ALO_DIAGNOSTIC_REGION_END
 
 typedef enum {
