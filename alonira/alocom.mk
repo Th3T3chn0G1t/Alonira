@@ -1,8 +1,8 @@
-ALOCOM_C_FLAGS = -Ialonira/alocom/include
-ALOCOM_L_FLAGS = -Llib -lalonira-common
+ALOCOM_C_FLAGS = -Ialonira/alocom/include -march=x86-64 -m64 --target=x86_64-none-eabi
+ALOCOM_L_FLAGS = -Llib -lalonira-common -march=x86-64 -m64 --target=x86_64-none-eabi
 
 ALOCOM_SOURCES = $(wildcard alonira/alocom/*.c)
-ALOCOM_OBJECTS = $(ALOCOM_SOURCES:.c=.o)
+ALOCOM_OBJECTS = $(ALOCOM_SOURCES:.c=$(OBJECT_SUFFIX))
 
 ALOCOM_OUT = lib/libalonira-common.a
 

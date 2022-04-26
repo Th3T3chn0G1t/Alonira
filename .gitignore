@@ -53,3 +53,5 @@ test.c
 .vs
 
 *.DS_STORE
+
+test.*

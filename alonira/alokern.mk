@@ -1,5 +1,5 @@
 ALOKERN_SOURCES = $(wildcard alonira/alokern/*.c)
-ALOKERN_OBJECTS = $(ALOKERN_SOURCES:.c=.o)
+ALOKERN_OBJECTS = $(ALOKERN_SOURCES:.c=$(OBJECT_SUFFIX))
 
 ALOKERN_OUT = boot/alonira-kernel.elf
 
@@ -10,7 +10,7 @@ else
 ALOKERN_C_FLAGS += $(ULTRA_C_FLAGS)
 endif
 
-ALOKERN_L_FLAGS = $(ALOCOM_L_FLAGS) -static
+ALOKERN_L_FLAGS = $(ALOCOM_L_FLAGS)
 ifeq ($(BOOT_PROTOCOL),STIVALE)
 ALOKERN_L_FLAGS += -Talonira/alokern/kernel-stivale.ld
 else

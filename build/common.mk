@@ -61,17 +61,15 @@ endif
 CLINKER := $(CLANG) -fuse-ld=lld
 
 GLOBAL_C_FLAGS += -std=gnu2x -fcomment-block-commands=example -fmacro-backtrace-limit=0
-GLOBAL_C_FLAGS += -mcmodel=kernel -ffreestanding -fno-pic -fstack-protector-all -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
-GLOBAL_C_FLAGS += -march=x86-64 -m64 --target=x86_64-none-eabi
+GLOBAL_C_FLAGS += -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -fstack-protector-all -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
 GLOBAL_C_FLAGS += -DENABLED=1 -DDISABLED=0 -DALO_BOOT_PROTOCOL_STIVALE=1 -DALO_BOOT_PROTOCOL_ULTRA=2 -DALO_BOOT_PROTOCOL=ALO_BOOT_PROTOCOL_$(BOOT_PROTOCOL)
 GLOBAL_C_FLAGS += -Werror -Weverything -Wthread-safety
-GLOBAL_C_FLAGS += -Wno-gnu-statement-expression -Wno-c++98-compat -Wno-redundant-parens -Wno-atomic-implicit-seq-cst -Wno-padded -Wno-poison-system-directories -Wno-unknown-warning-option  -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-register -Wno-overlength-strings -Wno-cast-qual
+GLOBAL_C_FLAGS += -Wno-gnu-statement-expression -Wno-c++98-compat -Wno-redundant-parens -Wno-atomic-implicit-seq-cst -Wno-padded -Wno-poison-system-directories -Wno-unknown-warning-option -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-register -Wno-overlength-strings -Wno-cast-qual  -Wno-gnu-zero-variadic-macro-arguments -Wno-language-extension-token -Wno-gnu-conditional-omitted-operand -Wno-gnu-case-range -Wno-gnu-binary-literal
 # https://stackoverflow.com/questions/28516413/c11-alignas-vs-clang-wcast-align
 # Clang fails to check alignment properly when delivering -Wcast-align
 GLOBAL_C_FLAGS += -Wno-cast-align
 
-GLOBAL_L_FLAGS += -nostdlib
-GLOBAL_L_FLAGS += -march=x86-64 -m64 --target=x86_64-none-eabi
+GLOBAL_L_FLAGS += -nostdlib -static
 
 CLANG_STATIC_ANALYZER_FLAGS = -Xanalyzer -analyzer-output=text
 CLANG_STATIC_ANALYZER_FLAGS += -Xanalyzer -analyzer-checker=core -Xanalyzer -analyzer-checker=deadcode
@@ -92,6 +90,7 @@ DYNAMIC_LIB_SUFFIX = .so
 STATIC_LIB_SUFFIX = .a
 ELF_SUFFIX = .elf
 OBJECT_SUFFIX = .o
+BIN_SUFFIX = .bin
 
 ELF_TOOL = $(CLINKER) -o $@ $(filter %$(OBJECT_SUFFIX),$^) $(GLOBAL_L_FLAGS) $(LFLAGS)
 STATIC_LIB_TOOL = $(AR) -r -c $@ $(filter %$(OBJECT_SUFFIX),$^)
@@ -99,6 +98,10 @@ STATIC_LIB_TOOL = $(AR) -r -c $@ $(filter %$(OBJECT_SUFFIX),$^)
 %$(ELF_SUFFIX):
 	@$(ECHO) "$(ACTION_PREFIX)$(ELF_TOOL)$(ACTION_SUFFIX)"
 	@$(ELF_TOOL)
+
+%$(BIN_SUFFIX): %$(ELF_SUFFIX)
+	@$(ECHO) "$(ACTION_PREFIX)$(ELF_TOOL) -Wl,--oformat,binary$(ACTION_SUFFIX)"
+	@$(ELF_TOOL) -Wl,--oformat,binary
 
 %$(STATIC_LIB_SUFFIX):
 	@$(ECHO) "$(ACTION_PREFIX)$(STATIC_LIB_TOOL)$(ACTION_SUFFIX)"
@@ -116,3 +119,12 @@ STATIC_LIB_TOOL = $(AR) -r -c $@ $(filter %$(OBJECT_SUFFIX),$^)
 
 	@$(ECHO) "$(ACTION_PREFIX)$(CLANG_FORMAT) -i $<$(ACTION_SUFFIX)"
 	-@$(CLANG_FORMAT) -i $<
+
+%$(OBJECT_SUFFIX): %.asm build/config.mk | tmp
+	@$(ECHO) "$(ACTION_PREFIX)$(NASM) $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<$(ACTION_SUFFIX)"
+	@$(NASM) $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<
+
+%$(BIN_SUFFIX): %.asm build/config.mk | tmp
+	@$(ECHO) "$(ACTION_PREFIX)$(NASM) -fbin $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<$(ACTION_SUFFIX)"
+	@$(NASM) -fbin $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<
+

@@ -7,3 +7,6 @@
 [submodule "alonira/vendor/ultra"]
 	path = alonira/vendor/ultra
 	url = https://github.com/UltraOS/UltraProtocol
+[submodule "alonira/vendor/hyper"]
+	path = alonira/vendor/hyper
+	url = https://github.com/UltraOS/Hyper

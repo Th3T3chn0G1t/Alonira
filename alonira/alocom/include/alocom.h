@@ -85,7 +85,7 @@ typedef enum {
 extern const char* alo_error_name(const alo_error_t error);
 extern const char* alo_error_description(const alo_error_t error);
 
-#define ALO_INTERNAL_OUTPUT_ERROR_MESSAGE(error, message) alogf(ERROR, "%s: %s", alo_error_name(error), message)
+#define ALO_INTERNAL_OUTPUT_ERROR_MESSAGE(error, message) alogf(ERROR, "%s (%s): %s", alo_error_name(error), alo_error_description(error), message)
 
 #define ALO_ALL_OK return ALO_OK
 #define ALO_ERROR_OUT(error, message) \

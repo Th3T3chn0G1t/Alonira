@@ -50,15 +50,13 @@ typedef enum {
     ALO_SERIAL_PARITY_SPACE
 } alo_serial_parity_mode_t;
 
-enum {
+typedef enum __attribute__((enum_extensibility(closed), flag_enum)) {
     ALO_SERIAL_INTERRUPT_NONE = 0,
     ALO_SERIAL_INTERRUPT_DATA_NOTIFY = 1 << 0,
     ALO_SERIAL_INTERRUPT_SEND_COMPLETE = 1 << 1,
     ALO_SERIAL_INTERRUPT_ERROR = 1 << 2,
     ALO_SERIAL_INTERRUPT_STATUS_NOTIFY = 1 << 3
-};
-
-typedef uint8_t alo_serial_interrupt_mode_t;
+} alo_serial_interrupt_mode_t;
 
 ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wgnu-binary-literal"
@@ -132,7 +130,7 @@ static __forceinline __nodiscard alo_error_t alo_serial_set(const alo_serial_com
     }
 
     alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE, ~0b00001111 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE));
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE, interrupt_mode | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE));
+    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE, (uint8_t) interrupt_mode | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE));
 
     ALO_ALL_OK;
 }
