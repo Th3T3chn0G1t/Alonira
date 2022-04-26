@@ -1,5 +1,5 @@
 CLANG = clang
-AR = ar
+AR = llvm-ar
 CLANG_FORMAT = clang-format
 XORRISO = xorriso
 NASM = nasm

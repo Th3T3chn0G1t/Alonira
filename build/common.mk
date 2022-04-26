@@ -58,9 +58,10 @@ endif
 
 CLINKER := $(CLANG) -fuse-ld=lld
 
-GLOBAL_C_FLAGS += -std=gnu2x -fcomment-block-commands=example -fmacro-backtrace-limit=0 -DENABLED=1 -DDISABLED=0 
+GLOBAL_C_FLAGS += -std=gnu2x -fvisibility=default -fcomment-block-commands=example -fmacro-backtrace-limit=0 -DENABLED=1 -DDISABLED=0 
 
 FREESTANDING_C_FLAGS = -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -fstack-protector-all -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
+FREESTANDING_L_FLAGS = -nostdlib -static
 
 CLANG_STATIC_ANALYZER_FLAGS = -Xanalyzer -analyzer-output=text
 CLANG_STATIC_ANALYZER_FLAGS += -Xanalyzer -analyzer-checker=core -Xanalyzer -analyzer-checker=deadcode
@@ -72,7 +73,7 @@ ifeq ($(BUILD_MODE),RELEASE)
 	GLOBAL_C_FLAGS += -Ofast -ffast-math -flto -mllvm -polly
 	GLOBAL_L_FLAGS += -flto -Wl,-s
 else
-	GLOBAL_C_FLAGS += -O0 -glldb -fstandalone-debug -fno-eliminate-unused-debug-types -fdebug-macro -fno-lto -fno-omit-frame-pointer
+	GLOBAL_C_FLAGS += -O0 -glldb -fstandalone-debug -fno-eliminate-unused-debug-types -fdebug-macro -flto=thin -fno-omit-frame-pointer
 	GLOBAL_L_FLAGS += -flto=thin
 endif
 

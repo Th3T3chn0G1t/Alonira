@@ -17,7 +17,7 @@ ifeq ($(BOOT_PROTOCOL),ULTRA)
 ALOKERN_C_FLAGS += $(ULTRA_C_FLAGS)
 endif
 
-ALOKERN_L_FLAGS = -nostdlib -static
+ALOKERN_L_FLAGS = $(FREESTANDING_L_FLAGS)
 ALOKERN_L_FLAGS += $(ALOCOM_L_FLAGS)
 ALOKERN_L_FLAGS += -Talonira/alokern/kernel-generic.ld
 ALOKERN_L_FLAGS += -fsanitize=undefined,cfi

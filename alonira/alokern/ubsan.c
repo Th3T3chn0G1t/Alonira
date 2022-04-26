@@ -16,7 +16,8 @@ typedef struct {
 } __ubsan_source_location;
 
 typedef struct {
-	const enum {
+	const enum
+	{
 		__ubsan_type_kind_integer = 0x0000,
 		__ubsan_type_kind_float = 0x0001,
 		__ubsan_type_kind_unknown = 0xFFFF
@@ -43,7 +44,8 @@ typedef struct {
 	const __ubsan_source_location at;
 	const __ubsan_type_descriptor* const type;
 	unsigned char alignment;
-	enum {
+	enum
+	{
 		__ubsan_type_check_kind_load,
 		__ubsan_type_check_kind_store,
 		__ubsan_type_check_kind_reference_binding,
@@ -106,7 +108,8 @@ typedef struct {
 	const __ubsan_source_location at;
 	const __ubsan_type_descriptor* const from_type;
 	const __ubsan_type_descriptor* const to_type;
-	enum {
+	enum
+	{
 		__ubsan_implicit_conversion_check_integer_truncation = 0,
 		__ubsan_implicit_conversion_check_unsigned_integer_truncation = 1,
 		__ubsan_implicit_conversion_check_signed_integer_truncation = 2,
@@ -117,7 +120,8 @@ typedef struct {
 
 typedef struct {
 	const __ubsan_source_location at;
-	enum {
+	enum
+	{
 		__ubsan_builtin_conversion_kind_ctz_passed_zero, // Count tailing zeroes
 		__ubsan_builtin_conversion_kind_clz_passed_zero, // Count leading zeroes
 	} kind : 8;
@@ -138,7 +142,8 @@ typedef struct {
 } __ubsan_pointer_overflow_data;
 
 typedef struct {
-	enum {
+	enum
+	{
 		__ubsan_control_flow_integrity_type_check_kind_vcall,
 		__ubsan_control_flow_integrity_type_check_kind_nvcall,
 		__ubsan_control_flow_integrity_type_check_kind_derived_cast,
