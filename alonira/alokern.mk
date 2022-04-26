@@ -4,18 +4,10 @@ ALOKERN_OBJECTS = $(ALOKERN_SOURCES:.c=$(OBJECT_SUFFIX))
 ALOKERN_OUT = boot/alonira-kernel.elf
 
 ALOKERN_C_FLAGS = $(ALOCOM_C_FLAGS)
-ifeq ($(BOOT_PROTOCOL),STIVALE)
-ALOKERN_C_FLAGS += $(STIVALE_C_FLAGS)
-else
 ALOKERN_C_FLAGS += $(ULTRA_C_FLAGS)
-endif
 
 ALOKERN_L_FLAGS = $(ALOCOM_L_FLAGS)
-ifeq ($(BOOT_PROTOCOL),STIVALE)
-ALOKERN_L_FLAGS += -Talonira/alokern/kernel-stivale.ld
-else
 ALOKERN_L_FLAGS += -Talonira/alokern/kernel-generic.ld
-endif
 
 build_message_alokern:
 	@$(ECHO) "$(SECTION_PREFIX) Alokern"
