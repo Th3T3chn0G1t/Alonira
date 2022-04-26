@@ -5,7 +5,7 @@ $(HYPER_STAGE1_OUT): $(HYPER_STAGE1_ASM_SOURCE)
 
 
 HYPER_STAGE2_ASM_FLAGS = -felf32
-HYPER_STAGE2_C_FLAGS = --target=i686-none-eabi -fno-stack-protector
+HYPER_STAGE2_C_FLAGS = --target=i686-none-eabi -fno-stack-protector $(FREESTANDING_C_FLAGS) -Wno-ignored-attributes
 HYPER_STAGE2_C_FLAGS += -Wno-reserved-identifier -Ialonira/vendor/hyper/loader -Ialonira/vendor/hyper/loader/bios -Ialonira/vendor/hyper/loader/common -Ialonira/vendor/hyper/loader/elf -Ialonira/vendor/hyper/loader/filesystem -Ialonira/vendor/hyper/loader/protocols -Ialonira/vendor/hyper/loader/filesystem/fat -Ialonira/vendor/hyper/loader/filesystem/iso9660
 HYPER_STAGE2_L_FLAGS = --target=i686-none-eabi -Talonira/vendor/hyper/loader/bios/linker.ld -fno-stack-protector
 
