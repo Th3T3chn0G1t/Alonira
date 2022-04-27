@@ -1,4 +1,0 @@
-[submodule "alonira/vendor/hyper"]
-	path = alonira/vendor/hyper
-	url = https://github.com/UltraOS/Hyper
-	ignore = untracked
