@@ -1,5 +1,5 @@
 HYPER_STAGE1_ASM_FLAGS = -DHYPER_ISO_BOOT_RECORD
-HYPER_STAGE1_ASM_SOURCE = alonira/vendor/hyper/bios/hyper_boot_record.asm
+HYPER_STAGE1_ASM_SOURCE = alonira/vendor/alonira-hyper/bios/hyper_boot_record.asm
 HYPER_STAGE1_OUT = $(HYPER_STAGE1_ASM_SOURCE:.asm=.bin)
 
 $(HYPER_STAGE1_OUT): ASMFLAGS = $(HYPER_STAGE1_ASM_FLAGS)
@@ -9,11 +9,11 @@ $(HYPER_STAGE1_OUT): $(HYPER_STAGE1_ASM_SOURCE)
 HYPER_STAGE2_ASM_FLAGS = -felf32
 HYPER_STAGE2_C_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -fno-stack-protector $(FREESTANDING_C_FLAGS)
 HYPER_STAGE2_C_FLAGS += -Wno-ignored-attributes -Wno-unknown-warning-option -Wno-reserved-identifier
-HYPER_STAGE2_C_FLAGS += -Ialonira/vendor/hyper/loader -Ialonira/vendor/hyper/loader/bios -Ialonira/vendor/hyper/loader/common -Ialonira/vendor/hyper/loader/elf -Ialonira/vendor/hyper/loader/filesystem -Ialonira/vendor/hyper/loader/protocols -Ialonira/vendor/hyper/loader/filesystem/fat -Ialonira/vendor/hyper/loader/filesystem/iso9660
-HYPER_STAGE2_L_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -Talonira/vendor/hyper/loader/bios/linker.ld $(FREESTANDING_L_FLAGS) -lclang_rt.builtins-i386
+HYPER_STAGE2_C_FLAGS += -Ialonira/vendor/alonira-hyper/loader -Ialonira/vendor/alonira-hyper/loader/bios -Ialonira/vendor/alonira-hyper/loader/common -Ialonira/vendor/alonira-hyper/loader/elf -Ialonira/vendor/alonira-hyper/loader/filesystem -Ialonira/vendor/alonira-hyper/loader/protocols -Ialonira/vendor/alonira-hyper/loader/filesystem/fat -Ialonira/vendor/alonira-hyper/loader/filesystem/iso9660
+HYPER_STAGE2_L_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -Talonira/vendor/alonira-hyper/loader/bios/linker.ld $(FREESTANDING_L_FLAGS) -lclang_rt.builtins-i386
 
-HYPER_STAGE2_ASM_SOURCES = $(wildcard alonira/vendor/hyper/loader/bios/*.asm)
-HYPER_STAGE2_C_SOURCES = $(wildcard alonira/vendor/hyper/loader/*.c) $(wildcard alonira/vendor/hyper/loader/common/*.c) $(wildcard alonira/vendor/hyper/loader/elf/*.c) $(wildcard alonira/vendor/hyper/loader/filesystem/*.c) $(wildcard alonira/vendor/hyper/loader/filesystem/fat/*.c) $(wildcard alonira/vendor/hyper/loader/filesystem/iso9660/*.c) $(wildcard alonira/vendor/hyper/loader/protocols/*.c) $(wildcard alonira/vendor/hyper/loader/bios/*.c)
+HYPER_STAGE2_ASM_SOURCES = $(wildcard alonira/vendor/alonira-hyper/loader/bios/*.asm)
+HYPER_STAGE2_C_SOURCES = $(wildcard alonira/vendor/alonira-hyper/loader/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/common/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/elf/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/fat/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/iso9660/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/protocols/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/bios/*.c)
 HYPER_STAGE2_OBJECTS = $(HYPER_STAGE2_ASM_SOURCES:.asm=$(OBJECT_SUFFIX)) $(HYPER_STAGE2_C_SOURCES:.c=$(OBJECT_SUFFIX))
 HYPER_STAGE2_ELF = hyper_stage2$(ELF_SUFFIX)
 HYPER_STAGE2_OUT = hyper_stage2$(BIN_SUFFIX)
@@ -34,13 +34,13 @@ $(HYPER_OUT): $(HYPER_STAGE1_OUT) $(HYPER_STAGE2_OUT)
 	cat $^ > $@
 
 
-HYPER_INSTALL_C_SOURCES = $(wildcard alonira/vendor/hyper/installer/*.c)
+HYPER_INSTALL_C_SOURCES = $(wildcard alonira/vendor/alonira-hyper/installer/*.c)
 HYPER_INSTALL_LOADERDATA_SOURCES = tmp/loaderdata_mbr.c tmp/loaderdata_iso_mbr.c tmp/loaderdata_stage2.c
 HYPER_INSTALL_OBJECTS = $(HYPER_INSTALL_C_SOURCES:.c=$(OBJECT_SUFFIX)) $(HYPER_INSTALL_LOADERDATA_SOURCES:.c=$(OBJECT_SUFFIX))
 HYPER_INSTALL = ./hyper_install$(EXECUTABLE_SUFFIX)
 
 tmp/loaderdata_%.c: $(HYPER_STAGE1_OUT) $(HYPER_STAGE2_OUT) | tmp
-	$(PYTHON3) alonira/vendor/hyper/installer/dump_as_array.py $(HYPER_STAGE1_OUT) $@ $*
+	$(PYTHON3) alonira/vendor/alonira-hyper/installer/dump_as_array.py $(HYPER_STAGE1_OUT) $@ $*
 
 $(HYPER_INSTALL_OBJECTS): $(HYPER_INSTALL_C_SOURCES) $(HYPER_INSTALL_LOADERDATA_SOURCES)
 
@@ -48,7 +48,7 @@ $(HYPER_INSTALL): CLANG_FORMAT = DISABLED
 $(HYPER_INSTALL): $(HYPER_INSTALL_OBJECTS)
 
 
-ULTRA_C_FLAGS = -Ialonira/vendor/hyper/loader/protocols/ultra_protocol
+ULTRA_C_FLAGS = -Ialonira/vendor/alonira-hyper/loader/protocols/ultra_protocol
 
 
 hyper: $(HYPER_OUT) $(HYPER_INSTALL)
