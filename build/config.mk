@@ -3,6 +3,8 @@ AR = llvm-ar
 CLANG_FORMAT = clang-format
 XORRISO = xorriso
 NASM = nasm
+PYTHON3 = python3
+OBJCOPY = llvm-objcopy
 
 BUILD_MODE = DEBUG
 

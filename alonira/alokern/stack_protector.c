@@ -8,11 +8,11 @@
 ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wreserved-identifier"
 
-#pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-__unused uintptr_t __stack_chk_guard = 0xAFAFAFAFAFAFAFAF;
+extern uintptr_t __stack_chk_guard;
+__used uintptr_t __stack_chk_guard = 0xAFAFAFAFAFAFAFAF;
 
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
-__unused noreturn void __stack_chk_fail(void) {
+extern noreturn void __stack_chk_fail(void);
+__used noreturn void __stack_chk_fail(void) {
 	atrace;
 	panic(ALO_OUT_OF_BOUNDS, "Stack smashing detected");
 }

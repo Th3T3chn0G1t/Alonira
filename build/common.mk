@@ -33,6 +33,9 @@ endif
 ifneq ($(OVERRIDE_AR),)
 AR = $(OVERRIDE_AR)
 endif
+ifneq ($(OVERRIDE_PYTHON3),)
+PYTHON3 = $(OVERRIDE_PYTHON3)
+endif
 ifneq ($(OVERRIDE_CLANG_FORMAT),)
 CLANG_FORMAT = $(OVERRIDE_CLANG_FORMAT)
 endif
@@ -59,9 +62,10 @@ endif
 CLINKER := $(CLANG) -fuse-ld=lld
 
 GLOBAL_C_FLAGS += -std=gnu2x -fvisibility=default -fcomment-block-commands=example -fmacro-backtrace-limit=0 -DENABLED=1 -DDISABLED=0 
+GLOBAL_L_FLAGS += -Wl,--build-id=none
 
-FREESTANDING_C_FLAGS = -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -fstack-protector-all -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
-FREESTANDING_L_FLAGS = -nostdlib -static
+FREESTANDING_C_FLAGS = -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
+FREESTANDING_L_FLAGS = -nostdlib -static -nodefaultlibs
 
 CLANG_STATIC_ANALYZER_FLAGS = -Xanalyzer -analyzer-output=text
 CLANG_STATIC_ANALYZER_FLAGS += -Xanalyzer -analyzer-checker=core -Xanalyzer -analyzer-checker=deadcode
@@ -102,8 +106,8 @@ EXECUTABLE_TOOL = $(ELF_TOOL) -fPIE
 	@$(STATIC_LIB_TOOL)
 
 %$(BIN_SUFFIX): %$(ELF_SUFFIX)
-	@$(ECHO) "$(ACTION_PREFIX)$(ELF_TOOL) -Wl,--oformat,binary$(ACTION_SUFFIX)"
-	@$(ELF_TOOL) -Wl,--oformat,binary
+	@$(ECHO) "$(ACTION_PREFIX)$(OBJCOPY) -O binary $< $@$(ACTION_SUFFIX)"
+	@$(OBJCOPY) -O binary $< $@
 
 %$(OBJECT_SUFFIX): %.c build/config.mk | tmp
 	@$(ECHO) "$(ACTION_PREFIX)$(CLANG) -c $(GLOBAL_C_FLAGS) $(CFLAGS) -o $@ $<$(ACTION_SUFFIX)"

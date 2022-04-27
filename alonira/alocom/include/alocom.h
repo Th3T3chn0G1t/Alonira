@@ -37,6 +37,9 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #ifndef __unused
 #define __unused __attribute__((unused))
 #endif
+#ifndef __used
+#define __used __attribute__((used))
+#endif
 #ifndef __maybe_unused
 #define __maybe_unused [[maybe_unused]]
 #endif
