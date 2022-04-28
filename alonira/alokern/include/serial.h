@@ -5,7 +5,25 @@
 #define ALO_SERIAL_H
 
 #include <alocom.h>
-#include "kio.h"
+
+#define ALO_ANSI_COLOR_BLACK "30"
+#define ALO_ANSI_COLOR_RED "31"
+#define ALO_ANSI_COLOR_GREEN "32"
+#define ALO_ANSI_COLOR_YELLOW "33"
+#define ALO_ANSI_COLOR_BLUE "34"
+#define ALO_ANSI_COLOR_MAGENTA "35"
+#define ALO_ANSI_COLOR_CYAN "36"
+#define ALO_ANSI_COLOR_WHITE "37"
+#define ALO_ANSI_BOLD "1"
+#define ALO_ANSI_CLEAR "0"
+#define ALO_INTERNAL_ANSI_SEQUENCE_PREFIX "\033["
+#define ALO_INTERNAL_ANSI_SEQUENCE_SUFFIX "m"
+#define ALO_INTERNAL_ANSI_COLOR_DARK_PREFIX "0;"
+#define ALO_INTERNAL_ANSI_COLOR_LIGHT_PREFIX "1;"
+#define ALO_ANSI_SEQUENCE(code) ALO_INTERNAL_ANSI_SEQUENCE_PREFIX code ALO_INTERNAL_ANSI_SEQUENCE_SUFFIX
+#define ALO_ANSI_COLOR_DARK(color) ALO_ANSI_SEQUENCE(ALO_INTERNAL_ANSI_COLOR_DARK_PREFIX color)
+#define ALO_ANSI_COLOR_LIGHT(color) ALO_ANSI_SEQUENCE(ALO_INTERNAL_ANSI_COLOR_LIGHT_PREFIX color)
+
 
 typedef enum __packed {
     ALO_SERIAL_COM1 = 0x3F8,
@@ -58,82 +76,8 @@ typedef enum __attribute__((enum_extensibility(closed), flag_enum)) {
     ALO_SERIAL_INTERRUPT_STATUS_NOTIFY = 1 << 3
 } alo_serial_interrupt_mode_t;
 
-ALO_DIAGNOSTIC_REGION_BEGIN
-#pragma clang diagnostic ignored "-Wgnu-binary-literal"
-
-static __forceinline __nodiscard alo_error_t alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode) {
-    ALO_FRAME_BEGIN(alo_serial_set);
-
-    const uint16_t baud_divisor = (uint16_t) 115200 / baud;
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b10000000 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_BAUD_DIVISOR_LSB, (uint8_t) ((baud_divisor << 8) >> 8));
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_BAUD_DIVISOR_MSB, (uint8_t) (baud_divisor >> 8));
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b10000000 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-
-    switch(data_width) {
-        case ALO_SERIAL_DATA_WIDTH_5: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00000011 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_DATA_WIDTH_6: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00000001 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00000010 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_DATA_WIDTH_7: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00000001 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00000010 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_DATA_WIDTH_8: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00000011 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-    }
-
-    switch(stop_bit_width) {
-        case ALO_SERIAL_STOP_BIT_1: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00000100 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_STOP_BIT_1_5:
-        case ALO_SERIAL_STOP_BIT_2: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00000100 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-    }
-
-    switch(parity_mode) {
-        case ALO_SERIAL_PARITY_NONE: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00011100 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_PARITY_ODD: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00110000 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00001000 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_PARITY_EVEN: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00100000 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00011000 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_PARITY_MARK: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, ~0b00010000 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00101000 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-        case ALO_SERIAL_PARITY_SPACE: {
-            alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL, 0b00111000 | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_LINE_CONTROL));
-            break;
-        }
-    }
-
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE, ~0b00001111 & alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE));
-    alo_port_out_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE, (uint8_t) interrupt_mode | alo_port_in_byte(com_port + ALO_SERIAL_PORT_REGISTER_INTERRUPT_ENABLE));
-
-    ALO_ALL_OK;
-}
-ALO_DIAGNOSTIC_REGION_END
+ALO_ERRORABLE alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode);
+ALO_ERRORABLE alo_serial_send(const alo_serial_com_port_t com_port, const char data);
+ALO_ERRORABLE alo_serial_send_string(const alo_serial_com_port_t com_port, const char* const restrict data);
 
 #endif

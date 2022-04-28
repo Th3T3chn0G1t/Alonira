@@ -5,12 +5,15 @@
 #include "include/vga.h"
 
 #include <alocom.h>
+#include <alomemory.h>
 #include <alostring.h>
 
 static const char alo_internal_panic_message_head[] = "ALONIRA KERNEL PANIC";
 
 void panic(const alo_error_t error, const char* const restrict context) {
 	ALO_FRAME_BEGIN(panic);
+
+	(void) alo_memory_set(ALO_VGA_ADDRESS, ALO_VGA_WIDTH * ALO_VGA_HEIGHT * sizeof(ALO_VGA_ADDRESS[0]), 0);
 
 	// We can't check errors here - let's just hope we didn't mess up
 	(void) alo_vga_put_string_at_colored(alo_internal_panic_message_head, sizeof(alo_internal_panic_message_head) - 1, ALO_VGA_COLOR_DARK(ALO_VGA_COLOR_RED), ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE), ALO_VGA_WIDTH / 2 - (sizeof(alo_internal_panic_message_head) - 1) / 2, 5);

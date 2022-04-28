@@ -6,15 +6,10 @@
 	- Docs autogen
 - Common
 	- Thread-local on alotooling
-	- `kernel` vs. `user` suffixes on intermediaries/binaries in order to make Make/buildcommon use appropriate build flags/modes
-- Kernel
+- Backburner
 	- GDB/LLDB debugging & stubs
+- Kernel
 	- FIX! UBSan impl does not take full advantage of provided diagnostic info
-	- Add newline support to `alog`
-	- Fix horrible mess at top of `alocom.h`
-	- `ALO_REQUIRE_EQUAL_K` and put in `alog` & `kdiagnostic.h` to deal with unrecoverable runtime errors
-	- Terminal driver
-		- Serial output
 	- Segmentation
 	- Interrupts
 		- Keyboard driver
