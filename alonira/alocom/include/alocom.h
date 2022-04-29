@@ -21,6 +21,9 @@ typedef __builtin_va_list va_list;
 #define pragma _Pragma
 #define generic _Generic
 #define thread_local _Thread_local
+#define iasm(ops, ...) asm volatile(ops __VA_ARGS__)
+#define as(...) #__VA_ARGS__ "\n"
+#define alignas _Alignas
 
 #ifndef restrict
 #define restrict __restrict

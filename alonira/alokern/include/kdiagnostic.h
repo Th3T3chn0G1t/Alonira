@@ -6,19 +6,16 @@
 
 #include <alocom.h>
 
-ALO_DIAGNOSTIC_REGION_BEGIN
-#pragma clang diagnostic ignored "-Wlanguage-extension-token"
 static noreturn __forceinline void hang(void) {
     ALO_FRAME_BEGIN(hang);
-    while(true) asm("hlt");
+    while(true) iasm(as(hlt));
 }
-ALO_DIAGNOSTIC_REGION_END
 extern noreturn void panic(const alo_error_t error, const char* const restrict context);
 
 #define ALO_REQUIRE_NO_ERROR_K(error) \
     do { \
         if(error != ALO_OK) { \
-            alogf(FATAL, "Require failed - got error"); \
+            alogf(FATAL, "Require failed - got error %s (%s)", alo_error_name(error), alo_error_description(error)); \
             panic(error, "Require failed - got error"); \
         } \
     } while(0)
