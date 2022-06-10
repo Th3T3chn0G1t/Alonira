@@ -1,4 +1,0 @@
-[submodule "alonira/vendor/alonira-hyper"]
-	path = alonira/vendor/alonira-hyper
-	url = https://github.com/Th3T3chn0G1t/Alonira-Hyper
-	ignore = untracked
