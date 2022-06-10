@@ -16,7 +16,7 @@ static alo_segment_selector_t gdt_selectors[3] = {
 ALO_ERRORABLE alo_gdt_install(void) {
 	ALO_FRAME_BEGIN(alo_gdt_install);
 
-	alog(DEBUG, "GDT Load");
+	alogf(DEBUG, "GDT Load: %zux entries @ %zu bytes - %zu bytes in total", sizeof(gdt) / sizeof(gdt[0]), sizeof(alo_gdt_entry_t), sizeof(gdt));
 	alogf(DEBUG, "NULL %zx: %zx", (size_t) * (uint16_t*) &gdt_selectors[0], *(uint64_t*) &gdt[0]);
 	alogf(DEBUG, "CODE %zx: %zx", (size_t) * (uint16_t*) &gdt_selectors[1], *(uint64_t*) &gdt[1]);
 	alogf(DEBUG, "DATA %zx: %zx", (size_t) * (uint16_t*) &gdt_selectors[2], *(uint64_t*) &gdt[2]);
@@ -36,7 +36,7 @@ ALO_ERRORABLE alo_gdt_install(void) {
             as(lgdtq (%%rax))
 
             as(pushq 0x8)
-            as(mov .done_reload_cs, %%rax)
+            as(mov .done_reload_cs(%%rip), %%rax)
             as(pushq %%rax)
             as(lretq)
             as(.done_reload_cs:)

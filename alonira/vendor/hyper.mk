@@ -10,7 +10,7 @@ HYPER_STAGE2_ASM_FLAGS = -felf32
 HYPER_STAGE2_C_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -fno-stack-protector $(FREESTANDING_C_FLAGS)
 HYPER_STAGE2_C_FLAGS += -Wno-ignored-attributes -Wno-unknown-warning-option -Wno-reserved-identifier
 HYPER_STAGE2_C_FLAGS += -Ialonira/vendor/alonira-hyper/loader -Ialonira/vendor/alonira-hyper/loader/bios -Ialonira/vendor/alonira-hyper/loader/common -Ialonira/vendor/alonira-hyper/loader/elf -Ialonira/vendor/alonira-hyper/loader/filesystem -Ialonira/vendor/alonira-hyper/loader/protocols -Ialonira/vendor/alonira-hyper/loader/filesystem/fat -Ialonira/vendor/alonira-hyper/loader/filesystem/iso9660
-HYPER_STAGE2_L_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -Talonira/vendor/alonira-hyper/loader/bios/linker.ld $(FREESTANDING_L_FLAGS) -lclang_rt.builtins-i386
+HYPER_STAGE2_L_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -Talonira/vendor/alonira-hyper/loader/bios/linker.ld $(FREESTANDING_L_FLAGS)
 
 HYPER_STAGE2_ASM_SOURCES = $(wildcard alonira/vendor/alonira-hyper/loader/bios/*.asm)
 HYPER_STAGE2_C_SOURCES = $(wildcard alonira/vendor/alonira-hyper/loader/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/common/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/elf/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/fat/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/iso9660/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/protocols/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/bios/*.c)

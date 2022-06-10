@@ -1,6 +1,6 @@
 ALOCOM_C_FLAGS = -Ialonira/alocom/include -march=x86-64 -m64 --target=x86_64-none-eabi -fstack-protector-all -fsanitize=undefined,cfi
 ALOCOM_C_FLAGS += -Werror -Weverything -Wthread-safety
-ALOCOM_C_FLAGS += -Wno-gnu-statement-expression -Wno-c++98-compat -Wno-redundant-parens -Wno-atomic-implicit-seq-cst -Wno-padded -Wno-poison-system-directories -Wno-unknown-warning-option -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-register -Wno-overlength-strings -Wno-cast-qual  -Wno-gnu-zero-variadic-macro-arguments -Wno-language-extension-token -Wno-gnu-conditional-omitted-operand -Wno-gnu-case-range -Wno-gnu-binary-literal
+ALOCOM_C_FLAGS += -Wno-gnu-statement-expression -Wno-c++98-compat -Wno-redundant-parens -Wno-atomic-implicit-seq-cst -Wno-padded -Wno-poison-system-directories -Wno-unknown-warning-option -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-register -Wno-overlength-strings -Wno-cast-qual  -Wno-gnu-zero-variadic-macro-arguments -Wno-language-extension-token -Wno-gnu-conditional-omitted-operand -Wno-gnu-case-range -Wno-gnu-binary-literal -Wno-declaration-after-statement
 # https://stackoverflow.com/questions/28516413/c11-alignas-vs-clang-wcast-align
 # Clang fails to check alignment properly when delivering -Wcast-align
 ALOCOM_C_FLAGS += -Wno-cast-align
