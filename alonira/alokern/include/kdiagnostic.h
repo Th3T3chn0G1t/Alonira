@@ -7,7 +7,7 @@
 #include <alocom.h>
 
 static noreturn __forceinline void hang(void) {
-    ALO_FRAME_BEGIN(hang);
+    iasm(as(cli));
     while(true) iasm(as(hlt));
 }
 extern noreturn void panic(const alo_error_t error, const char* const restrict context);

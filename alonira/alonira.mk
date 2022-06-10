@@ -1,4 +1,4 @@
-ALONIRA_QEMU_FLAGS = -serial stdio
+ALONIRA_QEMU_FLAGS =
 ALONIRA_OUT = alonira.iso
 
 alonira: $(ALONIRA_OUT)

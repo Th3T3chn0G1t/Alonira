@@ -13,7 +13,7 @@ static alo_segment_selector_t gdt_selectors[3] = {
 	{ALO_CPU_PRIVILIGE_RING0, ALO_SEGMENT_TABLE_GDT, 1},
 	{ALO_CPU_PRIVILIGE_RING0, ALO_SEGMENT_TABLE_GDT, 2}};
 
-ALO_ERRORABLE alo_gdt_install(void) {
+alo_error_t alo_gdt_install(void) {
 	ALO_FRAME_BEGIN(alo_gdt_install);
 
 	alogf(DEBUG, "GDT Load: %zux entries @ %zu bytes - %zu bytes in total", sizeof(gdt) / sizeof(gdt[0]), sizeof(alo_gdt_entry_t), sizeof(gdt));
@@ -35,28 +35,19 @@ ALO_ERRORABLE alo_gdt_install(void) {
             as(movq %0, 2(%%rax))
             as(lgdtq (%%rax))
 
-            as(pushq 0x8)
-            as(mov .done_reload_cs(%%rip), %%rax)
+            as(movq %1, %%rbx)
+            as(movw 2*%c2(%%rbx), %%ax)
+            as(movw %%ax, %%ds)
+            as(movw %%ax, %%es)
+            as(movw %%ax, %%fs)
+            as(movw %%ax, %%gs)
+            as(movw %%ax, %%ss)
+
+            as(pushq 1*%c2(%%rbx))
+            as(lea .done_reload_cs(%%rip), %%rax)
             as(pushq %%rax)
             as(lretq)
             as(.done_reload_cs:)
-
-            as(hlt)
-
-            // as(movq %1, %%rax)
-            // as(pushw %c2(%%rax))
-            // as(movq .done_reload_cs, %%rax)
-            // as(pushq %%rax)
-            // as(lretq)
-            // as(.done_reload_cs:)
-
-            // as(movq %1, %%rbx)
-            // as(movw 2*%c2(%%rbx), %%ax)
-            // as(movw %%ax, %%ds)
-            // as(movw %%ax, %%es)
-            // as(movw %%ax, %%fs)
-            // as(movw %%ax, %%gs)
-            // as(movw %%ax, %%ss)
 
             as(sti),
     :: "p"(&gdt), "p"(gdt_selectors), "n"(sizeof(alo_segment_selector_t)), "n"(sizeof(gdt) - 1) : "rax", "rbx");

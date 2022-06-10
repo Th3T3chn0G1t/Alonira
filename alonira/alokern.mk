@@ -1,5 +1,5 @@
 ALOKERN_SOURCES = $(wildcard alonira/alokern/*.c)
-ALOKERN_OBJECTS = $(ALOKERN_SOURCES:.c=$(OBJECT_SUFFIX))
+ALOKERN_OBJECTS = $(ALOKERN_SOURCES:.c=.c$(OBJECT_SUFFIX))
 
 ALOKERN_OUT = boot/alonira-kernel.elf
 

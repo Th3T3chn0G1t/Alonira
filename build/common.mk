@@ -64,7 +64,7 @@ CLINKER := $(CLANG) -fuse-ld=lld
 GLOBAL_C_FLAGS += -std=gnu2x -fvisibility=default -fcomment-block-commands=example -fmacro-backtrace-limit=0 -DENABLED=1 -DDISABLED=0 
 GLOBAL_L_FLAGS += -Wl,--build-id=none
 
-FREESTANDING_C_FLAGS = -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
+FREESTANDING_C_FLAGS = -D__alo__ -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
 FREESTANDING_L_FLAGS = -nostdlib -static -nodefaultlibs
 
 CLANG_STATIC_ANALYZER_FLAGS = -Xanalyzer -analyzer-output=text
@@ -109,7 +109,7 @@ EXECUTABLE_TOOL = $(ELF_TOOL) -fPIE
 	@$(ECHO) "$(ACTION_PREFIX)$(OBJCOPY) -O binary $< $@$(ACTION_SUFFIX)"
 	@$(OBJCOPY) -O binary $< $@
 
-%$(OBJECT_SUFFIX): %.c build/config.mk | tmp
+%.c$(OBJECT_SUFFIX): %.c build/config.mk | tmp
 	@$(ECHO) "$(ACTION_PREFIX)$(CLANG) -c $(GLOBAL_C_FLAGS) $(CFLAGS) -o $@ $<$(ACTION_SUFFIX)"
 	@$(CLANG) -c $(GLOBAL_C_FLAGS) $(CFLAGS) -o $@ $<
 
@@ -122,11 +122,10 @@ EXECUTABLE_TOOL = $(ELF_TOOL) -fPIE
 	@$(ECHO) "$(ACTION_PREFIX)$(CLANG_FORMAT) -i $<$(ACTION_SUFFIX)"
 	-@$(CLANG_FORMAT) -i $<
 
-%$(OBJECT_SUFFIX): %.asm build/config.mk
+%.asm$(OBJECT_SUFFIX): %.asm build/config.mk
 	@$(ECHO) "$(ACTION_PREFIX)$(NASM) $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<$(ACTION_SUFFIX)"
 	@$(NASM) $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<
 
 %$(BIN_SUFFIX): %.asm build/config.mk
 	@$(ECHO) "$(ACTION_PREFIX)$(NASM) -fbin $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<$(ACTION_SUFFIX)"
 	@$(NASM) -fbin $(GLOBAL_ASM_FLAGS) $(ASMFLAGS) -o $@ $<
-

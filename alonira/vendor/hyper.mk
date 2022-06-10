@@ -14,7 +14,7 @@ HYPER_STAGE2_L_FLAGS = -march=i686 -m32 --target=i686-none-unknown-eabi -Talonir
 
 HYPER_STAGE2_ASM_SOURCES = $(wildcard alonira/vendor/alonira-hyper/loader/bios/*.asm)
 HYPER_STAGE2_C_SOURCES = $(wildcard alonira/vendor/alonira-hyper/loader/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/common/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/elf/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/fat/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/filesystem/iso9660/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/protocols/*.c) $(wildcard alonira/vendor/alonira-hyper/loader/bios/*.c)
-HYPER_STAGE2_OBJECTS = $(HYPER_STAGE2_ASM_SOURCES:.asm=$(OBJECT_SUFFIX)) $(HYPER_STAGE2_C_SOURCES:.c=$(OBJECT_SUFFIX))
+HYPER_STAGE2_OBJECTS = $(HYPER_STAGE2_ASM_SOURCES:.asm=.asm$(OBJECT_SUFFIX)) $(HYPER_STAGE2_C_SOURCES:.c=.c$(OBJECT_SUFFIX))
 HYPER_STAGE2_ELF = hyper_stage2$(ELF_SUFFIX)
 HYPER_STAGE2_OUT = hyper_stage2$(BIN_SUFFIX)
 
@@ -27,7 +27,6 @@ $(HYPER_STAGE2_ELF): CFLAGS = $(HYPER_STAGE2_C_FLAGS)
 $(HYPER_STAGE2_ELF): LFLAGS = $(HYPER_STAGE2_L_FLAGS)
 $(HYPER_STAGE2_ELF): $(HYPER_STAGE2_OBJECTS)
 
-
 HYPER_OUT = boot/hyper.bin
 
 $(HYPER_OUT): $(HYPER_STAGE1_OUT) $(HYPER_STAGE2_OUT)
@@ -36,7 +35,7 @@ $(HYPER_OUT): $(HYPER_STAGE1_OUT) $(HYPER_STAGE2_OUT)
 
 HYPER_INSTALL_C_SOURCES = $(wildcard alonira/vendor/alonira-hyper/installer/*.c)
 HYPER_INSTALL_LOADERDATA_SOURCES = tmp/loaderdata_mbr.c tmp/loaderdata_iso_mbr.c tmp/loaderdata_stage2.c
-HYPER_INSTALL_OBJECTS = $(HYPER_INSTALL_C_SOURCES:.c=$(OBJECT_SUFFIX)) $(HYPER_INSTALL_LOADERDATA_SOURCES:.c=$(OBJECT_SUFFIX))
+HYPER_INSTALL_OBJECTS = $(HYPER_INSTALL_C_SOURCES:.c=.c$(OBJECT_SUFFIX)) $(HYPER_INSTALL_LOADERDATA_SOURCES:.c=.c$(OBJECT_SUFFIX))
 HYPER_INSTALL = ./hyper_install$(EXECUTABLE_SUFFIX)
 
 tmp/loaderdata_%.c: $(HYPER_STAGE1_OUT) $(HYPER_STAGE2_OUT) | tmp
