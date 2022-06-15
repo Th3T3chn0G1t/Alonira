@@ -14,3 +14,13 @@ alo_error_t alo_memory_set(void* const restrict address, const size_t length, co
 
 	ALO_ALL_OK;
 }
+
+void* memset(void* dest, int ch, size_t count) {
+	alo_error_t error = alo_memory_set(dest, count, ch);
+	if(error) {
+		ALO_INTERNAL_OUTPUT_ERROR_MESSAGE(error, "`alo_memory_set` failed");
+		return NULL;
+	}
+
+	return dest;
+}

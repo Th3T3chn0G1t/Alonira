@@ -7,13 +7,13 @@
 #include <alocom.h>
 
 static __forceinline void alo_port_out_byte(const uint16_t port, const uint8_t value) {
-    iasm(as(outb %0, %1), :: "a"(value), "Nd"(port) :);
+    iasm(as(outb %[value], %[port]), :: [value]"a"(value), [port]"Nd"(port) :);
 }
 
 static __forceinline uint8_t alo_port_in_byte(const uint16_t port) {
-    uint8_t ret = 0;
-    iasm(as(inb %1, %0), : "=a"(ret) : "Nd"(port) :);
-    return ret;
+    uint8_t out_value = 0;
+    iasm(as(inb %[port], %[out_value]), : [out_value]"=a"(out_value) : [port]"Nd"(port) :);
+    return out_value;
 }
 
 #endif

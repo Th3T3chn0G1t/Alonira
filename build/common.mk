@@ -64,7 +64,7 @@ CLINKER := $(CLANG) -fuse-ld=lld
 GLOBAL_C_FLAGS += -std=gnu2x -fvisibility=default -fcomment-block-commands=example -fmacro-backtrace-limit=0 -DENABLED=1 -DDISABLED=0 
 GLOBAL_L_FLAGS += -Wl,--build-id=none
 
-FREESTANDING_C_FLAGS = -D__alo__ -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2
+FREESTANDING_C_FLAGS = -D__alo__ -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-threadsafe-statics -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -fno-strict-aliasing -mgeneral-regs-only
 FREESTANDING_L_FLAGS = -nostdlib -static -nodefaultlibs
 
 CLANG_STATIC_ANALYZER_FLAGS = -Xanalyzer -analyzer-output=text

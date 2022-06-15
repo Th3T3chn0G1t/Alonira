@@ -14,6 +14,6 @@ __used uintptr_t __stack_chk_guard = 0xAFAFAFAFAFAFAFAF;
 extern noreturn void __stack_chk_fail(void);
 __used noreturn void __stack_chk_fail(void) {
 	atrace;
-	panic(ALO_OUT_OF_BOUNDS, "Stack smashing detected");
+	alo_panic(ALO_OUT_OF_BOUNDS, "Stack smashing detected");
 }
 ALO_DIAGNOSTIC_REGION_END

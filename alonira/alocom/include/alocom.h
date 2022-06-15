@@ -4,6 +4,10 @@
 #ifndef ALO_COMMON_H
 #define ALO_COMMON_H
 
+#define ALO_DIAGNOSTIC_REGION_BEGIN pragma("clang diagnostic push")
+#define ALO_DIAGNOSTIC_REGION_END pragma("clang diagnostic pop")
+#define ALO_DIAGNOSTIC_IGNORE_ALL pragma("clang diagnostic ignored \"-Weverything\"")
+
 #include "alonum.h"
 
 #define NULL ((void*) 0)
@@ -31,10 +35,6 @@ typedef __builtin_va_list va_list;
 
 #include "alog.h"
 
-#define ALO_DIAGNOSTIC_REGION_BEGIN pragma("clang diagnostic push")
-#define ALO_DIAGNOSTIC_REGION_END pragma("clang diagnostic pop")
-#define ALO_DIAGNOSTIC_IGNORE_ALL pragma("clang diagnostic ignored \"-Weverything\"")
-
 ALO_DIAGNOSTIC_REGION_BEGIN
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
 #ifndef __unused
@@ -60,6 +60,15 @@ ALO_DIAGNOSTIC_REGION_BEGIN
 #endif
 #ifndef __packed
 #define __packed __attribute__((packed))
+#endif
+#ifndef __naked
+#define __naked __attribute__((naked))
+#endif
+#ifndef __callee_preserve
+#define __callee_preserve __attribute__((no_caller_saved_registers))
+#endif
+#ifndef __interrupt
+#define __interrupt __attribute__((interrupt))
 #endif
 ALO_DIAGNOSTIC_REGION_END
 

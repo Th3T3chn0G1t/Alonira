@@ -10,7 +10,7 @@
 	- GDB/LLDB debugging & stubs
 - Kernel
 	- FIX! UBSan impl does not take full advantage of provided diagnostic info
-	- Segmentation
+	- FIX! TSS Interrupt Stack Table for IDT entries `sysenter`
 	- Interrupts
 		- Keyboard driver
 			- Layouts?

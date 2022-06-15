@@ -9,11 +9,6 @@
 #include <alocom.h>
 
 typedef enum {
-    ALO_GDT_INVALID = 0,
-    ALO_GDT_VALID
-} alo_gdt_presence_t;
-
-typedef enum {
     ALO_GDT_TYPE_SYSTEM = 0,
     ALO_GDT_TYPE_CODE_DATA
 } alo_gdt_type_t;
@@ -46,10 +41,11 @@ typedef enum {
     ALO_GDT_SEGMENT_WIDTH_64 = 0
 } alo_gdt_segment_width_t;
 
+#define ALO_GDT_MAKE_ENTRY(base, limit, readable_writeable, direction_conforming, executable, type, privilige, granularity) ((alo_gdt_entry_t) {(limit) & 0xFFFF, (base) & 0xFFFFFF, true, (readable_writeable), (direction_conforming), (executable), (type), (privilige), true, ((limit) >> 2) & 0xF, false, true, ALO_GDT_SEGMENT_WIDTH_64, (granularity), ((base) >> 3) & 0xFF})
+
 typedef struct __packed {
     uint16_t limit_low;
-    uint16_t base_low;
-    uint8_t base_mid;
+    uint32_t base_low : 24;
 
     bool accessed : 1;
     alo_gdt_access_mode_t readable_writeable : 1;
@@ -57,7 +53,7 @@ typedef struct __packed {
     bool executable : 1;
     alo_gdt_type_t type : 1;
     alo_cpu_privilige_t privilige : 2;
-    alo_gdt_presence_t present : 1;
+    bool present : 1;
 
     uint8_t limit_high : 4;
 
@@ -71,8 +67,22 @@ typedef struct __packed {
 
 typedef struct __packed {
     uint16_t limit;
-    alo_gdt_entry_t* base;
+    const alo_gdt_entry_t* base;
 } alo_gdt_pointer_t;
+
+typedef enum {
+    ALO_GDT_INDEX_NULL = 0,
+    ALO_GDT_INDEX_CODE,
+    ALO_GDT_INDEX_DATA,
+    ALO_GDT_INDEX_TSS_BASE,
+    ALO_GDT_INDEX_TSS_HIGH,
+
+    ALO_GDT_INDEX_COUNT
+} alo_gdt_index_t;
+
+extern alo_gdt_entry_t alo_gdt[ALO_GDT_INDEX_COUNT];
+extern const alo_segment_selector_t alo_gdt_selectors[ALO_GDT_INDEX_COUNT];
+extern const alo_gdt_pointer_t alo_gdtr;
 
 ALO_ERRORABLE alo_gdt_install(void);
 

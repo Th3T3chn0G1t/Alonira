@@ -6,6 +6,8 @@
 
 #include "alocom.h"
 
+extern void* memset(void* dest, int ch, size_t count);
+
 ALO_ERRORABLE alo_memory_set(void* const restrict address, const size_t length, const unsigned char value);
 
 #endif
