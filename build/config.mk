@@ -27,8 +27,8 @@ NASM ?= nasm
 # The lld command to use
 LLD ?= lld
 
-# The ar command to use
-AR ?= ar
+# The llvm-ar command to use
+LLVMAR ?= llvm-ar
 
 # The xorriso command to use
 XORRISO ?= xorriso

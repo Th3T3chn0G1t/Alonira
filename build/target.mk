@@ -9,6 +9,6 @@ ifeq ($(ARCH), x86_64)
 	TARGET_GLOBAL_ASMFLAGS += -felf64
 	TARGET_GLOBAL_LFLAGS += --target=x86_64-unknown-none
 
-	TARGET_STATIC_LIB_TOOL = $(AR) -r -c $@ $(filter %$(TARGET_C_OBJECT_SUFFIX),$^)
+	TARGET_STATIC_LIB_TOOL = $(LLVMAR) -r -c $@ $(filter %$(TARGET_C_OBJECT_SUFFIX),$^)
 	TARGET_STATIC_OBJECT_TOOL = $(LLD) -flavour ld -static $(TARGET_GLOBAL_LFLAGS) $(addprefix -L,$(TARGET_LIBDIRS)) $(TARGET_LFLAGS) -o $@ $(filter %$(TARGET_C_OBJECT_SUFFIX),$^)
 endif
