@@ -1,0 +1,62 @@
+# TODO
+
+- Do documentation you silly person!
+- Add github actions
+	- CI
+	- Docs autogen
+- Common
+	- Thread-local on alotooling
+- Backburner
+	- GDB/LLDB debugging & stubs
+- Kernel
+	- FIX! UBSan impl does not take full advantage of provided diagnostic info
+	- FIX! TSS Interrupt Stack Table for IDT entries `sysenter`
+	- Interrupts
+		- Keyboard driver
+			- Layouts?
+		- Timer
+		- Mouse?
+	- Memory management
+		- pmemm/vmemm
+		- gzalloc/gfree
+	- Disk IO
+		- IDE driver
+		- Filesystem
+			- USTAR
+	- Better timer
+		- Graphics
+		- Sound?
+	- USB
+	- PCIe
+	- Networking
+	- Start work on userland
+		- Context switching
+			- Syscalls
+		- Executable-loading
+			- LLVM backend for Alonira
+			- Scheduling
+				- Multiprocessing
+					- Threads
+					- Processes
+						- IPC
+		- Rings
+		- Permissions and users?
+			- Filesystem permissions
+	- Floating point
+		- HW accel. graphics
+	- Better disk IO
+		- Parsing sectors
+		- AHCI
+		- ExtFS
+		- Disk identification and discovery
+			- Hotplugging?
+	- Misc
+		- HWinfo
+			- CPU speed
+			- Disks
+			- Amount of RAM
+- Userspace
+	- Write some programs!
+    - OSLib
+    - Shell
+    - WM

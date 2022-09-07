@@ -42,6 +42,8 @@ ColumnLimit: 0
 DeriveLineEnding: true
 DerivePointerAlignment: true
 
+ForEachMacros: [ 'GEN_FOREACH', 'GEN_FOREACH_PTR', 'GEN_FOREACH_DIRECT_PTR' ]
+
 IncludeBlocks: Regroup
 
 IndentCaseBlocks: false
@@ -53,6 +55,9 @@ IndentWidth: 4
 KeepEmptyLinesAtTheStartOfBlocks: false
 
 Language: Cpp
+
+MacroBlockBegin: .+GEN_DIAG_REGION_BEGIN\n
+MacroBlockEnd: .+GEN_DIAG_REGION_END\n
 
 MaxEmptyLinesToKeep: 1
 

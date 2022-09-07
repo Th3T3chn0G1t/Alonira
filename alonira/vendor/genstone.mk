@@ -1,0 +1,20 @@
+GENSTONE_DIR = $(ALONIRA_DIR)/alonira/vendor/Genstone
+
+# TODO: Maybe make this easier from the Genstone side?
+PLATFORM = ALONIRA
+OBJECT_SUFFIX = $(TARGET_C_OBJECT_SUFFIX)
+LIB_PREFIX = $(TARGET_LIB_PREFIX)
+DYNAMIC_LIB_SUFFIX = $(TARGET_STATIC_LIB_SUFFIX)
+$(GEN_CORE_LIB): TARGET_CFLAGS = $(GEN_CORE_INTERNAL_CFLAGS)
+$(GEN_CORE_LIB): TARGET_ASMFLAGS =
+$(GEN_CORE_LIB): TARGET_LFLAGS = $(GEN_CORE_INTERNAL_LFLAGS)
+$(GEN_CORE_LIB): TARGET_LIBDIRS =
+# This is a sneaky dependency injection
+GEN_CORE_OBJECTS += alocommon
+SANITIZERS = DISABLED
+
+MODULE_NAMES += gencore
+CLEAN_TARGETS += clean_gencore
+TEST_TARGETS += test_gencore
+
+include $(GENSTONE_DIR)/genstone/gencore.mk

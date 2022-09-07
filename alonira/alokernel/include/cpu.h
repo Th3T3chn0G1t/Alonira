@@ -78,6 +78,7 @@ typedef struct __packed {
             as(mov %%rax, 8*16(%[registers])) \
         :: [registers]"r"(&registers) : "rax"); \
     } while(0)
+    
 typedef struct {
     union {
         alo_register_t registers[18];

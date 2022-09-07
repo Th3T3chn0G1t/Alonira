@@ -15,19 +15,8 @@ typedef _Bool bool;
 #define true ((bool) 1)
 #define false ((bool) 0)
 
-typedef __builtin_va_list va_list;
-#define va_start(ap, param) __builtin_va_start(ap, param)
-#define va_end(ap) __builtin_va_end(ap)
-#define va_arg(ap, type) __builtin_va_arg(ap, type)
-#define va_copy(dest, src) __builtin_va_copy(dest, src)
-
-#define noreturn _Noreturn
-#define pragma _Pragma
-#define generic _Generic
-#define thread_local _Thread_local
 #define iasm(ops, ...) asm volatile(ops __VA_ARGS__)
 #define as(...) #__VA_ARGS__ "\n"
-#define alignas _Alignas
 
 #ifndef restrict
 #define restrict __restrict
