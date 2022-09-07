@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_SERIAL_H
 #define ALO_SERIAL_H
 
-#include <alocom.h>
+#include <gencommon.h>
 
 #define ALO_ANSI_COLOR_BLACK "30"
 #define ALO_ANSI_COLOR_RED "31"
@@ -25,7 +25,7 @@
 #define ALO_ANSI_COLOR_LIGHT(color) ALO_ANSI_SEQUENCE(ALO_INTERNAL_ANSI_COLOR_LIGHT_PREFIX color)
 
 
-typedef enum __packed {
+typedef enum ALO_PACKED {
     ALO_SERIAL_COM1 = 0x3F8,
     ALO_SERIAL_COM2 = 0x2F8,
     ALO_SERIAL_COM3 = 0x3E8,
@@ -76,8 +76,8 @@ typedef enum __attribute__((enum_extensibility(closed), flag_enum)) {
     ALO_SERIAL_INTERRUPT_STATUS_NOTIFY = 1 << 3
 } alo_serial_interrupt_mode_t;
 
-ALO_ERRORABLE alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode);
-ALO_ERRORABLE alo_serial_send(const alo_serial_com_port_t com_port, const char data);
-ALO_ERRORABLE alo_serial_send_string(const alo_serial_com_port_t com_port, const char* const restrict data);
+extern gen_error_t* alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode);
+extern gen_error_t* alo_serial_send(const alo_serial_com_port_t com_port, const char data);
+extern gen_error_t* alo_serial_send_string(const alo_serial_com_port_t com_port, const char* const restrict data);
 
 #endif

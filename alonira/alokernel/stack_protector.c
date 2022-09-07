@@ -1,19 +1,16 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #include "include/kdiagnostic.h"
 
-#include <alocom.h>
-
-ALO_DIAGNOSTIC_REGION_BEGIN
-#pragma clang diagnostic ignored "-Wreserved-identifier"
+#include <gencommon.h>
+#include <alocommon.h>
 
 extern uintptr_t __stack_chk_guard;
-__used uintptr_t __stack_chk_guard = 0xAFAFAFAFAFAFAFAF;
+ALO_USED uintptr_t __stack_chk_guard = 0xAFAFAFAFAFAFAFAF;
 
-extern noreturn void __stack_chk_fail(void);
-__used noreturn void __stack_chk_fail(void) {
-	atrace;
-	alo_panic(ALO_OUT_OF_BOUNDS, "Stack smashing detected");
+ALO_USED GEN_NORETURN void __stack_chk_fail(void) {
+    gen_error_t* error = gen_error_attach_backtrace(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_NUMBER, "Stack smashing detected");
+    gen_error_print("alonira", error, GEN_ERROR_SEVERITY_FATAL);
+    gen_error_abort();
 }
-ALO_DIAGNOSTIC_REGION_END

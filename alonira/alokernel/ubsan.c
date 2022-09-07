@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #include "include/kdiagnostic.h"
 #include "include/vga.h"
 
-#include <alocom.h>
+#include <gencommon.h>
+#include <alocommon.h>
 
-ALO_DIAGNOSTIC_REGION_BEGIN
-#pragma clang diagnostic ignored "-Wreserved-identifier"
+#include <genlog.h>
 
 typedef struct {
 	const char* const filename;
@@ -31,11 +31,11 @@ typedef struct {
 } __ubsan_value;
 
 /*
-  signed integer: type_kind == __ubsan_type_kind_integer &&  (type_info & 1)
-unsigned integer: type_kind == __ubsan_type_kind_integer && !(type_info & 1)
+  signed integer: type_kind == __ubsan_type_kind_integer &&  (type_info & 1);
+unsigned integer: type_kind == __ubsan_type_kind_integer && !(type_info & 1);
 		   float: type_kind == __ubsan_type_kind_float
 
-   integer width: 1 << (type_info >> 1)
+   integer width: 1 << (type_info >> 1);
      float width: type_info
 */
 
@@ -151,116 +151,252 @@ typedef struct {
 	const __ubsan_type_descriptor* const type;
 } __ubsan_control_flow_integrity_check_fail_data;
 
-__unused static const char* const __ubsan_type_check_kinds[] = {
+ALO_USED static const char* const __ubsan_type_check_kinds[] = {
 	"Load of", "Store to", "Reference binding to", "Member access within",
 	"Member call on", "Constructor call on", "Downcast of", "Downcast of",
 	"Upcast of", "Cast to virtual base of", "`_Nonnull` binding to",
 	"Dynamic operation on"};
 
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
-__nosanitize __unused noreturn void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
-	ALO_FRAME_BEGIN(__ubsan_handle_type_mismatch_v1);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+// TODO: Properly implement diagnostics for ubsan
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_type_mismatch_v1, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
 	(void) pointer;
-	// if(!pointer)
-	// 	alogf(FATAL, "%s null pointer of type %s", __ubsan_type_check_kinds[data->kind], data->type->type_name);
-	// else if((uintptr_t) pointer->value & (data->alignment - 1))
-	// 	alogf(FATAL, "%s misaligned address %p for type %s which requires %zu", __ubsan_type_check_kinds[data->kind], pointer, data->type->type_name, 1 << data->alignment);
-	// else
-	// 	alogf(FATAL, "%s address %p with insufficient space for an object of type %s", __ubsan_type_check_kinds[data->kind], pointer, data->type->type_name);
-	alo_panic(ALO_WRONG_OBJECT_TYPE, "`__ubsan_handle_type_mismatch_v1` tripped");
+
+    gen_error_abort();
 }
 
-#pragma clang diagnostic ignored "-Wpointer-arith"
-__nosanitize __unused noreturn void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
-	ALO_FRAME_BEGIN(__ubsan_handle_alignment_assumption);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_alignment_assumption, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
 	(void) pointer;
 	(void) alignment;
 	(void) offset;
+
+    gen_error_abort();
+
 	// alogf(FATAL, "From %s:%u:%u", data->from.filename, data->from.line, data->from.column);
 	// const uintptr_t real_pointer = (uintptr_t) pointer->value - (uintptr_t) offset->value;
-	// if(!offset->value)
+	// if(!offset->value);
 	// 	alogf(FATAL, "Assumption of %zu byte alignment for pointer of type %s failed", alignment->value, data->type->type_name);
 	// else
 	// 	alogf(FATAL, "%p is aligned to %zu, misalignment offset is %zu", real_pointer, 1 << __builtin_ctzl(real_pointer), (uintptr_t) real_pointer & (uintptr_t) (alignment->value - 1));
-	alo_panic(ALO_BAD_ALIGNMENT, "`__ubsan_handle_alignment_assumption` tripped");
 }
 
-__unused void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const size_t right) {
-	ALO_FRAME_BEGIN(__ubsan_handle_overflow);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const size_t right) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_overflow, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
 	(void) operator;
 	(void) left;
 	(void) right;
-	// if(data) alo_panic(ALO_UNKNOWN, "???");
-	// if(data->type->type_info & 1)
+
+    gen_error_abort();
+
+	// if(data) 
+	// if(data->type->type_info & 1);
 	// alogf(FATAL, "Signed integer overflow: %c %i cannot be represented in type %s", operator, right, data->type);
 	// alogf(FATAL, "Signed integer overflow: %li %c %li cannot be represented in type %s", left->value, operator, right, data->type->type_name);
 	// else
 	// 	alogf(FATAL, "Unsigned integer overflow: %lu %c %lu cannot be represented in type %s", left->value, operator, right, data->type->type_name);
 }
-__nosanitize __unused noreturn void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	ALO_FRAME_BEGIN(__ubsan_handle_mul_overflow);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_mul_overflow, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
 	(void) left;
 	(void) right;
+
+    gen_error_abort();
+
 	// __ubsan_handle_overflow(data, left, '*', (size_t) right->value);
-	alo_panic(ALO_TOO_LONG, "`__ubsan_handle_mul_overflow` was tripped");
-}
-__nosanitize __unused noreturn void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	ALO_FRAME_BEGIN(__ubsan_handle_add_overflow);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	(void) left;
-	(void) right;
-	// __ubsan_handle_overflow(data, left, '+', (size_t) right->value);
-	alo_panic(ALO_TOO_LONG, "`__ubsan_handle_add_overflow` was tripped");
-}
-__nosanitize __unused noreturn void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	ALO_FRAME_BEGIN(__ubsan_handle_sub_overflow);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	(void) left;
-	(void) right;
-	// __ubsan_handle_overflow(data, left, '-', (size_t) right->value);
-	alo_panic(ALO_TOO_LONG, "`__ubsan_handle_sub_overflow` was tripped");
 }
 
-__nosanitize __unused noreturn void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	ALO_FRAME_BEGIN(__ubsan_handle_divrem_overflow);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_add_overflow, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
 	(void) left;
 	(void) right;
-	alo_panic(ALO_TOO_LONG, "`__ubsan_handle_divrem_overflow` was tripped");
+
+    gen_error_abort();
+
+	// __ubsan_handle_overflow(data, left, '+', (size_t) right->value);
 }
-__nosanitize __unused noreturn void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
-	ALO_FRAME_BEGIN(__ubsan_handle_pointer_overflow);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_sub_overflow, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+	(void) left;
+	(void) right;
+
+    gen_error_abort();
+
+	// __ubsan_handle_overflow(data, left, '-', (size_t) right->value);
+}
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_divrem_overflow, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+	(void) left;
+	(void) right;
+
+    gen_error_abort();
+
+}
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_pointer_overflow, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
 	(void) base;
 	(void) result;
-	alo_panic(ALO_TOO_LONG, "`__ubsan_handle_pointer_overflow` was tripped");
-}
-__nosanitize __unused noreturn void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
-	ALO_FRAME_BEGIN(__ubsan_handle_invalid_builtin);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	alo_panic(ALO_INVALID_PARAMETER, "`__ubsan_handle_invalid_builtin` was tripped");
-}
-__nosanitize __unused noreturn void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	ALO_FRAME_BEGIN(__ubsan_handle_shift_out_of_bounds);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	(void) left;
-	(void) right;
-	alo_panic(ALO_OUT_OF_BOUNDS, "`__ubsan_handle_shift_out_of_bounds` was tripped");
-}
-__nosanitize __unused noreturn void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
-	ALO_FRAME_BEGIN(__ubsan_handle_builtin_unreachable);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	alo_panic(ALO_INVALID_CONTROL, "`__ubsan_handle_builtin_unreachable` was tripped");
-}
-__nosanitize __unused noreturn void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
-	ALO_FRAME_BEGIN(__ubsan_handle_out_of_bounds);
-	alogf(FATAL, "At %s:%u:%u", data->at.filename, data->at.line, data->at.column);
-	(void) offset;
-	alo_panic(ALO_OUT_OF_BOUNDS, "`__ubsan_handle_out_of_bounds` was tripped");
+
+    gen_error_abort();
 }
 
-ALO_DIAGNOSTIC_REGION_END
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_invalid_builtin, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    gen_error_abort();
+}
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_shift_out_of_bounds, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+	(void) left;
+	(void) right;
+
+    gen_error_abort();
+}
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_builtin_unreachable, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    gen_error_abort();
+}
+
+ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_out_of_bounds, GEN_FILE_NAME);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	if(error) {
+        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
+        gen_error_abort();        
+    }
+
+	(void) offset;
+
+    gen_error_abort();
+}

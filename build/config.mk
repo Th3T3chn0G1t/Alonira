@@ -30,6 +30,12 @@ LLD ?= lld
 # The llvm-ar command to use
 LLVMAR ?= llvm-ar
 
+# The llvm-objcopy command to use
+LLVMOBJCOPY ?= llvm-objcopy
+
+# The python3 command to use
+PYTHON3 ?= python3
+
 # The xorriso command to use
 XORRISO ?= xorriso
 
@@ -44,3 +50,4 @@ TARGET_EXTRA_CFLAGS ?=
 
 # Extra linker flags to apply to all target binaries
 TARGET_EXTRA_LFLAGS ?=
+

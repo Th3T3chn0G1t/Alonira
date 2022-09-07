@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_VGA_H
 #define ALO_VGA_H
 
-#include <alocom.h>
+#include <gencommon.h>
 
 enum {
 	ALO_VGA_COLOR_BLACK = 0,
@@ -32,7 +32,7 @@ typedef unsigned short alo_vga_character_t;
 #define ALO_VGA_COLOR_DARK(color) ALO_VGA_COLOR(color)
 #define ALO_VGA_COLOR_LAST ALO_VGA_COLOR_LIGHT(ALO_VGA_COLOR_WHITE)
 
-ALO_ERRORABLE alo_vga_put_char_at_colored(const char c, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
-ALO_ERRORABLE alo_vga_put_string_at_colored(const char* const restrict string, const size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
+extern gen_error_t* alo_vga_put_char_at_colored(const char c, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
+extern gen_error_t* alo_vga_put_string_at_colored(const char* const restrict string, const size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
 
 #endif

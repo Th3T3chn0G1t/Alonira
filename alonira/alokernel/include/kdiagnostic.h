@@ -1,19 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_KERNEL_DIAGNOSTIC_H
 #define ALO_KERNEL_DIAGNOSTIC_H
 
-#include <alocom.h>
+#include <gencommon.h>
+#include <alocommon.h>
 
 #include "cpu.h"
 
-static noreturn __forceinline void alo_hang(void) {
-    iasm(as(cli));
-    while(true) iasm(as(hlt));
+static GEN_NORETURN ALO_FORCE_INLINE void alo_hang(void) {
+    ALO_ASM_BLOCK(ALO_ASM(cli));
+    while(true) ALO_ASM_BLOCK(ALO_ASM(hlt));
 }
-extern noreturn void alo_panic(const alo_error_t error, const char* const restrict context);
-extern noreturn void alo_panic_with_registers(const alo_error_t error, const char* const restrict context, alo_registers_t registers);
+extern GEN_NORETURN void alo_panic(const gen_error_t* error, const char* const restrict context);
+extern GEN_NORETURN void alo_panic_with_registers(const gen_error_t* error, const char* const restrict context, alo_registers_t registers);
 
 #define ALO_REQUIRE_NO_ERROR_K(error) \
     do { \

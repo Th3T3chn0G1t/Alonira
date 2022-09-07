@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_KERNEL_ISRS_H
 #define ALO_KERNEL_ISRS_H
@@ -9,7 +9,7 @@
 #include "idt.h"
 
 /*
-typedef struct __packed {
+typedef struct ALO_PACKED {
     alo_register_t rip;
 
     uint64_t pad0 : 48;
@@ -25,28 +25,28 @@ typedef struct __packed {
 
 #define ALO_INTERNAL_ISR __used __interrupt static void
 
-__callee_preserve static void alo_internal_handle_isr_common(__unused alo_registers_t* registers, __unused alo_idt_isr_t isr) {
+__callee_preserve static void alo_internal_handle_isr_common(GEN_UNUSED alo_registers_t* registers, GEN_UNUSED alo_idt_isr_t isr) {
 
 }
 
 #define ALO_INTERNAL_ISR_STORE_REGISTERS(registers, frame) \
     do { \
-        iasm( \
-            as(mov 8*0(%[registers]), rax) \
-            as(mov 8*1(%[registers]), rbx) \
-            as(mov 8*2(%[registers]), rcx) \
-            as(mov 8*3(%[registers]), rdx) \
-            as(mov 8*4(%[registers]), rsi) \
-            as(mov 8*5(%[registers]), rdi) \
-            as(mov 8*8(%[registers]), r8) \
-            as(mov 8*9(%[registers]), r9) \
-            as(mov 8*10(%[registers]), r10) \
-            as(mov 8*11(%[registers]), r11) \
-            as(mov 8*12(%[registers]), r12) \
-            as(mov 8*13(%[registers]), r13) \
-            as(mov 8*14(%[registers]), r14) \
-            as(mov 8*15(%[registers]), r15) \
-            as(mov 8*16(%[registers]), rip), \
+        ALO_ASM_BLOCK( \
+            ALO_ASM(mov 8*0(%[registers]), rax) \
+            ALO_ASM(mov 8*1(%[registers]), rbx) \
+            ALO_ASM(mov 8*2(%[registers]), rcx) \
+            ALO_ASM(mov 8*3(%[registers]), rdx) \
+            ALO_ASM(mov 8*4(%[registers]), rsi) \
+            ALO_ASM(mov 8*5(%[registers]), rdi) \
+            ALO_ASM(mov 8*8(%[registers]), r8) \
+            ALO_ASM(mov 8*9(%[registers]), r9) \
+            ALO_ASM(mov 8*10(%[registers]), r10) \
+            ALO_ASM(mov 8*11(%[registers]), r11) \
+            ALO_ASM(mov 8*12(%[registers]), r12) \
+            ALO_ASM(mov 8*13(%[registers]), r13) \
+            ALO_ASM(mov 8*14(%[registers]), r14) \
+            ALO_ASM(mov 8*15(%[registers]), r15) \
+            ALO_ASM(mov 8*16(%[registers]), rip), \
         :: [registers]"p"(registers)); \
         registers.rbp = __builtin_frame_address(1); \
         registers.rsp = frame->rsp; \

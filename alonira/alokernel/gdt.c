@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #include "include/gdt.h"
 
@@ -20,33 +20,34 @@ const alo_segment_selector_t alo_gdt_selectors[] = {
 
 const alo_gdt_pointer_t alo_gdtr = {sizeof(alo_gdt) - 1, alo_gdt};
 
-alo_error_t alo_gdt_install(void) {
-	ALO_FRAME_BEGIN(alo_gdt_install);
+gen_error_t* alo_gdt_install(void) {
+	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_gdt_install, GEN_FILE_NAME);
+	if(error) return error;
 
 	alo_gdt[ALO_GDT_INDEX_TSS_BASE].base_low = (uintptr_t) &alo_gdt & 0xFFFFFF;
 	alo_gdt[ALO_GDT_INDEX_TSS_BASE].base_high = ((uintptr_t) &alo_gdt >> 3) & 0xFF;
 	((uint32_t*) &alo_gdt[ALO_GDT_INDEX_TSS_HIGH])[0] = (uint32_t) ((uintptr_t) &alo_gdt >> 4);
 
 	// clang-format off
-	iasm(
-        as(movq %[gdtr], %%rax)
-        as(lgdtq (%%rax))
+	ALO_ASM_BLOCK(
+        ALO_ASM(movq %[gdtr], %%rax)
+        ALO_ASM(lgdtq (%%rax))
 
-        as(movq %[selectors], %%rbx)
-        as(movw %c[data_segment]*%c[selector_stride](%%rbx), %%ax)
-        as(movw %%ax, %%ds)
-        as(movw %%ax, %%es)
-        as(movw %%ax, %%fs)
-        as(movw %%ax, %%gs)
-        as(movw %%ax, %%ss)
+        ALO_ASM(movq %[selectors], %%rbx)
+        ALO_ASM(movw %c[data_segment]*%c[selector_stride](%%rbx), %%ax)
+        ALO_ASM(movw %%ax, %%ds)
+        ALO_ASM(movw %%ax, %%es)
+        ALO_ASM(movw %%ax, %%fs)
+        ALO_ASM(movw %%ax, %%gs)
+        ALO_ASM(movw %%ax, %%ss)
 
-        as(pushq %c[code_segment]*%c[selector_stride](%%rbx))
-        as(lea .done_reload_cs(%%rip), %%rax)
-        as(pushq %%rax)
-        as(lretq)
-        as(.done_reload_cs:),
+        ALO_ASM(pushq %c[code_segment]*%c[selector_stride](%%rbx))
+        ALO_ASM(lea .done_reload_cs(%%rip), %%rax)
+        ALO_ASM(pushq %%rax)
+        ALO_ASM(lretq)
+        ALO_ASM(.done_reload_cs:),
     :: [gdtr]"p"(&alo_gdtr), [selectors]"p"(alo_gdt_selectors), [selector_stride]"n"(sizeof(alo_segment_selector_t)), [code_segment]"n"(ALO_GDT_INDEX_CODE), [data_segment]"n"(ALO_GDT_INDEX_DATA) : "rax", "rbx");
 	// clang-format on
 
-	ALO_ALL_OK;
+	return NULL;
 }

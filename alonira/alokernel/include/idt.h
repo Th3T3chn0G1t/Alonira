@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_KERNEL_IDT_H
 #define ALO_KERNEL_IDT_H
@@ -7,7 +7,8 @@
 #include "cpu.h"
 #include "gdt.h"
 
-#include <alocom.h>
+#include <gencommon.h>
+#include <alocommon.h>
 
 typedef enum {
     ALO_IDT_ENTRY_EXCEPTION_DIVIDE_BY_ZERO = 0,
@@ -278,7 +279,7 @@ typedef enum {
 
 #define ALO_IDT_MAKE_ENTRY(offset, ist, gate_type, privilige) ((alo_idt_entry_t) {(offset) & 0xFFFF, alo_gdt_selectors[ALO_GDT_INDEX_CODE], (ist), 0, (gate_type), false, (privilige), true, (offset) >> 2, 0})
 
-typedef struct __packed {
+typedef struct ALO_PACKED {
     uint16_t offset_low;
     
     alo_segment_selector_t segment_selector;
@@ -296,7 +297,7 @@ typedef struct __packed {
     uint32_t reserved2;
 } alo_idt_entry_t;
 
-typedef struct __packed {
+typedef struct ALO_PACKED {
     uint16_t size;
     const alo_idt_entry_t* offset;
 } alo_idt_pointer_t;
@@ -304,6 +305,6 @@ typedef struct __packed {
 extern const alo_idt_entry_t alo_idt[ALO_IDT_ENTRY_COUNT];
 extern const alo_idt_pointer_t alo_idtr;
 
-ALO_ERRORABLE alo_idt_install(void);
+extern gen_error_t* alo_idt_install(void);
 
 #endif

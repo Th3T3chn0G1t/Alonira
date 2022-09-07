@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2022 TTG <prs.ttg+alonira@pm.me>
+// Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #ifndef ALO_KERNEL_CPU_H
 #define ALO_KERNEL_CPU_H
 
-#include <alocom.h>
+#include <gencommon.h>
+#include <alocommon.h>
 
 typedef uint64_t alo_register_t;
 
@@ -20,13 +21,13 @@ typedef enum {
     ALO_SEGMENT_TABLE_LDT
 } alo_segment_table_selector_t;
 
-typedef struct __packed {
+typedef struct ALO_PACKED {
     alo_cpu_privilige_t privilige : 2;
     alo_segment_table_selector_t table : 1;
     uint16_t index : 13;
 } alo_segment_selector_t;
 
-typedef struct __packed {
+typedef struct ALO_PACKED {
     bool carry : 1;
     bool reserved0 : 1;
     bool parity : 1;
@@ -54,28 +55,28 @@ typedef struct __packed {
 
 #define ALO_STORE_REGISTERS(registers) \
     do { \
-        iasm( \
-            as(.__addr:) \
-            as(pushfq) \
-            as(popq 8*17(%[registers])) \
-            as(mov %%rax, 8*0(%[registers])) \
-            as(mov %%rbx, 8*1(%[registers])) \
-            as(mov %%rcx, 8*2(%[registers])) \
-            as(mov %%rdx, 8*3(%[registers])) \
-            as(mov %%rsi, 8*4(%[registers])) \
-            as(mov %%rdi, 8*5(%[registers])) \
-            as(mov %%rbp, 8*6(%[registers])) \
-            as(mov %%rsp, 8*7(%[registers])) \
-            as(mov %%r8, 8*8(%[registers])) \
-            as(mov %%r9, 8*9(%[registers])) \
-            as(mov %%r10, 8*10(%[registers])) \
-            as(mov %%r11, 8*11(%[registers])) \
-            as(mov %%r12, 8*12(%[registers])) \
-            as(mov %%r13, 8*13(%[registers])) \
-            as(mov %%r14, 8*14(%[registers])) \
-            as(mov %%r15, 8*15(%[registers])) \
-            as(leaq .__addr(%%rip), %%rax) \
-            as(mov %%rax, 8*16(%[registers])) \
+        ALO_ASM_BLOCK( \
+            ALO_ASM(.__addr:) \
+            ALO_ASM(pushfq) \
+            ALO_ASM(popq 8*17(%[registers])) \
+            ALO_ASM(mov %%rax, 8*0(%[registers])) \
+            ALO_ASM(mov %%rbx, 8*1(%[registers])) \
+            ALO_ASM(mov %%rcx, 8*2(%[registers])) \
+            ALO_ASM(mov %%rdx, 8*3(%[registers])) \
+            ALO_ASM(mov %%rsi, 8*4(%[registers])) \
+            ALO_ASM(mov %%rdi, 8*5(%[registers])) \
+            ALO_ASM(mov %%rbp, 8*6(%[registers])) \
+            ALO_ASM(mov %%rsp, 8*7(%[registers])) \
+            ALO_ASM(mov %%r8, 8*8(%[registers])) \
+            ALO_ASM(mov %%r9, 8*9(%[registers])) \
+            ALO_ASM(mov %%r10, 8*10(%[registers])) \
+            ALO_ASM(mov %%r11, 8*11(%[registers])) \
+            ALO_ASM(mov %%r12, 8*12(%[registers])) \
+            ALO_ASM(mov %%r13, 8*13(%[registers])) \
+            ALO_ASM(mov %%r14, 8*14(%[registers])) \
+            ALO_ASM(mov %%r15, 8*15(%[registers])) \
+            ALO_ASM(leaq .__addr(%%rip), %%rax) \
+            ALO_ASM(mov %%rax, 8*16(%[registers])) \
         :: [registers]"r"(&registers) : "rax"); \
     } while(0)
     
