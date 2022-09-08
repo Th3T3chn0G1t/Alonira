@@ -9,10 +9,7 @@
 
 #include "cpu.h"
 
-static GEN_NORETURN ALO_FORCE_INLINE void alo_hang(void) {
-    ALO_ASM_BLOCK(ALO_ASM(cli));
-    while(true) ALO_ASM_BLOCK(ALO_ASM(hlt));
-}
+extern GEN_NORETURN void alo_hang(void);
 extern GEN_NORETURN void alo_panic(const gen_error_t* error, const char* const restrict context);
 extern GEN_NORETURN void alo_panic_with_registers(const gen_error_t* error, const char* const restrict context, alo_registers_t registers);
 

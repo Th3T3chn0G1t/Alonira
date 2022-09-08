@@ -18,6 +18,7 @@ ifeq ($(HOST), LINUX)
 	CD = cd
 	AND = &&
 	MKDIR = mkdir
+	CAT = cat
 	
 	HOST_LIB_PREFIX = lib
 	HOST_STATIC_LIB_SUFFIX = .host.a
@@ -40,6 +41,7 @@ ifeq ($(HOST),OSX)
 	CD = cd
 	AND = &&
 	MKDIR = mkdir
+	CAT = cat
 
 	HOST_LIB_PREFIX = lib
 	HOST_STATIC_LIB_SUFFIX = .host.a
@@ -62,11 +64,13 @@ ifeq ($(HOST), WINDOWS)
 	CD = cd
 	AND = &&
 	MKDIR = mkdir
+	# TODO: `cat`-equivalent behaviour with Windows' `type`
+	CAT = $(ECHO) "BROKEN"
 
 	HOST_LIB_PREFIX =
-	HOST_STATIC_LIB_SUFFIX = .lib
-	HOST_DYNAMIC_LIB_SUFFIX = .dll
-	HOST_EXECUTABLE_SUFFIX = .exe
+	HOST_STATIC_LIB_SUFFIX = .host.lib
+	HOST_DYNAMIC_LIB_SUFFIX = .host.dll
+	HOST_EXECUTABLE_SUFFIX = .host.exe
 	HOST_OBJECT_SUFFIX = .host.obj
 
 	HOST_DYNAMIC_LIB_TOOL = $(HOST_CLINKER) -shared $(HOST_GLOBAL_LFLAGS) $(addprefix -L,$(HOST_LIBDIRS)) $(HOST_LFLAGS) -o $@ $(filter %$(HOST_OBJECT_SUFFIX),$^)
