@@ -4,12 +4,14 @@
 
 *.elf
 
+*.bin
+
 *.so
 *.so.*
 
 *.out
 
-*.dSYM
+*.iso
 
 documentation/
 !build/documentation/

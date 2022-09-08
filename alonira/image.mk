@@ -18,8 +18,14 @@ $(ALONIRA_OUT): $(HYPER_OUT) $(HYPER_INSTALL_OUT) $(ALO_KERNEL_OUT) $(ALONIRA_DI
 	@$(ECHO) "$(ACTION_SUFFIX)"
 endif
 
-.PHONY: clean_alonira
-clean_alonira:
+.PHONY: image
+image: $(ALONIRA_OUT)
+
+.PHONY: test_image
+test_image: $(ALONIRA_OUT)
+
+.PHONY: clean_image
+clean_image:
 	@$(ECHO) "$(ACTION_PREFIX)"
 	-$(RM) $(ALONIRA_OUT)
 	-$(RMDIR) $(ALONIRA_DIR)/lib
