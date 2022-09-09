@@ -10,6 +10,7 @@
 #define ALO_PACKED __attribute__((packed))
 #define ALO_USED __attribute__((used))
 #define ALO_FORCE_INLINE __attribute__((always_inline)) __attribute__((artificial)) inline
+#define ALO_NO_INLINE __attribute__((noinline))
 
 #define ALO_NO_SANITIZE [[clang::disable_sanitizer_instrumentation]]
 

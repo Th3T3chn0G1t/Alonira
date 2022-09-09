@@ -5,7 +5,7 @@ MODULE_NAMES += hyper
 ALO_KERNEL_SOURCES = $(wildcard $(ALONIRA_DIR)/alonira/alokernel/*.c) $(wildcard $(ALONIRA_DIR)/alonira/alokernel/override/*.c)
 ALO_KERNEL_OBJECTS = $(ALO_KERNEL_SOURCES:.c=$(TARGET_C64_OBJECT_SUFFIX))
 
-ALO_KERNEL_OUT = $(ALONIRA_DIR)/boot/alonira-kernel$(TARGET_STATIC_OBJECT_SUFFIX)
+ALO_KERNEL_OUT = $(ALONIRA_DIR)/boot/alonira$(TARGET_STATIC_OBJECT_SUFFIX)
 
 ALO_KERNEL_CFLAGS = $(GEN_CORE_DIAGNOSTIC_CFLAGS) -Wno-reserved-identifier -Wno-language-extension-token -Wno-gnu-zero-variadic-macro-arguments
 ALO_KERNEL_CFLAGS += -Wno-gnu-binary-literal -Wno-missing-prototypes

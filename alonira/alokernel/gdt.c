@@ -5,6 +5,8 @@
 
 #include "include/tss.h"
 
+#include <alocommon.h>
+
 alo_gdt_entry_t alo_gdt[] = {
 	[ALO_GDT_INDEX_NULL] = {0},
 	[ALO_GDT_INDEX_CODE] = ALO_GDT_MAKE_ENTRY(0x0, 0xFFFFFF, ALO_GDT_CODE_UNREADABLE, ALO_GDT_CODE_CONFORMING_PRIVILIGE_RESTRICTED, true, ALO_GDT_TYPE_CODE_DATA, ALO_CPU_PRIVILIGE_RING0, ALO_GDT_GRANULARITY_4KIB),
@@ -20,7 +22,7 @@ const alo_segment_selector_t alo_gdt_selectors[] = {
 
 const alo_gdt_pointer_t alo_gdtr = {sizeof(alo_gdt) - 1, alo_gdt};
 
-gen_error_t* alo_gdt_install(void) {
+ALO_NO_INLINE gen_error_t* alo_gdt_install(void) {
 	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_gdt_install, GEN_FILE_NAME);
 	if(error) return error;
 
