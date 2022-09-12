@@ -20,7 +20,7 @@ $(GENSTONE_DIR)/lib:
 	@$(ECHO) "$(ACTION_PREFIX)$(MKDIR) $@$(ACTION_SUFFIX)"
 	-@$(MKDIR) $@
 
-GEN_CORE_DISABLED_SOURCES = genmemory.c
+GEN_CORE_DISABLED_SOURCES = genmemory.c genlog.c
 
 include $(GENSTONE_DIR)/genstone/gencore.mk
 

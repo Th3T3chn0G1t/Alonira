@@ -7,9 +7,11 @@
 #include "include/kdiagnostic.h"
 #include "include/serial.h"
 #include "include/tss.h"
+#include "include/vga.h"
 
 #include <gencommon.h>
 #include <genlog.h>
+#include <genstring.h>
 #include <alocommon.h>
 
 static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
@@ -25,8 +27,21 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
 	error = alo_tss_install();
     if(error) return error;
 
-    error = alo_serial_send_string(ALO_SERIAL_COM1, "Hello, Alonira!");
+    // alo_registers_t registers = {0};
+    // ALO_STORE_REGISTERS(registers);
+
+    // error = gen_log_formatted(GEN_LOG_LEVEL_INFO, "alonira-entry", "%uz\n", registers.rip);
+    // if(error) return error;
+
+    char out[256] = {0};
+    error = gen_string_format(255, out, NULL, "Hello, %t\n", 10, "world!");
     if(error) return error;
+    
+    error = alo_serial_send_string(ALO_SERIAL_COM1, out);
+    if(error) return error;
+
+    // error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
+    // if(error) return error;
 
 	// error = alo_idt_install();
     // if(error) return error;
@@ -47,6 +62,8 @@ GEN_NORETURN GEN_UNUSED void _start(ALO_BOOT_SIGNATURE) {
 
 	ALO_ASM_BLOCK(ALO_ASM(cli));
 
+    // alo_hang();
+
 	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) _start, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("alonira-entry", error, GEN_ERROR_SEVERITY_FATAL);
@@ -55,6 +72,7 @@ GEN_NORETURN GEN_UNUSED void _start(ALO_BOOT_SIGNATURE) {
 
     error = gen_main(boot_data, magic);
 	if(error) {
+        alo_vga_put_char_at_colored('E', ALO_VGA_COLOR_RED, ALO_VGA_COLOR_WHITE, 0, 0);
         gen_error_print("alonira-entry", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();
     }

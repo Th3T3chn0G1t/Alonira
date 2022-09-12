@@ -10,14 +10,14 @@
 typedef uint64_t alo_register_t;
 
 typedef enum {
-    ALO_CPU_PRIVILIGE_RING0 = 0,
+    ALO_CPU_PRIVILIGE_RING0,
     ALO_CPU_PRIVILIGE_RING1,
     ALO_CPU_PRIVILIGE_RING2,
     ALO_CPU_PRIVILIGE_RING3
 } alo_cpu_privilige_t;
 
 typedef enum {
-    ALO_SEGMENT_TABLE_GDT = 0,
+    ALO_SEGMENT_TABLE_GDT,
     ALO_SEGMENT_TABLE_LDT
 } alo_segment_table_selector_t;
 

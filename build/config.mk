@@ -13,6 +13,8 @@ ARCH ?= x86_64
 # `ULTRA`: Use the Ultra boot protocol and HyperLoader. Only compatible with `TARGET=x86_64`
 BOOT_PROTOCOL ?= ULTRA
 
+STATIC_ANALYSIS = ENABLED
+
 # Set build mode
 # `DEBUG`: Includes debug symbols and disables optimizations
 # `RELEASE`: Excludes debug symbols and enables optimizations
@@ -39,6 +41,9 @@ PYTHON3 ?= python3
 # The xorriso command to use
 XORRISO ?= xorriso
 
+# The qemu command to use for x86_64
+QEMU_X86_64 ?= qemu-system-x86_64
+
 # Extra compiler flags to apply to all host sources
 HOST_EXTRA_CFLAGS ?=
 
@@ -51,3 +56,4 @@ TARGET_EXTRA_CFLAGS ?=
 # Extra linker flags to apply to all target binaries
 TARGET_EXTRA_LFLAGS ?=
 
+EXTRA_QEMU_FLAGS ?=

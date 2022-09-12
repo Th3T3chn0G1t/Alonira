@@ -16,6 +16,8 @@
 documentation/
 !build/documentation/
 
+.bochsrc
+
 .vscode
 
 *.DS_STORE

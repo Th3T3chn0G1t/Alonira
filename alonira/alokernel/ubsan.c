@@ -107,11 +107,11 @@ typedef struct {
 	const __ubsan_type_descriptor* const from_type;
 	const __ubsan_type_descriptor* const to_type;
 	enum {
-		__ubsan_implicit_conversion_check_integer_truncation = 0,
-		__ubsan_implicit_conversion_check_unsigned_integer_truncation = 1,
-		__ubsan_implicit_conversion_check_signed_integer_truncation = 2,
-		__ubsan_implicit_conversion_check_integer_sign_change = 3,
-		__ubsan_implicit_conversion_check_signed_integer_truncation_or_sign_change = 4
+		__ubsan_implicit_conversion_check_integer_truncation,
+		__ubsan_implicit_conversion_check_unsigned_integer_truncation,
+		__ubsan_implicit_conversion_check_signed_integer_truncation,
+		__ubsan_implicit_conversion_check_integer_sign_change,
+		__ubsan_implicit_conversion_check_signed_integer_truncation_or_sign_change
 	} kind : 8;
 } __ubsan_implicit_conversion_data;
 

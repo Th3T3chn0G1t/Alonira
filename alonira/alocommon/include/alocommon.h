@@ -12,6 +12,8 @@
 #define ALO_FORCE_INLINE __attribute__((always_inline)) __attribute__((artificial)) inline
 #define ALO_NO_INLINE __attribute__((noinline))
 
+#define ALO_FLAG_ENUM __attribute__((enum_extensibility(closed), flag_enum))
+
 #define ALO_NO_SANITIZE [[clang::disable_sanitizer_instrumentation]]
 
 #endif
