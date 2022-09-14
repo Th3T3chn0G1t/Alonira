@@ -10,7 +10,7 @@
 // TODO: Exclusive access to each serial port - mutex
 
 gen_error_t* alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_serial_set, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_serial_set, GEN_FILE_NAME);
 	if(error) return error;
 
     // TODO: De-magic this - move out port bitfields into structs
@@ -87,7 +87,7 @@ gen_error_t* alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t
 }
 
 gen_error_t* alo_serial_send(const alo_serial_com_port_t com_port, const char data) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_serial_send, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_serial_send, GEN_FILE_NAME);
 	if(error) return error;
 
 	while((alo_port_in_byte((uint16_t) (com_port + ALO_SERIAL_PORT_REGISTER_LINE_STATUS)) & 0b00100000) == 0)
@@ -99,7 +99,7 @@ gen_error_t* alo_serial_send(const alo_serial_com_port_t com_port, const char da
 }
 
 gen_error_t* alo_serial_send_string(const alo_serial_com_port_t com_port, const char* const restrict data) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_serial_send_string, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_serial_send_string, GEN_FILE_NAME);
 	if(error) return error;
 
 	if(!data) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`data` was `NULL`");

@@ -1,4 +1,4 @@
-ALONIRA_QEMU_FLAGS =
+ALONIRA_QEMU_FLAGS = -cpu qemu64,vendor=GenuineIntel
 ALONIRA_OUT = $(ALONIRA_DIR)/alonira.iso
 
 $(ALONIRA_DIR)/boot:

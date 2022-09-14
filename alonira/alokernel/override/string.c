@@ -11,7 +11,7 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Wmissing-prototypes"))
 
 size_t strnlen(const char* const restrict string, size_t limit) {
     for(size_t i = 0; i < limit; ++i) {
-        if(!string[i]) return i + 1;
+        if(!string[i]) return i;
     }
 
     return limit;
@@ -27,7 +27,8 @@ char *strncpy(char * dst, const char * src, size_t len) {
         dst[i] = src[i];
         if(!src[i]) return dst;
     }
-    dst[i - 1] = '\0';
+
+    dst[i] = '\0';
 
     return dst;
 }

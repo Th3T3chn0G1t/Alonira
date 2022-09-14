@@ -24,7 +24,7 @@ const alo_segment_selector_t alo_gdt_selectors[] = {
 const alo_gdt_pointer_t alo_gdtr = {sizeof(alo_gdt) - 1, alo_gdt};
 
 ALO_NO_INLINE gen_error_t* alo_gdt_install(void) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_gdt_install, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_gdt_install, GEN_FILE_NAME);
 	if(error) return error;
 
 	alo_gdt[ALO_GDT_INDEX_TSS_BASE] = ALO_GDT_MAKE_SYSTEM_ENTRY(&alo_tss, sizeof(alo_tss), ALO_GDT_SYSTEM_SEGMENT_TYPE_TSS_IDLE, ALO_CPU_PRIVILIGE_RING0, ALO_GDT_GRANULARITY_1B);

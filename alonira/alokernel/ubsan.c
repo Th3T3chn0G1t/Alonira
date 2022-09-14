@@ -160,7 +160,7 @@ ALO_USED static const char* const __ubsan_type_check_kinds[] = {
 // TODO: Properly implement diagnostics for ubsan
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_type_mismatch_v1, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_type_mismatch_v1, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -178,7 +178,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_alignment_assumption, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_alignment_assumption, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -205,7 +205,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(c
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const size_t right) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_overflow, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -231,7 +231,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan
 	// 	alogf(FATAL, "Unsigned integer overflow: %lu %c %lu cannot be represented in type %s", left->value, operator, right, data->type->type_name);
 }
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_mul_overflow, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_mul_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -252,7 +252,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __u
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_add_overflow, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_add_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -273,7 +273,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __u
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_sub_overflow, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_sub_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -294,7 +294,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __u
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_divrem_overflow, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_divrem_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -314,7 +314,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const 
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_pointer_overflow, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_pointer_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -333,7 +333,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_invalid_builtin, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_invalid_builtin, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -349,7 +349,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const 
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_shift_out_of_bounds, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_shift_out_of_bounds, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -368,7 +368,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(co
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_builtin_unreachable, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_builtin_unreachable, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        
@@ -384,7 +384,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(co
 }
 
 ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
-	gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_out_of_bounds, GEN_FILE_NAME);
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_out_of_bounds, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();        

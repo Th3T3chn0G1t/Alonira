@@ -6,6 +6,7 @@
 #include <gencommon.h>
 #include <genmemory.h>
 #include <genstring.h>
+#include <genthreads.h>
 
 #include "../include/serial.h"
 
@@ -62,6 +63,8 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
 #define ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE 4096
 #endif
 
+static GEN_THREAD_LOCAL char formatted[ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE + 1] = {0};
+
 gen_error_t* gen_log(const gen_log_level_t severity, const char* const restrict context, const char* const restrict string) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_log, GEN_FILE_NAME);
 	if(error) return error;
@@ -97,6 +100,9 @@ gen_error_t* gen_log(const gen_log_level_t severity, const char* const restrict 
 		sizeof("error") - 1,
 		sizeof("fatal") - 1};
 
+    error = gen_memory_set(formatted, ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE + 1, 0);
+	if(error) return error;
+
 	// `clang-format` has a bit of an aneurism here
 	// clang-format off
 	static const char format[] =
@@ -111,8 +117,6 @@ gen_error_t* gen_log(const gen_log_level_t severity, const char* const restrict 
         GEN_LOG_INTERNAL_ANSI_SEQUENCE_CLEAR "%t\n";
 	// clang-format on
 
-    char formatted[ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE] = {0};
-
 	error = gen_string_format(ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE, formatted, NULL, format, sizeof(format) - 1, context, context_length, ' ', GEN_LOG_CONTEXT_PAD - context_length, severity_names[severity], severity_lengths[severity], ' ', GEN_LOG_SEVERITY_PAD - severity_name_lengths[severity], string);
 	if(error) return error;
 
@@ -121,6 +125,8 @@ gen_error_t* gen_log(const gen_log_level_t severity, const char* const restrict 
 
 	return NULL;
 }
+
+static GEN_THREAD_LOCAL char logf_formatted[ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE + 1] = {0};
 
 gen_error_t* gen_log_formatted(const gen_log_level_t severity, const char* const restrict context, const char* const restrict format, ...) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_log_formatted, GEN_FILE_NAME);
@@ -137,10 +143,11 @@ gen_error_t* gen_log_formatted(const gen_log_level_t severity, const char* const
 	error = gen_string_length(format, GEN_STRING_NO_BOUNDS, GEN_STRING_NO_BOUNDS, &format_length);
 	if(error) return error;
 
-    char formatted[ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE] = {0};
-
-	error = gen_string_formatv(ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE, formatted, NULL, format, format_length, args_copy);
+    error = gen_memory_set(logf_formatted, ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE + 1, 0);
 	if(error) return error;
 
-	return gen_log(severity, context, formatted);
+	error = gen_string_formatv(ALO_GEN_LOG_OVERRIDE_LOG_BUFFER_SIZE, logf_formatted, NULL, format, format_length, args_copy);
+	if(error) return error;
+
+	return gen_log(severity, context, logf_formatted);
 }

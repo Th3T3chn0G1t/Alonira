@@ -20,14 +20,12 @@ $(GENSTONE_DIR)/lib:
 	@$(ECHO) "$(ACTION_PREFIX)$(MKDIR) $@$(ACTION_SUFFIX)"
 	-@$(MKDIR) $@
 
-GEN_CORE_DISABLED_SOURCES = genmemory.c genlog.c
+GEN_CORE_DISABLED_SOURCES = genmemory.c genlog.c generror.c
 
 include $(GENSTONE_DIR)/genstone/gencore.mk
 
-GENSTONE_CFLAGS = -DGEN_ERROR_ABORT_FUNCTION='extern GEN_NORETURN void alo_hang(void);alo_hang'
-
 # TODO: Some sort of tag to allow per-thread instantiation or completely override gentooling
-GENSTONE_CFLAGS += -DGEN_THREAD_LOCAL=""
+GENSTONE_CFLAGS += -DGEN_THREAD_LOCAL=
 
 GENSTONE_CFLAGS += -DGEN_STRING_STRNCAT=__builtin_strncat
 GENSTONE_CFLAGS += -DGEN_STRING_STRNCPY=__builtin_strncpy
