@@ -1,3 +1,7 @@
-[submodule "alonira/vendor/alonira-hyper"]
-	path = alonira/vendor/alonira-hyper
-	url = https://github.com/Th3T3chn0G1t/Alonira-Hyper
+[submodule "alonira/vendor/Genstone"]
+	path = alonira/vendor/Genstone
+	url = https://github.com/Th3T3chn0G1t/Genstone
+[submodule "alonira/vendor/Hyper"]
+	path = alonira/vendor/Hyper
+    ignore = untracked
+	url = https://github.com/UltraOS/Hyper

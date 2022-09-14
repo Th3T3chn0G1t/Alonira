@@ -1,0 +1,44 @@
+GENSTONE_DIR = $(ALONIRA_DIR)/alonira/vendor/Genstone
+
+# TODO: Maybe make this easier from the Genstone side?
+PLATFORM = ALONIRA
+OBJECT_SUFFIX = $(TARGET_C64_OBJECT_SUFFIX)
+LIB_PREFIX = $(TARGET_LIB_PREFIX)
+DYNAMIC_LIB_SUFFIX = $(TARGET_STATIC_LIB_SUFFIX)
+SANITIZERS = DISABLED
+
+MODULE_NAMES += gencore
+CLEAN_TARGETS += clean_genstone
+
+.PHONY: clean_genstone
+clean_genstone:
+	@$(ECHO) "$(ACTION_PREFIX)"
+	-$(RMDIR) $(GENSTONE_DIR)/lib
+	@$(ECHO) "$(ACTION_SUFFIX)"
+
+$(GENSTONE_DIR)/lib:
+	@$(ECHO) "$(ACTION_PREFIX)$(MKDIR) $@$(ACTION_SUFFIX)"
+	-@$(MKDIR) $@
+
+GEN_CORE_DISABLED_SOURCES = genmemory.c genlog.c generror.c
+
+include $(GENSTONE_DIR)/genstone/gencore.mk
+
+# TODO: Some sort of tag to allow per-thread instantiation or completely override gentooling
+GENSTONE_CFLAGS += -DGEN_THREAD_LOCAL=
+
+GENSTONE_CFLAGS += -DGEN_STRING_STRNCAT=__builtin_strncat
+GENSTONE_CFLAGS += -DGEN_STRING_STRNCPY=__builtin_strncpy
+GENSTONE_CFLAGS += -DGEN_STRING_STRNCMP=__builtin_strncmp
+
+GENSTONE_CFLAGS += -DGEN_DISABLED=0 -DGEN_ENABLED=1
+GENSTONE_CFLAGS += -DGEN_DEBUG=0 -DGEN_RELEASE=1 -DGEN_BUILD_MODE=GEN_$(MODE)
+GENSTONE_CFLAGS += -DGEN_LINUX=0 -DGEN_OSX=1 -DGEN_WINDOWS=2 -DGEN_PLATFORM=ALONIRA
+
+$(GEN_CORE_LIB): TARGET_CFLAGS = $(GENSTONE_CFLAGS) $(GEN_CORE_INTERNAL_CFLAGS)
+$(GEN_CORE_LIB): TARGET_LFLAGS = $(GEN_CORE_INTERNAL_LFLAGS)
+$(GEN_CORE_LIB): TARGET_LIBDIRS =
+
+$(GENSTONE_DIR)/genstone/gencore/genstring$(TARGET_C64_OBJECT_SUFFIX): TARGET_CFLAGS += -I$(GENSTONE_DIR)/genstone/gencore/include -include $(ALONIRA_DIR)/alonira/alokernel/override/string.h
+
+GEN_CORE_LFLAGS = -lgencore.target

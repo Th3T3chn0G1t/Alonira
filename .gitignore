@@ -1,57 +1,23 @@
 *.o
-*.obj
 
 *.a
-*.lib
+
+*.elf
+
+*.bin
 
 *.so
 *.so.*
-*.dll
-*.dylib
 
 *.out
-*.exe
-*.app
-*.elf
-*.bin
-
-*.sys
-*.EFI
-
-*.def
-*.exp
-
-*.dSYM
-
-*.depfile
-
-*.tmp
-*.log
-
-*.plist
-
-*.gcda
-*.gcno
-*.profraw
 
 *.iso
-*.img
 
-docs/*
-out/*
-tmp/*
-vulkan/*
+documentation/
+!build/documentation/
 
-mnt/
-
-alonira/vendor/tmp/*
-
-filename
-test.c
+.bochsrc
 
 .vscode
-.vs
 
 *.DS_STORE
-
-test.*
