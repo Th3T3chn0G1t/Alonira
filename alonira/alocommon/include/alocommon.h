@@ -8,7 +8,6 @@
 #define ALO_ASM_BLOCK_RAW(ops, ...) asm(ops __VA_ARGS__)
 #define ALO_ASM(...) #__VA_ARGS__ "\n"
 
-#define ALO_PACKED __attribute__((packed))
 #define ALO_USED __attribute__((used))
 #define ALO_NAKED __attribute__((naked))
 #define ALO_FORCE_INLINE __attribute__((always_inline)) __attribute__((artificial)) inline

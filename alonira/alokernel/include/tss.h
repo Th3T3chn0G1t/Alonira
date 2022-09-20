@@ -21,7 +21,7 @@ typedef enum {
 } alo_ist_t;
 
 typedef uintptr_t alo_tss_entry_t;
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     uint32_t reserved0;
     alo_tss_entry_t rsp[3];
     alo_tss_entry_t reserved1[2];

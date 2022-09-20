@@ -54,12 +54,12 @@ typedef enum {
 
 typedef struct {
     union {
-        struct ALO_PACKED {
+        struct GEN_PACKED {
             uint16_t limit_low;
             uint32_t base_low : 24;
 
             union {
-                struct ALO_PACKED {
+                struct GEN_PACKED {
                     bool accessed : 1;
                     alo_gdt_access_mode_t readable_writeable : 1;
                     alo_gdt_conforming_direction_mode_t direction_conforming : 1;
@@ -69,7 +69,7 @@ typedef struct {
                     bool present : 1;
                 } code_data_access;
 
-                struct ALO_PACKED {
+                struct GEN_PACKED {
                     alo_gdt_system_segment_type_t system_type : 4;
                     alo_gdt_type_t type : 1;
                     alo_cpu_privilige_t privilige : 2;
@@ -86,14 +86,14 @@ typedef struct {
 
             uint8_t base_high;
         } entry;
-        struct ALO_PACKED {
+        struct GEN_PACKED {
             uint32_t base_high;
             uint32_t reserved;
         } system_entry_high;
     };
 } alo_gdt_entry_t;
 
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     uint16_t limit;
     const alo_gdt_entry_t* base;
 } alo_gdt_pointer_t;

@@ -274,22 +274,22 @@ typedef enum {
     ALO_INTERRUPT_VECTOR_COUNT
 } alo_interrupt_vector_t;
 
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     alo_interrupt_vector_t vector;
     uint32_t pad0;
     alo_registers_t registers;
     uint64_t error_code;
     alo_register_t rip;
-    struct ALO_PACKED {
+    struct GEN_PACKED {
         alo_segment_selector_t cs;
         uint64_t pad1 : 48;
     };
-    union ALO_PACKED {
+    union GEN_PACKED {
         alo_flags_t rflags;
         alo_register_t rfl;
     };
     alo_register_t rsp;
-    struct ALO_PACKED {
+    struct GEN_PACKED {
         alo_segment_selector_t ss;
         uint64_t pad2 : 48;
     };

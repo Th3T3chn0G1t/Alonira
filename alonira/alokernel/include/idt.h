@@ -18,7 +18,7 @@ typedef enum {
 
 #define ALO_IDT_MAKE_ENTRY(offset, ist, gate_type, privilige) ((alo_idt_entry_t) {(offset) & 0xFFFF, alo_gdt_selectors[ALO_GDT_INDEX_CODE], (ist), 0, (gate_type), false, (privilige), true, (offset) >> 16, 0})
 
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     uint16_t offset_low;
     
     alo_segment_selector_t segment_selector;
@@ -36,7 +36,7 @@ typedef struct ALO_PACKED {
     uint32_t reserved2;
 } alo_idt_entry_t;
 
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     uint16_t size;
     alo_idt_entry_t* offset;
 } alo_idt_pointer_t;

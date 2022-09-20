@@ -21,13 +21,13 @@ typedef enum {
     ALO_SEGMENT_TABLE_LDT
 } alo_segment_table_selector_t;
 
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     alo_cpu_privilige_t privilige : 2;
     alo_segment_table_selector_t table : 1;
     uint16_t index : 13;
 } alo_segment_selector_t;
 
-typedef struct ALO_PACKED {
+typedef struct GEN_PACKED {
     bool carry : 1;
     bool reserved0 : 1;
     bool parity : 1;
@@ -54,9 +54,9 @@ typedef struct ALO_PACKED {
 } alo_flags_t;
     
 typedef struct {
-    union ALO_PACKED {
+    union GEN_PACKED {
         alo_register_t registers[18];
-        struct ALO_PACKED {
+        struct GEN_PACKED {
             alo_register_t rax;
             alo_register_t rbx;
             alo_register_t rcx;
