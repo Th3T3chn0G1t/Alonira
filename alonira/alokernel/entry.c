@@ -27,32 +27,13 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
 	error = alo_tss_install();
     if(error) return error;
 
-    // alo_registers_t registers = {0};
-    // ALO_STORE_REGISTERS(registers);
-
-    // error = gen_log_formatted(GEN_LOG_LEVEL_INFO, "alonira-entry", "%uz\n", registers.rip);
-    // if(error) return error;
-
-    // char out[256] = {0};
-    // error = gen_string_format(255, out, NULL, "Hello, %t\n", 10, "world!");
-    // if(error) return error;
-    
-    // error = alo_serial_send_string(ALO_SERIAL_COM1, out);
-    // if(error) return error;
+	error = alo_idt_install();
+    if(error) return error;
 
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
-	// error = alo_idt_install();
-    // if(error) return error;
-
-	// error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
-    // if(error) return error;
-
-	// alo_registers_t registers = {0};
-	// ALO_STORE_REGISTERS(registers);
-
-	// alo_panic_with_registers(GEN_ERROR_NOT_IMPLEMENTED, "OS not found :^)", registers);
+    ALO_ASM_BLOCK(ALO_ASM(int $3));
 
     return gen_error_attach_backtrace(GEN_ERROR_NOT_IMPLEMENTED, GEN_LINE_NUMBER, "OS not found :^)");
 }
@@ -61,8 +42,6 @@ GEN_NORETURN GEN_UNUSED void _start(ALO_BOOT_SIGNATURE) {
     // TODO: Check boot magic
 
 	ALO_ASM_BLOCK(ALO_ASM(cli));
-
-    // alo_hang();
 
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) _start, GEN_FILE_NAME);
 	if(error) {

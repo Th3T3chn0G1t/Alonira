@@ -52,38 +52,11 @@ typedef struct ALO_PACKED {
 
     uint64_t reserved4 : 42;
 } alo_flags_t;
-
-#define ALO_STORE_REGISTERS(registers) \
-    do { \
-        ALO_ASM_BLOCK( \
-            ALO_ASM(.__addr:) \
-            ALO_ASM(pushfq) \
-            ALO_ASM(popq 8*17(%[registers])) \
-            ALO_ASM(mov %%rax, 8*0(%[registers])) \
-            ALO_ASM(mov %%rbx, 8*1(%[registers])) \
-            ALO_ASM(mov %%rcx, 8*2(%[registers])) \
-            ALO_ASM(mov %%rdx, 8*3(%[registers])) \
-            ALO_ASM(mov %%rsi, 8*4(%[registers])) \
-            ALO_ASM(mov %%rdi, 8*5(%[registers])) \
-            ALO_ASM(mov %%rbp, 8*6(%[registers])) \
-            ALO_ASM(mov %%rsp, 8*7(%[registers])) \
-            ALO_ASM(mov %%r8, 8*8(%[registers])) \
-            ALO_ASM(mov %%r9, 8*9(%[registers])) \
-            ALO_ASM(mov %%r10, 8*10(%[registers])) \
-            ALO_ASM(mov %%r11, 8*11(%[registers])) \
-            ALO_ASM(mov %%r12, 8*12(%[registers])) \
-            ALO_ASM(mov %%r13, 8*13(%[registers])) \
-            ALO_ASM(mov %%r14, 8*14(%[registers])) \
-            ALO_ASM(mov %%r15, 8*15(%[registers])) \
-            ALO_ASM(leaq .__addr(%%rip), %%rax) \
-            ALO_ASM(mov %%rax, 8*16(%[registers])) \
-        :: [registers]"r"(&registers) : "rax"); \
-    } while(0)
     
 typedef struct {
-    union {
+    union ALO_PACKED {
         alo_register_t registers[18];
-        struct {
+        struct ALO_PACKED {
             alo_register_t rax;
             alo_register_t rbx;
             alo_register_t rcx;

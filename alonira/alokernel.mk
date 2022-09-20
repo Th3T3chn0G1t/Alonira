@@ -7,7 +7,8 @@ ALO_KERNEL_OBJECTS = $(ALO_KERNEL_SOURCES:.c=$(TARGET_C64_OBJECT_SUFFIX))
 
 ALO_KERNEL_OUT = $(ALONIRA_DIR)/boot/alonira$(TARGET_STATIC_OBJECT_SUFFIX)
 
-ALO_KERNEL_CFLAGS = $(GEN_CORE_DIAGNOSTIC_CFLAGS) -Wno-reserved-identifier -Wno-language-extension-token -Wno-gnu-zero-variadic-macro-arguments
+ALO_KERNEL_CFLAGS = $(GEN_CORE_DIAGNOSTIC_CFLAGS) -Wno-reserved-identifier -Wno-language-extension-token
+ALO_KERNEL_CFLAGS += -Wno-gnu-zero-variadic-macro-arguments -Wno-dollar-in-identifier-extension
 ALO_KERNEL_CFLAGS += -Wno-gnu-binary-literal -Wno-missing-prototypes
 ALO_KERNEL_CFLAGS += -DALO_BOOT_PROTOCOL_ULTRA=0 -DALO_BOOT_PROTOCOL=ALO_BOOT_PROTOCOL_$(BOOT_PROTOCOL) $(ALO_COMMON_CFLAGS)
 ALO_KERNEL_LFLAGS = -Talonira/alokernel/kernel-generic.ld $(ALO_COMMON_LFLAGS)

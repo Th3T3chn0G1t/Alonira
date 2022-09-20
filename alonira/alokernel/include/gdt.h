@@ -108,6 +108,8 @@ typedef enum {
     ALO_GDT_INDEX_COUNT
 } alo_gdt_index_t;
 
+// TODO: Define LDT structs and API even though we aren't gonna use them.
+
 extern alo_gdt_entry_t alo_gdt[ALO_GDT_INDEX_COUNT];
 extern const alo_segment_selector_t alo_gdt_selectors[ALO_GDT_INDEX_COUNT];
 extern const alo_gdt_pointer_t alo_gdtr;

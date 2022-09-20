@@ -49,7 +49,7 @@ $(ALONIRA_DIR)/tmp/loaderdata_%.c: $(HYPER_STAGE1_OUT) $(HYPER_STAGE2_OUT) | $(A
 $(HYPER_INSTALL): HOST_CFLAGS = -Wno-undef-prefix -Wno-nullability-completeness
 $(HYPER_INSTALL): $(HYPER_INSTALL_OBJECTS)
 
-ULTRA_CFLAGS = -Ialonira/vendor/Hyper/loader/boot_protocol/ultra_protocol
+ULTRA_CFLAGS = -I$(ALONIRA_DIR)/alonira/vendor/Hyper/loader/boot_protocol/ultra_protocol
 
 # TODO: Investigate random `rm tmp/loaderdata_stage2.c tmp/loaderdata_mbr.c tmp/loaderdata_iso_mbr.c`
 

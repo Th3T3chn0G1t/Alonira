@@ -4,13 +4,7 @@
 - Add github actions
 	- CI
 	- Docs autogen
-- Common
-	- Thread-local on alotooling
-- Backburner
-	- GDB/LLDB debugging & stubs
 - Kernel
-	- FIX! UBSan impl does not take full advantage of provided diagnostic info
-	- FIX! TSS Interrupt Stack Table for IDT entries `sysenter`
 	- Interrupts
 		- Keyboard driver
 			- Layouts?
@@ -26,14 +20,11 @@
 	- Better timer
 		- Graphics
 		- Sound?
-	- USB
-	- PCIe
-	- Networking
 	- Start work on userland
 		- Context switching
 			- Syscalls
 		- Executable-loading
-			- LLVM backend for Alonira
+    		- Cíonom!
 			- Scheduling
 				- Multiprocessing
 					- Threads
@@ -42,14 +33,17 @@
 		- Rings
 		- Permissions and users?
 			- Filesystem permissions
-	- Floating point
-		- HW accel. graphics
 	- Better disk IO
 		- Parsing sectors
 		- AHCI
 		- ExtFS
 		- Disk identification and discovery
 			- Hotplugging?
+	- USB
+	- PCIe
+	- Networking
+	- Floating point
+		- 3DNow/Voodoo graphics?
 	- Misc
 		- HWinfo
 			- CPU speed

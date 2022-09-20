@@ -11,7 +11,7 @@ run: $(ALONIRA_OUT)
 	@$(QEMU_X86_64) -cdrom $(ALONIRA_OUT) $(ALONIRA_QEMU_FLAGS) $(EXTRA_QEMU_FLAGS)
 
 ifeq ($(BOOT_PROTOCOL),ULTRA)
-$(ALONIRA_OUT): $(HYPER_OUT) $(HYPER_INSTALL) $(ALO_KERNEL_OUT) $(ALONIRA_DIR)/boot
+$(ALONIRA_OUT): $(HYPER_OUT) $(HYPER_INSTALL) $(ALO_KERNEL_OUT) $(ALONIRA_DIR)/boot $(wildcard $(ALONIRA_DIR)/boot/*)
 	@$(ECHO) "$(ACTION_PREFIX)"
 	$(XORRISO) -as mkisofs -b $(notdir $(HYPER_OUT)) -no-emul-boot -boot-load-size 4 -boot-info-table --protective-msdos-label $(ALONIRA_DIR)/boot -o $@
 	$(HYPER_INSTALL) $@

@@ -5,6 +5,7 @@
 
 #include "include/kio.h"
 
+#include <gencommon.h>
 #include <genstring.h>
 
 // TODO: Exclusive access to each serial port - mutex
