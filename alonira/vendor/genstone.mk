@@ -20,7 +20,7 @@ $(GENSTONE_DIR)/lib:
 	@$(ECHO) "$(ACTION_PREFIX)$(MKDIR) $@$(ACTION_SUFFIX)"
 	-@$(MKDIR) $@
 
-GEN_CORE_DISABLED_SOURCES = genmemory.c genlog.c generror.c
+GEN_CORE_DISABLED_SOURCES = genmemory.c genlog.c generror.c genprocess.c
 
 include $(GENSTONE_DIR)/genstone/gencore.mk
 
@@ -34,11 +34,10 @@ GENSTONE_CFLAGS += -DGEN_STRING_STRNCMP=__builtin_strncmp
 GENSTONE_CFLAGS += -DGEN_DISABLED=0 -DGEN_ENABLED=1
 GENSTONE_CFLAGS += -DGEN_DEBUG=0 -DGEN_RELEASE=1 -DGEN_BUILD_MODE=GEN_$(MODE)
 GENSTONE_CFLAGS += -DGEN_LINUX=0 -DGEN_OSX=1 -DGEN_WINDOWS=2 -DGEN_PLATFORM=ALONIRA
+GENSTONE_CFLAGS += -I$(GENSTONE_DIR)/genstone/gencore/include -I$(ALONIRA_DIR)/alonira/alokernel -DGEN_STRING_INCLUDE='<override/string.h>'
 
 $(GEN_CORE_LIB): TARGET_CFLAGS = $(GENSTONE_CFLAGS) $(GEN_CORE_INTERNAL_CFLAGS)
 $(GEN_CORE_LIB): TARGET_LFLAGS = $(GEN_CORE_INTERNAL_LFLAGS)
 $(GEN_CORE_LIB): TARGET_LIBDIRS =
-
-$(GENSTONE_DIR)/genstone/gencore/genstring$(TARGET_C64_OBJECT_SUFFIX): TARGET_CFLAGS += -I$(GENSTONE_DIR)/genstone/gencore/include -include $(ALONIRA_DIR)/alonira/alokernel/override/string.h
 
 GEN_CORE_LFLAGS = -lgencore.target
