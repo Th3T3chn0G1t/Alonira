@@ -18,6 +18,7 @@ documentation/
 
 .bochsrc
 
-.vscode
+.vscode/
+.idea/
 
 *.DS_STORE
