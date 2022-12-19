@@ -78,7 +78,7 @@ typedef enum ALO_FLAG_ENUM {
     ALO_SERIAL_INTERRUPT_STATUS_NOTIFY = 1 << 3
 } alo_serial_interrupt_mode_t;
 
-extern gen_error_t* alo_serial_set(const alo_serial_com_port_t com_port, const uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode);
+extern gen_error_t* alo_serial_set(const alo_serial_com_port_t com_port, const gen_uint16_t baud, const alo_serial_data_width_t data_width, const alo_serial_stop_bit_width_t stop_bit_width, const alo_serial_parity_mode_t parity_mode, const alo_serial_interrupt_mode_t interrupt_mode);
 extern gen_error_t* alo_serial_send(const alo_serial_com_port_t com_port, const char data);
 extern gen_error_t* alo_serial_send_string(const alo_serial_com_port_t com_port, const char* const restrict data);
 

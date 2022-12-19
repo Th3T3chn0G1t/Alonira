@@ -5,9 +5,9 @@
 #define ALO_KERNEL_CPU_H
 
 #include <gencommon.h>
-#include <alocommon.h>
 
-typedef uint64_t alo_register_t;
+
+typedef gen_uint64_t alo_register_t;
 
 typedef enum {
     ALO_CPU_PRIVILIGE_RING0,
@@ -24,33 +24,33 @@ typedef enum {
 typedef struct GEN_PACKED {
     alo_cpu_privilige_t privilige : 2;
     alo_segment_table_selector_t table : 1;
-    uint16_t index : 13;
+    gen_uint16_t index : 13;
 } alo_segment_selector_t;
 
 typedef struct GEN_PACKED {
-    bool carry : 1;
-    bool reserved0 : 1;
-    bool parity : 1;
-    bool reserved1 : 1;
-    bool adjust : 1;
-    bool reserved2 : 1;
-    bool zero : 1;
-    bool sign : 1;
-    bool trap : 1;
-    bool interrupt : 1;
-    bool direction : 1;
-    bool overflow : 1;
+    gen_bool_t carry : 1;
+    gen_bool_t reserved0 : 1;
+    gen_bool_t parity : 1;
+    gen_bool_t reserved1 : 1;
+    gen_bool_t adjust : 1;
+    gen_bool_t reserved2 : 1;
+    gen_bool_t zero : 1;
+    gen_bool_t sign : 1;
+    gen_bool_t trap : 1;
+    gen_bool_t interrupt : 1;
+    gen_bool_t direction : 1;
+    gen_bool_t overflow : 1;
     alo_cpu_privilige_t privilige : 2;
-    bool nested_task : 1;
-    bool reserved3 : 1;
-    bool resume : 1;
-    bool v8086 : 1;
-    bool alignment_check : 1;
-    bool vinterrupt : 1;
-    bool vinterrupt_pending : 1;
-    bool cpuid_usable : 1;
+    gen_bool_t nested_task : 1;
+    gen_bool_t reserved3 : 1;
+    gen_bool_t resume : 1;
+    gen_bool_t v8086 : 1;
+    gen_bool_t alignment_check : 1;
+    gen_bool_t vinterrupt : 1;
+    gen_bool_t vinterrupt_pending : 1;
+    gen_bool_t cpuid_usable : 1;
 
-    uint64_t reserved4 : 42;
+    gen_uint64_t reserved4 : 42;
 } alo_flags_t;
     
 typedef struct {

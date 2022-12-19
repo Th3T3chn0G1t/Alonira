@@ -5,7 +5,7 @@
 #define ALO_KERNEL_DIAGNOSTIC_H
 
 #include <gencommon.h>
-#include <alocommon.h>
+
 
 #include "cpu.h"
 

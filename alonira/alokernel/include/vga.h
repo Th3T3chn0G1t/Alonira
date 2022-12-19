@@ -27,15 +27,16 @@ typedef enum {
 } alo_vga_color_t;
 
 typedef unsigned short alo_vga_dimension_t;
-typedef size_t alo_vga_offset_t;
+typedef gen_size_t alo_vga_offset_t;
 typedef unsigned short alo_vga_character_t;
 
+// TODO: Declare as a pointer-to-array with the correct size
 #define ALO_VGA_ADDRESS ((unsigned short*) 0xB8000)
 #define ALO_VGA_WIDTH ((alo_vga_dimension_t) 80)
 #define ALO_VGA_HEIGHT ((alo_vga_dimension_t) 25)
 #define ALO_VGA_LENGTH (ALO_VGA_WIDTH * ALO_VGA_HEIGHT)
 
 extern gen_error_t* alo_vga_put_char_at_colored(const char c, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
-extern gen_error_t* alo_vga_put_string_at_colored(const char* const restrict string, const size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
+extern gen_error_t* alo_vga_put_string_at_colored(const char* const restrict string, const gen_size_t length, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y);
 
 #endif

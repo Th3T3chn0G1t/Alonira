@@ -20,13 +20,13 @@ gen_error_t* alo_idt_install(void) {
 	// if(error) return error;
 
 	// clang-format off
-	ALO_ASM_BLOCK(
-        ALO_ASM(movq %[idtr], %%rax)
-        ALO_ASM(lidtq (%%rax))
+	GEN_ASM_BLOCK(
+        GEN_ASM(movq %[idtr], %%rax)
+        GEN_ASM(lidtq (%%rax))
 
-        ALO_ASM(sti),
+        GEN_ASM(sti),
     :: [idtr]"p"(&alo_idtr) : "rax");
 	// clang-format on
 
-	return NULL;
+    return GEN_NULL;
 }

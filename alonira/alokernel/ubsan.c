@@ -5,14 +5,14 @@
 #include "include/vga.h"
 
 #include <gencommon.h>
-#include <alocommon.h>
+
 
 #include <genlog.h>
 
 typedef struct {
 	const char* const filename;
-	const uint32_t line;
-	const uint32_t column;
+	const gen_uint32_t line;
+	const gen_uint32_t column;
 } __ubsan_source_location;
 
 typedef struct {
@@ -21,7 +21,7 @@ typedef struct {
 		__ubsan_type_kind_float = 0x0001,
 		__ubsan_type_kind_unknown = 0xFFFF
 	} type_kind;
-	const uint16_t type_info;
+	const gen_uint16_t type_info;
 	const char* type_name;
 } __ubsan_type_descriptor;
 
@@ -151,7 +151,7 @@ typedef struct {
 	const __ubsan_type_descriptor* const type;
 } __ubsan_control_flow_integrity_check_fail_data;
 
-ALO_USED static const char* const __ubsan_type_check_kinds[] = {
+GEN_USED static const char* const __ubsan_type_check_kinds[] = {
 	"Load of", "Store to", "Reference binding to", "Member access within",
 	"Member call on", "Constructor call on", "Downcast of", "Downcast of",
 	"Upcast of", "Cast to virtual base of", "`_Nonnull` binding to",
@@ -159,7 +159,9 @@ ALO_USED static const char* const __ubsan_type_check_kinds[] = {
 
 // TODO: Properly implement diagnostics for ubsan
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_BEGIN)
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Wmissing-prototypes"))
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_type_mismatch_v1, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -177,7 +179,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const
     gen_error_abort();
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_alignment_assumption, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -197,14 +199,14 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(c
     gen_error_abort();
 
 	// alogf(FATAL, "From %s:%u:%u", data->from.filename, data->from.line, data->from.column);
-	// const uintptr_t real_pointer = (uintptr_t) pointer->value - (uintptr_t) offset->value;
+	// const gen_uintptr_t real_pointer = (gen_uintptr_t) pointer->value - (gen_uintptr_t) offset->value;
 	// if(!offset->value);
 	// 	alogf(FATAL, "Assumption of %zu byte alignment for pointer of type %s failed", alignment->value, data->type->type_name);
 	// else
-	// 	alogf(FATAL, "%p is aligned to %zu, misalignment offset is %zu", real_pointer, 1 << __builtin_ctzl(real_pointer), (uintptr_t) real_pointer & (uintptr_t) (alignment->value - 1));
+	// 	alogf(FATAL, "%p is aligned to %zu, misalignment offset is %zu", real_pointer, 1 << __builtin_ctzl(real_pointer), (gen_uintptr_t) real_pointer & (gen_uintptr_t) (alignment->value - 1));
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const size_t right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const gen_size_t right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -230,7 +232,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan
 	// else
 	// 	alogf(FATAL, "Unsigned integer overflow: %lu %c %lu cannot be represented in type %s", left->value, operator, right, data->type->type_name);
 }
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_mul_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -251,7 +253,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __u
 	// __ubsan_handle_overflow(data, left, '*', (size_t) right->value);
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_add_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -272,7 +274,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __u
 	// __ubsan_handle_overflow(data, left, '+', (size_t) right->value);
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_sub_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -293,7 +295,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __u
 	// __ubsan_handle_overflow(data, left, '-', (size_t) right->value);
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_divrem_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -313,7 +315,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const 
 
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_pointer_overflow, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -332,7 +334,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const
     gen_error_abort();
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_invalid_builtin, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -348,7 +350,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const 
     gen_error_abort();
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_shift_out_of_bounds, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -367,7 +369,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(co
     gen_error_abort();
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_builtin_unreachable, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -383,7 +385,7 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(co
     gen_error_abort();
 }
 
-ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_out_of_bounds, GEN_FILE_NAME);
 	if(error) {
         gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
@@ -400,3 +402,4 @@ ALO_NO_SANITIZE ALO_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __
 
     gen_error_abort();
 }
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)

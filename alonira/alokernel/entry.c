@@ -12,10 +12,10 @@
 #include <gencommon.h>
 #include <genlog.h>
 #include <genstring.h>
-#include <alocommon.h>
+
 
 static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
-	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_main, GEN_FILE_NAME);
+GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_main, GEN_FILE_NAME);
     if(error) return error;
 
 	error = alo_serial_set(ALO_SERIAL_COM1, 9600, ALO_SERIAL_DATA_WIDTH_8, ALO_SERIAL_STOP_BIT_1, ALO_SERIAL_PARITY_NONE, ALO_SERIAL_INTERRUPT_NONE);
@@ -33,15 +33,18 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
-    ALO_ASM_BLOCK(ALO_ASM(int $3));
+    GEN_ASM_BLOCK(GEN_ASM(int $3));
 
     return gen_error_attach_backtrace(GEN_ERROR_NOT_IMPLEMENTED, GEN_LINE_NUMBER, "OS not found :^)");
 }
 
-GEN_NORETURN GEN_UNUSED void _start(ALO_BOOT_SIGNATURE) {
-    // TODO: Check boot magic
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_BEGIN)
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Wmissing-prototypes"))
+GEN_NORETURN GEN_USED void _start(ALO_BOOT_SIGNATURE) {
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
+// TODO: Check boot magic
 
-	ALO_ASM_BLOCK(ALO_ASM(cli));
+	GEN_ASM_BLOCK(GEN_ASM(cli));
 
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) _start, GEN_FILE_NAME);
 	if(error) {

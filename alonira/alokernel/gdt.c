@@ -5,13 +5,14 @@
 
 #include "include/tss.h"
 
-#include <alocommon.h>
+
 
 alo_gdt_entry_t alo_gdt[] = {
 	[ALO_GDT_INDEX_NULL] = {0},
-	[ALO_GDT_INDEX_CODE] = ALO_GDT_MAKE_ENTRY(0x0, 0xFFFFFF, ALO_GDT_CODE_UNREADABLE, ALO_GDT_CODE_CONFORMING_PRIVILIGE_RESTRICTED, true, ALO_CPU_PRIVILIGE_RING0, ALO_GDT_GRANULARITY_4KIB),
-	[ALO_GDT_INDEX_DATA] = ALO_GDT_MAKE_ENTRY(0x0, 0xFFFFFF, ALO_GDT_DATA_UNWRITEABLE, ALO_GDT_DATA_DIRECTION_DOWN, false, ALO_CPU_PRIVILIGE_RING0, ALO_GDT_GRANULARITY_4KIB),
+	[ALO_GDT_INDEX_CODE] = ALO_GDT_MAKE_ENTRY(0x0, 0xFFFFFF, ALO_GDT_CODE_UNREADABLE, ALO_GDT_CODE_CONFORMING_PRIVILIGE_RESTRICTED, gen_true, ALO_CPU_PRIVILIGE_RING0, ALO_GDT_GRANULARITY_4KIB),
+	[ALO_GDT_INDEX_DATA] = ALO_GDT_MAKE_ENTRY(0x0, 0xFFFFFF, ALO_GDT_DATA_UNWRITEABLE, ALO_GDT_DATA_DIRECTION_DOWN, gen_false, ALO_CPU_PRIVILIGE_RING0, ALO_GDT_GRANULARITY_4KIB),
 	// These two need to be runtime initialized as they actually take addresses
+    // TODO: There's probably a way to make linker scripts insert pointers here
     [ALO_GDT_INDEX_TSS_BASE] = {0},
 	[ALO_GDT_INDEX_TSS_HIGH] = {0}};
 
@@ -23,7 +24,7 @@ const alo_segment_selector_t alo_gdt_selectors[] = {
 
 const alo_gdt_pointer_t alo_gdtr = {sizeof(alo_gdt) - 1, alo_gdt};
 
-ALO_NO_INLINE gen_error_t* alo_gdt_install(void) {
+GEN_NO_INLINE gen_error_t* alo_gdt_install(void) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_gdt_install, GEN_FILE_NAME);
 	if(error) return error;
 
@@ -31,25 +32,25 @@ ALO_NO_INLINE gen_error_t* alo_gdt_install(void) {
 	alo_gdt[ALO_GDT_INDEX_TSS_HIGH] = ALO_GDT_MAKE_SYSTEM_ENTRY_HIGH(&alo_tss);
 
 	// clang-format off
-	ALO_ASM_BLOCK(
-        ALO_ASM(movq %[gdtr], %%rax)
-        ALO_ASM(lgdtq (%%rax))
+	GEN_ASM_BLOCK(
+        GEN_ASM(movq %[gdtr], %%rax)
+        GEN_ASM(lgdtq (%%rax))
 
-        ALO_ASM(movq %[selectors], %%rbx)
-        ALO_ASM(movw %c[data_segment]*%c[selector_stride](%%rbx), %%ax)
-        ALO_ASM(movw %%ax, %%ds)
-        ALO_ASM(movw %%ax, %%es)
-        ALO_ASM(movw %%ax, %%fs)
-        ALO_ASM(movw %%ax, %%gs)
-        ALO_ASM(movw %%ax, %%ss)
+        GEN_ASM(movq %[selectors], %%rbx)
+        GEN_ASM(movw %c[data_segment]*%c[selector_stride](%%rbx), %%ax)
+        GEN_ASM(movw %%ax, %%ds)
+        GEN_ASM(movw %%ax, %%es)
+        GEN_ASM(movw %%ax, %%fs)
+        GEN_ASM(movw %%ax, %%gs)
+        GEN_ASM(movw %%ax, %%ss)
 
-        ALO_ASM(pushq %c[code_segment]*%c[selector_stride](%%rbx))
-        ALO_ASM(lea .done_reload_cs(%%rip), %%rax)
-        ALO_ASM(pushq %%rax)
-        ALO_ASM(lretq)
-        ALO_ASM(.done_reload_cs:),
+        GEN_ASM(pushq %c[code_segment]*%c[selector_stride](%%rbx))
+        GEN_ASM(lea .done_reload_cs(%%rip), %%rax)
+        GEN_ASM(pushq %%rax)
+        GEN_ASM(lretq)
+        GEN_ASM(.done_reload_cs:),
     :: [gdtr]"p"(&alo_gdtr), [selectors]"p"(alo_gdt_selectors), [selector_stride]"n"(sizeof(alo_segment_selector_t)), [code_segment]"n"(ALO_GDT_INDEX_CODE), [data_segment]"n"(ALO_GDT_INDEX_DATA) : "rax", "rbx");
 	// clang-format on
 
-	return NULL;
+	return GEN_NULL;
 }

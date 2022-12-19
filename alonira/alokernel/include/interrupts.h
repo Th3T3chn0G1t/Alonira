@@ -7,7 +7,7 @@
 #include "cpu.h"
 
 #include <gencommon.h>
-#include <alocommon.h>
+
 
 #define ALO_INTERRUPT_HANDLER_ATTRIBUTES __attribute__((interrupt))
 #define ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES __attribute__((no_caller_saved_registers))
@@ -276,13 +276,13 @@ typedef enum {
 
 typedef struct GEN_PACKED {
     alo_interrupt_vector_t vector;
-    uint32_t pad0;
+    gen_uint32_t pad0;
     alo_registers_t registers;
-    uint64_t error_code;
+    gen_uint64_t error_code;
     alo_register_t rip;
     struct GEN_PACKED {
         alo_segment_selector_t cs;
-        uint64_t pad1 : 48;
+        gen_uint64_t pad1 : 48;
     };
     union GEN_PACKED {
         alo_flags_t rflags;
@@ -291,7 +291,7 @@ typedef struct GEN_PACKED {
     alo_register_t rsp;
     struct GEN_PACKED {
         alo_segment_selector_t ss;
-        uint64_t pad2 : 48;
+        gen_uint64_t pad2 : 48;
     };
 } alo_interrupt_frame_t;
 

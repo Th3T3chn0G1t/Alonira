@@ -12,12 +12,12 @@ gen_error_t* alo_tss_install(void) {
 	if(error) return error;
 
 	// clang-format off
-    ALO_ASM_BLOCK(
-        ALO_ASM(movq %[selectors], %%rbx)
-        ALO_ASM(movw %c[tss_segment]*%c[selector_stride](%%rbx), %%ax)
-        ALO_ASM(ltr %%ax),
+    GEN_ASM_BLOCK(
+        GEN_ASM(movq %[selectors], %%rbx)
+        GEN_ASM(movw %c[tss_segment]*%c[selector_stride](%%rbx), %%ax)
+        GEN_ASM(ltr %%ax),
     :: [tss_segment]"n"(ALO_GDT_INDEX_TSS_BASE), [selectors]"p"(alo_gdt_selectors), [selector_stride]"n"(sizeof(alo_segment_selector_t)) : "rax", "rbx");
 	// clang-format on
 
-	return NULL;
+	return GEN_NULL;
 }

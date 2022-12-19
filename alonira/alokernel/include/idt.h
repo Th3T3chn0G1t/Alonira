@@ -9,35 +9,35 @@
 #include "interrupts.h"
 
 #include <gencommon.h>
-#include <alocommon.h>
+
 
 typedef enum {
     ALO_IDT_GATE_TYPE_INTERRUPT = 0xE,
     ALO_IDT_GATE_TYPE_TRAP = 0xF
 } alo_idt_gate_type_t;
 
-#define ALO_IDT_MAKE_ENTRY(offset, ist, gate_type, privilige) ((alo_idt_entry_t) {(offset) & 0xFFFF, alo_gdt_selectors[ALO_GDT_INDEX_CODE], (ist), 0, (gate_type), false, (privilige), true, (offset) >> 16, 0})
+#define ALO_IDT_MAKE_ENTRY(offset, ist, gate_type, privilige) ((alo_idt_entry_t) {(offset) & 0xFFFF, alo_gdt_selectors[ALO_GDT_INDEX_CODE], (ist), 0, (gate_type), gen_false, (privilige), gen_true, (offset) >> 16, 0})
 
 typedef struct GEN_PACKED {
-    uint16_t offset_low;
+    gen_uint16_t offset_low;
     
     alo_segment_selector_t segment_selector;
     
-    uint8_t ist : 3;
-    uint8_t reserved0 : 5;
+    gen_uint8_t ist : 3;
+    gen_uint8_t reserved0 : 5;
     
     alo_idt_gate_type_t gate_type : 4;
-    bool reserved1 : 1;
+    gen_bool_t reserved1 : 1;
     alo_cpu_privilige_t privilige : 2;
-    bool present : 1;
+    gen_bool_t present : 1;
 
-    uint64_t offset_high : 48;
+    gen_uint64_t offset_high : 48;
 
-    uint32_t reserved2;
+    gen_uint32_t reserved2;
 } alo_idt_entry_t;
 
 typedef struct GEN_PACKED {
-    uint16_t size;
+    gen_uint16_t size;
     alo_idt_entry_t* offset;
 } alo_idt_pointer_t;
 
