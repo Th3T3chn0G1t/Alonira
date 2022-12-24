@@ -1,3 +1,7 @@
+KERNEL_CFLAGS += -DGEN_THREAD_LOCAL=""
+
+ALO_KERNEL_CFLAGS += -I$(ALONIRA_DIR)/alonira/alokernel/include
+
 ALO_KERNEL_CFLAGS += -Wno-reserved-identifier # We're a kernel - I think we can safely say we're allowed use reserved identifiers ;^)
 ALO_KERNEL_CFLAGS += -Wno-gnu-binary-literal
 
@@ -16,9 +20,9 @@ ALO_KERNEL = $(ALONIRA_DIR)/boot/alonira$(KERNEL_ELF_SUFFIX)
 ALO_KERNEL_SANITIZERS = undefined
 
 $(ALO_KERNEL): CFLAGS = $(GEN_CORE_CFLAGS) $(ULTRA_CFLAGS) $(GENSTONE_DIAGNOSTIC_CFLAGS) $(ALO_KERNEL_CFLAGS)
-$(ALO_KERNEL): LFLAGS = $(GEN_CORE_LFLAGS) -T$(ALONIRA_DIR)/alonira/alokernel/kernel-generic.ld
+$(ALO_KERNEL): LFLAGS = $(KERNEL_GEN_CORE_LIB) -T$(ALONIRA_DIR)/alonira/alokernel/kernel-generic.ld $(GEN_BACKENDS_ALONIRA_LIB)
 $(ALO_KERNEL): SANITIZERS = $(ALO_KERNEL_SANITIZERS)
-$(ALO_KERNEL): LIBDIRS = $(GEN_CORE_LIBDIRS)
+$(ALO_KERNEL): LIBDIRS = $(KERNEL_GEN_CORE_LIBDIRS)
 $(ALO_KERNEL): $(ALO_KERNEL_OBJECTS)
 
 .PHONY: alokernel

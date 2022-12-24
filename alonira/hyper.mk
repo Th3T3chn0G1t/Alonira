@@ -1,5 +1,7 @@
 HYPER_CMAKE_CACHE = $(ALONIRA_DIR)/alonira/vendor/Hyper/build
 HYPER_INSTALL = $(ALONIRA_DIR)/alonira/vendor/Hyper/installer/hyper_install
+HYPER_BUILD_OUT = $(ALONIRA_DIR)/alonira/vendor/Hyper/build/loader/hyper_iso_boot
+HYPER_OUT = $(ALONIRA_DIR)/boot/hyper_iso_boot
 
 ULTRA_CFLAGS = -I$(ALONIRA_DIR)/alonira/vendor/Hyper/loader/boot_protocol/ultra_protocol
 
@@ -8,10 +10,14 @@ $(HYPER_CMAKE_CACHE): $(ALONIRA_DIR)/alonira/vendor/Hyper
 	$(CMAKE) -G "Ninja" -DHYPER_TOOLCHAIN=clang -DCMAKE_C_COMPILER=clang -B$@
 	@$(ECHO) "$(ACTION_SUFFIX)"
 
-$(HYPER_INSTALL): $(HYPER_CMAKE_CACHE)
+$(HYPER_BUILD_OUT) $(HYPER_INSTALL): $(HYPER_CMAKE_CACHE)
 	@$(ECHO) "$(ACTION_PREFIX)"
 	$(CMAKE) --build $<
 	@$(ECHO) "$(ACTION_SUFFIX)"
+
+$(HYPER_OUT): $(HYPER_BUILD_OUT)
+	@$(ECHO) "$(ACTION_PREFIX)$(HYPER_OUT)$(ACTION_SUFFIX)"
+	@$(CP) $< $@
 
 .PHONY: hyper
 hyper: $(HYPER_INSTALL)
@@ -24,5 +30,6 @@ clean_hyper:
 	@$(ECHO) "$(ACTION_PREFIX)"
 	-$(CMAKE) --build $(HYPER_CMAKE_CACHE) -- clean
 	-$(RM) $(HYPER_CMAKE_CACHE)
+	-$(RM) $(HYPER_INSTALL)
 	@$(ECHO) "$(ACTION_SUFFIX)"
 

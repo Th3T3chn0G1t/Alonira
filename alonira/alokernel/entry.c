@@ -30,6 +30,9 @@ GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*
 	error = alo_idt_install();
     if(error) return error;
 
+    error = alo_serial_send_string(ALO_SERIAL_COM1, "TEST");
+    if(error) return error;
+
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
@@ -48,6 +51,7 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
 
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) _start, GEN_FILE_NAME);
 	if(error) {
+        // TODO: Abort with print
         gen_error_print("alonira-entry", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();
     }
