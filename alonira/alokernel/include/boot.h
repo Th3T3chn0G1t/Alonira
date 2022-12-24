@@ -13,7 +13,21 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Weverything"))
 #include <ultra_protocol.h>
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
 
-#define ALO_BOOT_SIGNATURE GEN_MAYBE_UNUSED struct ultra_boot_context boot_data , GEN_MAYBE_UNUSED const unsigned int magic
+#define ALO_BOOT_SIGNATURE GEN_MAYBE_UNUSED struct ultra_boot_context boot_data, GEN_MAYBE_UNUSED const unsigned int magic
+#define ALO_BOOT_PASSTHROUGH boot_data, magic
 
 #endif
+
+#if ALO_BOOT_PROTOCOL == ALO_BOOT_PROTOCOL_LIMINE
+
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_BEGIN)
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Weverything"))
+#include <limine.h>
+GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
+
+#define ALO_BOOT_SIGNATURE void
+#define ALO_BOOT_PASSTHROUGH
+
+#endif
+
 #endif

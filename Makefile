@@ -10,7 +10,7 @@ include $(ALONIRA_DIR)/build/kernel.mk
 
 MODULES = $(GENSTONE_DIR)/genstone/gentests.mk $(GENSTONE_DIR)/genstone/gencore.mk $(GENSTONE_DIR)/genstone/genbackends.mk
 MODULES += $(CIONOM_DIR)/implementation/cionom.mk
-MODULES += $(ALONIRA_DIR)/alonira/kernel_gencore.mk $(ALONIRA_DIR)/alonira/hyper.mk $(ALONIRA_DIR)/alonira/alokernel.mk $(ALONIRA_DIR)/alonira/alonira.mk $(ALONIRA_DIR)/alonira/genbackends_alonira.mk
+MODULES += $(ALONIRA_DIR)/alonira/kernel_gencore.mk $(ALONIRA_DIR)/alonira/hyper.mk $(ALONIRA_DIR)/alonira/limine.mk $(ALONIRA_DIR)/alonira/alokernel.mk $(ALONIRA_DIR)/alonira/alonira.mk $(ALONIRA_DIR)/alonira/genbackends_alonira.mk
 
 TARGETS = $(notdir $(subst .mk,,$(MODULES)))
 CLEAN_TARGETS = $(addprefix clean_,$(TARGETS)) clean_common

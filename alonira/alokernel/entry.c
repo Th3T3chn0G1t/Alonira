@@ -56,7 +56,7 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
         gen_error_abort();
     }
 
-    error = gen_main(boot_data, magic);
+    error = gen_main(ALO_BOOT_PASSTHROUGH);
 	if(error) {
         alo_vga_put_char_at_colored('E', ALO_VGA_COLOR_RED, ALO_VGA_COLOR_WHITE, 0, 0);
         gen_error_print("alonira-entry", error, GEN_ERROR_SEVERITY_FATAL);
