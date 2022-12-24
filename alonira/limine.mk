@@ -33,7 +33,7 @@ $(LIMINE_SYS): $(LIMINE_BUILD_SYS)
 	@$(CP) $< $@
 
 .PHONY: limine
-limine: $(LIMINE_INSTALL) $(LIMINE_OUT)
+limine: $(LIMINE_INSTALL) $(LIMINE_OUT) $(LIMINE_SYS)
 
 .PHONY: test_limine
 test_limine:

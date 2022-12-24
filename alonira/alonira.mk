@@ -10,7 +10,7 @@ endif
 ifeq ($(BOOT_PROTOCOL),LIMINE)
 $(ALONIRA_OUT): BOOTLOADER_MBR = $(LIMINE_OUT)
 $(ALONIRA_OUT): BOOTLOADER_INSTALL = $(LIMINE_INSTALL)
-$(ALONIRA_OUT): $(LIMINE_OUT) $(LIMINE_INSTALL)
+$(ALONIRA_OUT): $(LIMINE_OUT) $(LIMINE_SYS) $(LIMINE_INSTALL)
 endif
 	@$(ECHO) "$(ACTION_PREFIX)"
 	$(XORRISO) -as mkisofs -b $(subst $(ALONIRA_DIR)/boot,,$(BOOTLOADER_MBR)) -no-emul-boot -boot-load-size 4 -boot-info-table --protective-msdos-label $(ALONIRA_DIR)/boot -o $@

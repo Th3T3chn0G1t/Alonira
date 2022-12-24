@@ -1,7 +1,7 @@
 include $(ALONIRA_DIR)/build/config.mk
 include $(ALONIRA_DIR)/build/target.mk
 
-KERNEL_CFLAGS += -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-strict-aliasing -fno-threadsafe-statics
+KERNEL_CFLAGS += -mcmodel=kernel -ffreestanding -fno-stack-protector -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-strict-aliasing -fno-threadsafe-statics
 
 # TODO: Work out $(GLOBAL_LFLAGS) - perhaps there's a way to isolate clang's tooldriver?
 %$(KERNEL_ELF_SUFFIX):

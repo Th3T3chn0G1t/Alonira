@@ -15,7 +15,7 @@
 
 
 static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
-GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_main, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_main, GEN_FILE_NAME);
     if(error) return error;
 
 	error = alo_serial_set(ALO_SERIAL_COM1, 9600, ALO_SERIAL_DATA_WIDTH_8, ALO_SERIAL_STOP_BIT_1, ALO_SERIAL_PARITY_NONE, ALO_SERIAL_INTERRUPT_NONE);
@@ -27,8 +27,8 @@ GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*
 	error = alo_tss_install();
     if(error) return error;
 
-	error = alo_idt_install();
-    if(error) return error;
+//	error = alo_idt_install();
+//    if(error) return error;
 
     error = alo_serial_send_string(ALO_SERIAL_COM1, "TEST");
     if(error) return error;
