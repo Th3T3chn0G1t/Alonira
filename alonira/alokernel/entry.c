@@ -30,9 +30,6 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
 //	error = alo_idt_install();
 //    if(error) return error;
 
-    error = alo_serial_send_string(ALO_SERIAL_COM1, "TEST");
-    if(error) return error;
-
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 

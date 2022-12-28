@@ -14,7 +14,7 @@ gen_error_t* alo_tss_install(void) {
 	// clang-format off
     GEN_ASM_BLOCK(
         GEN_ASM(ltr %[tss_selector]),
-    :: [tss_selector]"m"(alo_gdt[ALO_GDT_INDEX_TSS_BASE]) :);
+    :: [tss_selector] "m" (alo_gdt_selectors[ALO_GDT_INDEX_TSS_BASE]) :);
 	// clang-format on
 
 	return GEN_NULL;

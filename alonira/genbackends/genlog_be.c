@@ -9,6 +9,7 @@
 
 #include "include/genlog_be.h"
 
+// TODO: Move ANSI codes to genbackends/unix/genansi.h or something to de-dup this.
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_BEGIN)
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Wunused-macros"))
 #define GEN_LOG_INTERNAL_ANSI_COLOR_GRAY "30"
@@ -41,8 +42,7 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Wunused-macros"))
 #define GEN_LOG_INTERNAL_ANSI_SEQUENCE_BOLD GEN_LOG_INTERNAL_ANSI_SEQUENCE_PREFIX GEN_LOG_INTERNAL_ANSI_BOLD GEN_LOG_INTERNAL_ANSI_SEQUENCE_SUFFIX
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
 
-#define GEN_BACKENDS_ALONIRA_LOG_MAX 4096
-static char gen_backends_alonira_internal_log_buffer[GEN_BACKENDS_ALONIRA_LOG_MAX + 1];
+GEN_THREAD_LOCAL static char gen_backends_alonira_internal_log_buffer[GEN_LOG_STATIC_FORMAT_BUFFER_SIZE + 1];
 
 gen_error_t* gen_backends_alonira_log(const gen_log_level_t severity, const char* const restrict context, const char* const restrict string) {
     GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_backends_alonira_log, GEN_FILE_NAME);
@@ -93,7 +93,7 @@ gen_error_t* gen_backends_alonira_log(const gen_log_level_t severity, const char
             GEN_LOG_INTERNAL_ANSI_SEQUENCE_CLEAR "%t\n";
     // clang-format on
 
-    error = gen_string_format(GEN_BACKENDS_ALONIRA_LOG_MAX, gen_backends_alonira_internal_log_buffer, GEN_NULL, format, sizeof(format), sizeof(format) - 1, context, context_length + 1, ' ', GEN_LOG_CONTEXT_PAD - context_length, severity_names[severity], severity_bounds[severity], ' ', GEN_LOG_SEVERITY_PAD - severity_name_lengths[severity], string);
+    error = gen_string_format(GEN_LOG_STATIC_FORMAT_BUFFER_SIZE, gen_backends_alonira_internal_log_buffer, GEN_NULL, format, sizeof(format), sizeof(format) - 1, context, context_length + 1, ' ', GEN_LOG_CONTEXT_PAD - context_length, severity_names[severity], severity_bounds[severity], ' ', GEN_LOG_SEVERITY_PAD - severity_name_lengths[severity], string);
     if(error) return error;
 
     error = alo_serial_send_string(ALO_SERIAL_COM1, gen_backends_alonira_internal_log_buffer);
