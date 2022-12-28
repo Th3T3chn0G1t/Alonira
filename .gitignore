@@ -2,14 +2,15 @@
 *.o.*
 
 *.a
+*.a.*
 
 *.elf
 *.elf.*
 
-*.bin
-
 *.so
 *.so.*
+
+*.bin
 
 *.out
 
