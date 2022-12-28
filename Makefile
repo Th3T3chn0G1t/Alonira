@@ -14,9 +14,6 @@ MODULES += $(ALONIRA_DIR)/alonira/kernel_gencore.mk
 ifeq ($(BOOT_PROTOCOL),ULTRA)
 	MODULES += $(ALONIRA_DIR)/alonira/hyper.mk
 endif
-ifeq ($(BOOT_PROTOCOL),LIMINE)
-	MODULES += $(ALONIRA_DIR)/alonira/limine.mk
-endif
 MODULES += $(ALONIRA_DIR)/alonira/alokernel.mk $(ALONIRA_DIR)/alonira/alonira.mk $(ALONIRA_DIR)/alonira/genbackends_alonira.mk
 
 TARGETS = $(notdir $(subst .mk,,$(MODULES)))

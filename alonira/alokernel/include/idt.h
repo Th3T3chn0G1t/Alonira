@@ -16,7 +16,7 @@ typedef enum {
     ALO_IDT_GATE_TYPE_TRAP = 0xF
 } alo_idt_gate_type_t;
 
-#define ALO_IDT_MAKE_ENTRY(offset, ist, gate_type, privilige) ((alo_idt_entry_t) {(offset) & 0xFFFF, alo_gdt_selectors[ALO_GDT_INDEX_CODE], (ist), 0, (gate_type), gen_false, (privilige), gen_true, (offset) >> 16, 0})
+#define ALO_IDT_MAKE_ENTRY(offset, ist, gate_type, privilege) ((alo_idt_entry_t) {(offset) & 0xFFFF, alo_gdt_selectors[ALO_GDT_INDEX_CODE], (ist), 0, (gate_type), gen_false, (privilege), gen_true, (offset) >> 16, 0})
 
 typedef struct GEN_PACKED {
     gen_uint16_t offset_low;
@@ -28,7 +28,7 @@ typedef struct GEN_PACKED {
     
     alo_idt_gate_type_t gate_type : 4;
     gen_bool_t reserved1 : 1;
-    alo_cpu_privilige_t privilige : 2;
+    alo_cpu_privilege_t privilege : 2;
     gen_bool_t present : 1;
 
     gen_uint64_t offset_high : 48;

@@ -6,15 +6,14 @@
 
 #include <gencommon.h>
 
-
 typedef gen_uint64_t alo_register_t;
 
 typedef enum {
-    ALO_CPU_PRIVILIGE_RING0,
-    ALO_CPU_PRIVILIGE_RING1,
-    ALO_CPU_PRIVILIGE_RING2,
-    ALO_CPU_PRIVILIGE_RING3
-} alo_cpu_privilige_t;
+    ALO_CPU_PRIVILEGE_RING0,
+    ALO_CPU_PRIVILEGE_RING1,
+    ALO_CPU_PRIVILEGE_RING2,
+    ALO_CPU_PRIVILEGE_RING3
+} alo_cpu_privilege_t;
 
 typedef enum {
     ALO_SEGMENT_TABLE_GDT,
@@ -22,7 +21,7 @@ typedef enum {
 } alo_segment_table_selector_t;
 
 typedef struct GEN_PACKED {
-    alo_cpu_privilige_t privilige : 2;
+    alo_cpu_privilege_t privilege : 2;
     alo_segment_table_selector_t table : 1;
     gen_uint16_t index : 13;
 } alo_segment_selector_t;
@@ -40,7 +39,7 @@ typedef struct GEN_PACKED {
     gen_bool_t interrupt : 1;
     gen_bool_t direction : 1;
     gen_bool_t overflow : 1;
-    alo_cpu_privilige_t privilige : 2;
+    alo_cpu_privilege_t privilege : 2;
     gen_bool_t nested_task : 1;
     gen_bool_t reserved3 : 1;
     gen_bool_t resume : 1;

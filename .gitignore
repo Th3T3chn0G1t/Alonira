@@ -20,8 +20,6 @@ lib/
 alonira.iso
 
 boot/boot/hyper/hyper_iso_boot
-boot/boot/limine/limine-cd.bin
-boot/boot/limine/limine.sys
 boot/boot/alonira.elf.64
 
 documentation/

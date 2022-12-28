@@ -17,8 +17,8 @@ typedef enum {
     ALO_GDT_DATA_DIRECTION_DOWN,
     ALO_GDT_DATA_DIRECTION_UP,
 
-    ALO_GDT_CODE_CONFORMING_PRIVILIGE_RESTRICTED = 0,
-    ALO_GDT_CODE_CONFORMING_PRIVILIGE_UNRESTRICTED
+    ALO_GDT_CODE_CONFORMING_PRIVILEGE_RESTRICTED = 0,
+    ALO_GDT_CODE_CONFORMING_PRIVILEGE_UNRESTRICTED
 } alo_gdt_conforming_direction_mode_t;
 
 typedef enum {
@@ -48,8 +48,8 @@ typedef enum {
     ALO_GDT_SYSTEM_SEGMENT_TYPE_TSS_BUSY = 11,
 } alo_gdt_system_segment_type_t;
 
-#define ALO_GDT_MAKE_ENTRY(base, limit, readable_writeable, direction_conforming, executable, privilige, granularity) ((alo_gdt_entry_t) { .entry = {(limit) & 0xFFFF, (base) & 0xFFFFFF, {.code_data_access = {gen_true, (readable_writeable), (direction_conforming), (executable), ALO_GDT_TYPE_CODE_DATA, (privilige), gen_true}}, ((limit) >> 2) & 0xF, gen_false, gen_true, ALO_GDT_SEGMENT_WIDTH_64, (granularity), ((base) >> 24) & 0xFF}})
-#define ALO_GDT_MAKE_SYSTEM_ENTRY(base, limit, type, privilige, granularity) ((alo_gdt_entry_t) { .entry = {(limit) & 0xFFFF, (gen_uintptr_t) (base) & 0xFFFFFF, {.system_access = {(type), ALO_GDT_TYPE_SYSTEM, (privilige), gen_true}}, ((limit) >> 2) & 0xF, gen_false, gen_true, ALO_GDT_SEGMENT_WIDTH_64, (granularity), ((gen_uintptr_t) (base) >> 24) & 0xFF}})
+#define ALO_GDT_MAKE_ENTRY(base, limit, readable_writeable, direction_conforming, executable, privilege, granularity) ((alo_gdt_entry_t) { .entry = {(limit) & 0xFFFF, (base) & 0xFFFFFF, {.code_data_access = {gen_true, (readable_writeable), (direction_conforming), (executable), ALO_GDT_TYPE_CODE_DATA, (privilege), gen_true}}, ((limit) >> 2) & 0xF, gen_false, gen_true, ALO_GDT_SEGMENT_WIDTH_64, (granularity), ((base) >> 24) & 0xFF}})
+#define ALO_GDT_MAKE_SYSTEM_ENTRY(base, limit, type, privilege, granularity) ((alo_gdt_entry_t) { .entry = {(limit) & 0xFFFF, (gen_uintptr_t) (base) & 0xFFFFFF, {.system_access = {(type), ALO_GDT_TYPE_SYSTEM, (privilege), gen_true}}, ((limit) >> 2) & 0xF, gen_false, gen_true, ALO_GDT_SEGMENT_WIDTH_64, (granularity), ((gen_uintptr_t) (base) >> 24) & 0xFF}})
 #define ALO_GDT_MAKE_SYSTEM_ENTRY_HIGH(base) ((alo_gdt_entry_t) { .system_entry_high = {(gen_uint32_t) ((gen_uintptr_t) (base) >> 32), 0}})
 
 typedef struct {
@@ -65,14 +65,14 @@ typedef struct {
                     alo_gdt_conforming_direction_mode_t direction_conforming : 1;
                     gen_bool_t executable : 1;
                     alo_gdt_type_t type : 1;
-                    alo_cpu_privilige_t privilige : 2;
+                    alo_cpu_privilege_t privilege : 2;
                     gen_bool_t present : 1;
                 } code_data_access;
 
                 struct GEN_PACKED {
                     alo_gdt_system_segment_type_t system_type : 4;
                     alo_gdt_type_t type : 1;
-                    alo_cpu_privilige_t privilige : 2;
+                    alo_cpu_privilege_t privilege : 2;
                     gen_bool_t present : 1;
                 } system_access;
             };
