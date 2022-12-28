@@ -36,7 +36,7 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
-    GEN_ASM_BLOCK(GEN_ASM(int $3));
+//    GEN_ASM_BLOCK(GEN_ASM(int $3));
 
     return gen_error_attach_backtrace(GEN_ERROR_NOT_IMPLEMENTED, GEN_LINE_NUMBER, "OS not found :^)");
 }
@@ -58,7 +58,6 @@ GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
 
     error = gen_main(ALO_BOOT_PASSTHROUGH);
 	if(error) {
-        alo_vga_put_char_at_colored('E', ALO_VGA_COLOR_RED, ALO_VGA_COLOR_WHITE, 0, 0);
         gen_error_print("alonira-entry", error, GEN_ERROR_SEVERITY_FATAL);
         gen_error_abort();
     }

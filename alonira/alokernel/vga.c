@@ -4,8 +4,8 @@
 #include "include/vga.h"
 
 gen_error_t* alo_vga_put_char_at_colored(const char c, const alo_vga_color_t foreground, const alo_vga_color_t background, const alo_vga_dimension_t x, const alo_vga_dimension_t y) {
-	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_vga_put_char_at_colored, GEN_FILE_NAME);
-	if(error) return error;
+//	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_vga_put_char_at_colored, GEN_FILE_NAME);
+//	if(error) return error;
 
 	const alo_vga_offset_t offset = x + y * ALO_VGA_WIDTH;
 	if(offset > ALO_VGA_LENGTH) return gen_error_attach_backtrace_formatted(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_NUMBER, "Calculated character offset `%uz` is outside of VGA buffer bounds", offset);
