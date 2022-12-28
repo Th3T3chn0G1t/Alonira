@@ -8,6 +8,3 @@
 [submodule "alonira/vendor/Cionom"]
 	path = alonira/vendor/Cionom
 	url = https://github.com/Th3T3chn0G1t/Cionom
-[submodule "alonira/vendor/Limine"]
-	path = alonira/vendor/Limine
-	url = https://github.com/limine-bootloader/limine
