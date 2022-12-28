@@ -33,23 +33,24 @@ GEN_NO_INLINE gen_error_t* alo_gdt_install(void) {
 
 	// clang-format off
 	GEN_ASM_BLOCK(
-        GEN_ASM(movq %[gdtr], %%rax)
-        GEN_ASM(lgdtq (%%rax))
+        GEN_ASM(lgdtq %[gdtr])
 
-        GEN_ASM(movq %[selectors], %%rbx)
-        GEN_ASM(movw %c[data_segment]*%c[selector_stride](%%rbx), %%ax)
         GEN_ASM(movw %%ax, %%ds)
         GEN_ASM(movw %%ax, %%es)
         GEN_ASM(movw %%ax, %%fs)
         GEN_ASM(movw %%ax, %%gs)
         GEN_ASM(movw %%ax, %%ss)
 
-        GEN_ASM(pushq %c[code_segment]*%c[selector_stride](%%rbx))
+        GEN_ASM(pushq %%rbx)
         GEN_ASM(lea .done_reload_cs(%%rip), %%rax)
         GEN_ASM(pushq %%rax)
         GEN_ASM(lretq)
         GEN_ASM(.done_reload_cs:),
-    :: [gdtr]"p"(&alo_gdtr), [selectors]"p"(alo_gdt_selectors), [selector_stride]"n"(sizeof(alo_segment_selector_t)), [code_segment]"n"(ALO_GDT_INDEX_CODE), [data_segment]"n"(ALO_GDT_INDEX_DATA) : "rax", "rbx");
+    ::
+        [gdtr]            "m" (alo_gdtr),
+        [code_segment]    "a" (alo_gdt_selectors[ALO_GDT_INDEX_CODE]),
+        [data_segment]    "b" (alo_gdt_selectors[ALO_GDT_INDEX_DATA])
+    :);
 	// clang-format on
 
 	return GEN_NULL;

@@ -13,10 +13,8 @@ gen_error_t* alo_tss_install(void) {
 
 	// clang-format off
     GEN_ASM_BLOCK(
-        GEN_ASM(movq %[selectors], %%rbx)
-        GEN_ASM(movw %c[tss_segment]*%c[selector_stride](%%rbx), %%ax)
-        GEN_ASM(ltr %%ax),
-    :: [tss_segment]"n"(ALO_GDT_INDEX_TSS_BASE), [selectors]"p"(alo_gdt_selectors), [selector_stride]"n"(sizeof(alo_segment_selector_t)) : "rax", "rbx");
+        GEN_ASM(ltr %[tss_selector]),
+    :: [tss_selector]"m"(alo_gdt[ALO_GDT_INDEX_TSS_BASE]) :);
 	// clang-format on
 
 	return GEN_NULL;
