@@ -27,13 +27,13 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
 	error = alo_tss_install();
     if(error) return error;
 
-//	error = alo_idt_install();
-//    if(error) return error;
+	error = alo_idt_install();
+    if(error) return error;
 
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
-//    GEN_ASM_BLOCK(GEN_ASM(int $3));
+    GEN_ASM_BLOCK(GEN_ASM(int $3));
 
     return gen_error_attach_backtrace(GEN_ERROR_NOT_IMPLEMENTED, GEN_LINE_NUMBER, "OS not found :^)");
 }

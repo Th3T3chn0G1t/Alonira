@@ -8,8 +8,6 @@
 
 #include <gencommon.h>
 
-
-#define ALO_INTERRUPT_HANDLER_ATTRIBUTES __attribute__((interrupt))
 #define ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES __attribute__((no_caller_saved_registers))
 
 typedef enum {
@@ -274,25 +272,14 @@ typedef enum {
     ALO_INTERRUPT_VECTOR_COUNT
 } alo_interrupt_vector_t;
 
-typedef struct GEN_PACKED {
+typedef struct {
     alo_interrupt_vector_t vector;
-    gen_uint32_t pad0;
     alo_registers_t registers;
-    gen_uint64_t error_code;
-    alo_register_t rip;
-    struct GEN_PACKED {
-        alo_segment_selector_t cs;
-        gen_uint64_t pad1 : 48;
-    };
-    union GEN_PACKED {
-        alo_flags_t rflags;
-        alo_register_t rfl;
-    };
-    alo_register_t rsp;
-    struct GEN_PACKED {
-        alo_segment_selector_t ss;
-        gen_uint64_t pad2 : 48;
-    };
-} alo_interrupt_frame_t;
+    gen_uint32_t error_code;
+
+    const char* TESTING_NAME;
+} alo_exception_frame_t;
+
+extern gen_error_t* alo_interrupts_install_exception_handlers(void);
 
 #endif

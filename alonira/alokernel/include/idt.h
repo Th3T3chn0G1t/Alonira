@@ -10,7 +10,6 @@
 
 #include <gencommon.h>
 
-
 typedef enum {
     ALO_IDT_GATE_TYPE_INTERRUPT = 0xE,
     ALO_IDT_GATE_TYPE_TRAP = 0xF
