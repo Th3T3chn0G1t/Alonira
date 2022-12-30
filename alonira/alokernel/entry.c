@@ -36,7 +36,7 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     // qemu/bochs shutdown
     // alo_port_out_word(0xB004, 0x2000);
 
-    GEN_ASM_BLOCK(GEN_ASM(int $3));
+    GEN_ASM_BLOCK(GEN_ASM(int $80));
 
     return gen_error_attach_backtrace(GEN_ERROR_NOT_IMPLEMENTED, GEN_LINE_NUMBER, "OS not found :^)");
 }

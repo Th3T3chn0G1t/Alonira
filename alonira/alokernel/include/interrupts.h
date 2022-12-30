@@ -331,7 +331,75 @@ typedef struct {
     } cs;
 } alo_exception_frame_t;
 
+
+#define ALO_INTERRUPTS_NO_ERROR_CODE movl $0, %[error_code]
+#define ALO_INTERRUPTS_ERROR_CODE popq %[error_code]
+
+#define ALO_INTERRUPTS_ISR_BODY(exception_vector, frame, stub, ...) \
+    GEN_ASM_BLOCK( \
+        /* Exception Entry Frame */ \
+        GEN_ASM(__VA_ARGS__) \
+        GEN_ASM(popq %[rip]) \
+        GEN_ASM(popq %[cs]) \
+        GEN_ASM(popq %[rflags]) \
+        GEN_ASM(popq %[rsp]) \
+        GEN_ASM(popq %[ss]) \
+        /* Exception Frame */ \
+        GEN_ASM(movl /* NOTE: Here we assume that enums are ints - if something weird happens in future that's probably why */ %[exception_vector], %[vector]) \
+        GEN_ASM(movq %%rax, %[rax]) \
+        GEN_ASM(movq %%rbx, %[rbx]) \
+        GEN_ASM(movq %%rcx, %[rcx]) \
+        GEN_ASM(movq %%rdx, %[rdx]) \
+        GEN_ASM(movq %%rsi, %[rsi]) \
+        GEN_ASM(movq %%rdi, %[rdi]) \
+        GEN_ASM(movq %%rbp, %[rbp]) \
+        GEN_ASM(movq %%r8 , %[r8] ) \
+        GEN_ASM(movq %%r9 , %[r9] ) \
+        GEN_ASM(movq %%r10, %[r10]) \
+        GEN_ASM(movq %%r11, %[r11]) \
+        GEN_ASM(movq %%r12, %[r12]) \
+        GEN_ASM(movq %%r13, %[r13]) \
+        GEN_ASM(movq %%r14, %[r14]) \
+        GEN_ASM(movq %%r15, %[r15]) \
+        GEN_ASM(.extern stub) \
+        GEN_ASM(callq stub), \
+        GEN_ASM(pushq %[ss]) \
+        GEN_ASM(pushq %[rsp]) \
+        GEN_ASM(pushq %[rflags]) \
+        GEN_ASM(pushq %[cs]) \
+        GEN_ASM(pushq %[rip]) \
+        GEN_ASM(iretq) \
+    : \
+        /* Exception Entry Frame */ \
+        [error_code ] "=m" (frame.error_code       ), \
+        [rip        ] "=m" (frame.registers.rip    ), \
+        [cs         ] "=m" (frame.cs               ), \
+        [rflags     ] "=m" (frame.registers.rflags ), \
+        [rsp        ] "=m" (frame.registers.rsp    ), \
+        [ss         ] "=m" (frame.ss               ), \
+        /* Exception Frame */ \
+        [vector] "=m" (frame.vector       ), \
+        [rax   ] "=m" (frame.registers.rax), \
+        [rbx   ] "=m" (frame.registers.rbx), \
+        [rcx   ] "=m" (frame.registers.rcx), \
+        [rdx   ] "=m" (frame.registers.rdx), \
+        [rsi   ] "=m" (frame.registers.rsi), \
+        [rdi   ] "=m" (frame.registers.rdi), \
+        [rbp   ] "=m" (frame.registers.rbp), \
+        [r8    ] "=m" (frame.registers.r8 ), \
+        [r9    ] "=m" (frame.registers.r9 ), \
+        [r10   ] "=m" (frame.registers.r10), \
+        [r11   ] "=m" (frame.registers.r11), \
+        [r12   ] "=m" (frame.registers.r12), \
+        [r13   ] "=m" (frame.registers.r13), \
+        [r14   ] "=m" (frame.registers.r14), \
+        [r15   ] "=m" (frame.registers.r15) \
+    : \
+        [exception_vector] "n" (exception_vector) \
+    :)
+
 extern gen_error_t* alo_interrupts_install_exception_handlers(void);
+extern gen_error_t* alo_interrupts_install_irq_handlers(void);
 
 #endif
 

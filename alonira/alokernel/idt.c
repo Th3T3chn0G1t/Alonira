@@ -14,6 +14,9 @@ gen_error_t* alo_idt_install(void) {
     error = alo_interrupts_install_exception_handlers();
 	if(error) return error;
 
+    error = alo_interrupts_install_irq_handlers();
+    if(error) return error;
+
 	// clang-format off
 	GEN_ASM_BLOCK(
         GEN_ASM(lidtq %[idtr])
