@@ -275,9 +275,18 @@ typedef enum {
 typedef struct {
     alo_interrupt_vector_t vector;
     alo_registers_t registers;
-    gen_uint32_t error_code;
-
-    const char* TESTING_NAME;
+    struct GEN_PACKED {
+        gen_uint32_t error_code;
+        gen_uint32_t pad0;
+    } error_code;
+    struct GEN_PACKED {
+        alo_segment_selector_t ss;
+        gen_uint64_t pad1 : 48;
+    } ss;
+    struct GEN_PACKED {
+        alo_segment_selector_t cs;
+        gen_uint64_t pad1 : 48;
+    } cs;
 } alo_exception_frame_t;
 
 extern gen_error_t* alo_interrupts_install_exception_handlers(void);

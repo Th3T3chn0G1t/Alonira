@@ -8,6 +8,7 @@
 #include "include/serial.h"
 #include "include/tss.h"
 #include "include/vga.h"
+#include "include/kio.h"
 
 #include <gencommon.h>
 #include <genlog.h>
@@ -32,6 +33,9 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
 
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
+
+    // qemu/bochs shutdown
+    // alo_port_out_word(0xB004, 0x2000);
 
     GEN_ASM_BLOCK(GEN_ASM(int $3));
 
