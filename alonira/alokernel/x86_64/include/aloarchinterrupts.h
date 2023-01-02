@@ -4,9 +4,9 @@
 #ifndef ALO_KERNEL_INTERRUPTS_H
 #define ALO_KERNEL_INTERRUPTS_H
 
-#include "cpu.h"
-
 #include <gencommon.h>
+
+#include "alocpu.h"
 
 #define ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES __attribute__((no_caller_saved_registers))
 

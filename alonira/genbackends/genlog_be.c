@@ -5,7 +5,7 @@
 #include <genlog.h>
 #include <genstring.h>
 #include <genmemory.h>
-#include <serial.h>
+#include <aloserial.h>
 
 #include "include/genlog_be.h"
 

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#include "include/gdt.h"
+#include <gencommon.h>
 
-#include "include/tss.h"
+#include "include/alogdt.h"
+#include "include/alotss.h"
 
 alo_gdt_entry_t alo_gdt[] = {
 	[ALO_GDT_INDEX_NULL] = {0},
@@ -31,7 +32,6 @@ GEN_NO_INLINE gen_error_t* alo_gdt_install(void) {
 
 	// clang-format off
 	GEN_ASM_BLOCK(
-//        GEN_ASM(movq , %%rax)
         GEN_ASM(lgdtq %[gdtr])
 
         GEN_ASM(movw %[data_segment], %%ax)

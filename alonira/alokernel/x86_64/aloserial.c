@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#include "include/serial.h"
-
-#include "include/kio.h"
-
 #include <gencommon.h>
 #include <genstring.h>
+
+#include "include/aloserial.h"
+#include "include/alocpu.h"
 
 // TODO: Exclusive access to each serial port - mutex
 

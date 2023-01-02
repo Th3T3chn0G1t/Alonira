@@ -7,12 +7,12 @@ ULTRA_CFLAGS = -I$(ALONIRA_DIR)/alonira/vendor/Hyper/loader/boot_protocol/ultra_
 
 $(HYPER_CMAKE_CACHE):
 	@$(ECHO) "$(ACTION_PREFIX)"
-	$(CMAKE) -G "Ninja" -DHYPER_TOOLCHAIN=clang -DCMAKE_C_COMPILER=clang -B$@ $(dir $@)
+	$(CMAKE) -G "Unix Makefiles" -DHYPER_TOOLCHAIN=clang -DCMAKE_C_COMPILER=$(CLANG) -DCMAKE_ASM_NASM_COMPILER=$(NASM) -B$@ $(dir $@)
 	@$(ECHO) "$(ACTION_SUFFIX)"
 
 $(HYPER_BUILD_OUT) $(HYPER_INSTALL): $(HYPER_CMAKE_CACHE)
 	@$(ECHO) "$(ACTION_PREFIX)"
-	$(CMAKE) --build $<
+	$(MAKE) -C $<
 	@$(ECHO) "$(ACTION_SUFFIX)"
 
 $(HYPER_OUT): $(HYPER_BUILD_OUT)

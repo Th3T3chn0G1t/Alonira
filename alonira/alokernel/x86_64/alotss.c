@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#include "include/tss.h"
+#include <gencommon.h>
 
-#include "include/gdt.h"
+#include "include/alotss.h"
+#include "include/alogdt.h"
 
 alo_tss_t alo_tss = {0};
 

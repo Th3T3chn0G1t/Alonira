@@ -1,12 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#include "include/kdiagnostic.h"
-#include "include/vga.h"
-
 #include <gencommon.h>
-
-
 #include <genlog.h>
 
 typedef struct {
@@ -161,42 +156,20 @@ GEN_USED static const char* const __ubsan_type_check_kinds[] = {
 
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_BEGIN)
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Wmissing-prototypes"))
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, const __ubsan_value* const restrict pointer) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __ubsan_type_mismatch_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict pointer) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_type_mismatch_v1, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+	if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) pointer;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_WRONG_OBJECT_TYPE, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+	gen_error_abort_with_error(error, "alonira-ubsan");
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, const __ubsan_value* const restrict pointer, const __ubsan_value* const restrict alignment, const __ubsan_value* const restrict offset) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict pointer, GEN_UNUSED const __ubsan_value* const restrict alignment, GEN_UNUSED const __ubsan_value* const restrict offset) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_alignment_assumption, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) pointer;
-	(void) alignment;
-	(void) offset;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 
 	// alogf(FATAL, "From %s:%u:%u", data->from.filename, data->from.line, data->from.column);
 	// const gen_uintptr_t real_pointer = (gen_uintptr_t) pointer->value - (gen_uintptr_t) offset->value;
@@ -206,24 +179,12 @@ GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_alignment_
 	// 	alogf(FATAL, "%p is aligned to %zu, misalignment offset is %zu", real_pointer, 1 << __builtin_ctzl(real_pointer), (gen_uintptr_t) real_pointer & (gen_uintptr_t) (alignment->value - 1));
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const char operator, const gen_size_t right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const char operator, GEN_UNUSED const gen_size_t right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_overflow, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) operator;
-	(void) left;
-	(void) right;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 
 	// if(data) 
 	// if(data->type->type_info & 1);
@@ -232,174 +193,81 @@ GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_overflow(c
 	// else
 	// 	alogf(FATAL, "Unsigned integer overflow: %lu %c %lu cannot be represented in type %s", left->value, operator, right, data->type->type_name);
 }
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_mul_overflow, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) left;
-	(void) right;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 
 	// __ubsan_handle_overflow(data, left, '*', (size_t) right->value);
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_add_overflow, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) left;
-	(void) right;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 
 	// __ubsan_handle_overflow(data, left, '+', (size_t) right->value);
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_sub_overflow, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) left;
-	(void) right;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 
 	// __ubsan_handle_overflow(data, left, '-', (size_t) right->value);
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ubsan_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_divrem_overflow, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) left;
-	(void) right;
-
-    gen_error_abort();
-
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, const __ubsan_value* const restrict base, const __ubsan_value* const restrict result) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict base, GEN_UNUSED const __ubsan_value* const restrict result) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_pointer_overflow, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) base;
-	(void) result;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 }
 
 GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_invalid_builtin, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_UNKNOWN, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict left, const __ubsan_value* const restrict right) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const __ubsan_value* const restrict right) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_shift_out_of_bounds, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) left;
-	(void) right;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 }
 
 GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_builtin_unreachable, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_INVALID_CONTROL, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 }
 
-GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, const __ubsan_value* const restrict offset) {
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict offset) {
 	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_out_of_bounds, GEN_FILE_NAME);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_FATAL, "ubsan", "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
-	if(error) {
-        gen_error_print("ubsan", error, GEN_ERROR_SEVERITY_FATAL);
-        gen_error_abort();        
-    }
-
-	(void) offset;
-
-    gen_error_abort();
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
 }
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)

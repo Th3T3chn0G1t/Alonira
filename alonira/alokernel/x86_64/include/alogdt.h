@@ -4,9 +4,9 @@
 #ifndef ALO_KERNEL_GDT_H
 #define ALO_KERNEL_GDT_H
 
-#include "cpu.h"
-
 #include <gencommon.h>
+
+#include "alocpu.h"
 
 typedef enum {
     ALO_GDT_TYPE_SYSTEM,

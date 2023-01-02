@@ -4,11 +4,11 @@
 #ifndef ALO_KERNEL_IDT_H
 #define ALO_KERNEL_IDT_H
 
-#include "cpu.h"
-#include "gdt.h"
-#include "interrupts.h"
-
 #include <gencommon.h>
+
+#include "alocpu.h"
+#include "alogdt.h"
+#include "aloarchinterrupts.h"
 
 typedef enum {
     ALO_IDT_GATE_TYPE_INTERRUPT = 0xE,

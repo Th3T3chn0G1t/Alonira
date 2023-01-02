@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#include "include/idt.h"
-#include "include/tss.h"
-
 #include <gencommon.h>
 #include <genlog.h>
+
+#include "include/aloidt.h"
+#include "include/alotss.h"
 
 static const char* alo_interrupts_internal_exception_names[] = {
     [ALO_INTERRUPT_VECTOR_EXCEPTION_DIVIDE_BY_ZERO              ] = "divide by zero"              ,
@@ -47,13 +47,21 @@ GEN_THREAD_LOCAL static alo_exception_frame_t alo_interrupts_internal_exception_
 
 ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES extern void alo_interrupts_internal_exception_stub(void);
 ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES GEN_USED void alo_interrupts_internal_exception_stub(void) {
-    // TODO: Abort with error on error
+    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_interrupts_internal_exception_stub, GEN_FILE_NAME);
+    if(error) gen_error_abort_with_error(error, "alonira-interrupts");
+
     // TODO: Print errors nicely with error_code union membs
-    (void) gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupt", "Exception: `%t` @ %p", alo_interrupts_internal_exception_names[alo_interrupts_internal_exception_frame.vector], alo_interrupts_internal_exception_frame.registers.rip);
-    (void) gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupt", "ss: %p cs: %p", (alo_register_t) alo_interrupts_internal_exception_frame.ss.ss.selector, (alo_register_t) alo_interrupts_internal_exception_frame.cs.cs.selector);
-    (void) gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupt", "rax: %p rbx: %p rcx: %p rdx: %p rsi: %p rdi: %p rbp: %p rsp: %p r8: %p r9: %p r10: %p r11: %p r12: %p r13: %p r14: %p r15: %p rfl: %p", alo_interrupts_internal_exception_frame.registers.rax, alo_interrupts_internal_exception_frame.registers.rbx, alo_interrupts_internal_exception_frame.registers.rcx, alo_interrupts_internal_exception_frame.registers.rdx, alo_interrupts_internal_exception_frame.registers.rsi, alo_interrupts_internal_exception_frame.registers.rdi, alo_interrupts_internal_exception_frame.registers.rbp, alo_interrupts_internal_exception_frame.registers.rsp, alo_interrupts_internal_exception_frame.registers.r8, alo_interrupts_internal_exception_frame.registers.r9, alo_interrupts_internal_exception_frame.registers.r10, alo_interrupts_internal_exception_frame.registers.r11, alo_interrupts_internal_exception_frame.registers.r12, alo_interrupts_internal_exception_frame.registers.r13, alo_interrupts_internal_exception_frame.registers.r14, alo_interrupts_internal_exception_frame.registers.r15, alo_interrupts_internal_exception_frame.registers.rfl);
-    // TODO: Can probably format this better
-    (void) gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupt", "carry: %uz parity: %uz adjust: %uz zero: %uz sign: %uz trap: %uz interrupt: %uz direction: %uz overflow: %uz privilege: %uz nested task: %uz resume: %uz v8086: %uz alignment check: %uz vinterrupt: %uz vinterrupt pending: %uz cpuid usable: %uz", (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.carry, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.parity, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.adjust, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.zero, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.sign, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.trap, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.interrupt, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.direction, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.overflow, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.privilege, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.nested_task, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.resume, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.v8086, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.alignment_check, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.vinterrupt, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.vinterrupt_pending, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.cpuid_usable);
+    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupts", "Exception: `%t` @ %p", alo_interrupts_internal_exception_names[alo_interrupts_internal_exception_frame.vector], alo_interrupts_internal_exception_frame.registers.rip);
+    if(error) gen_error_abort_with_error(error, "alonira-interrupts");
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupts", "ss: %p cs: %p", (alo_register_t) alo_interrupts_internal_exception_frame.ss.ss.selector, (alo_register_t) alo_interrupts_internal_exception_frame.cs.cs.selector);
+    if(error) gen_error_abort_with_error(error, "alonira-interrupts");
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupts", "rax: %p rbx: %p rcx: %p rdx: %p rsi: %p rdi: %p rbp: %p rsp: %p r8: %p r9: %p r10: %p r11: %p r12: %p r13: %p r14: %p r15: %p rfl: %p", alo_interrupts_internal_exception_frame.registers.rax, alo_interrupts_internal_exception_frame.registers.rbx, alo_interrupts_internal_exception_frame.registers.rcx, alo_interrupts_internal_exception_frame.registers.rdx, alo_interrupts_internal_exception_frame.registers.rsi, alo_interrupts_internal_exception_frame.registers.rdi, alo_interrupts_internal_exception_frame.registers.rbp, alo_interrupts_internal_exception_frame.registers.rsp, alo_interrupts_internal_exception_frame.registers.r8, alo_interrupts_internal_exception_frame.registers.r9, alo_interrupts_internal_exception_frame.registers.r10, alo_interrupts_internal_exception_frame.registers.r11, alo_interrupts_internal_exception_frame.registers.r12, alo_interrupts_internal_exception_frame.registers.r13, alo_interrupts_internal_exception_frame.registers.r14, alo_interrupts_internal_exception_frame.registers.r15, alo_interrupts_internal_exception_frame.registers.rfl);
+    if(error) gen_error_abort_with_error(error, "alonira-interrupts");
+
+    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupts", "carry: %uz parity: %uz adjust: %uz zero: %uz sign: %uz trap: %uz interrupt: %uz direction: %uz overflow: %uz privilege: %uz nested task: %uz resume: %uz v8086: %uz alignment check: %uz vinterrupt: %uz vinterrupt pending: %uz cpuid usable: %uz", (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.carry, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.parity, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.adjust, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.zero, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.sign, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.trap, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.interrupt, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.direction, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.overflow, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.privilege, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.nested_task, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.resume, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.v8086, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.alignment_check, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.vinterrupt, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.vinterrupt_pending, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.cpuid_usable);
+    if(error) gen_error_abort_with_error(error, "alonira-interrupts");
 }
 
 GEN_NAKED static void alo_interrupts_internal_exception_handler_divide_by_zero              (void) { ALO_INTERRUPTS_ISR_BODY(ALO_INTERRUPT_VECTOR_EXCEPTION_DIVIDE_BY_ZERO              , alo_interrupts_internal_exception_frame, alo_interrupts_internal_exception_stub, ALO_INTERRUPTS_NO_ERROR_CODE); }

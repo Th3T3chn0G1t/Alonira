@@ -6,7 +6,6 @@
 
 #include <gencommon.h>
 
-
 typedef enum {
     ALO_IST_NONE,
     ALO_IST1,

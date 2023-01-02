@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#include "include/idt.h"
-#include "include/tss.h"
+#include <gencommon.h>
+
+#include "include/aloidt.h"
+#include "include/alotss.h"
 
 alo_idt_entry_t alo_idt[ALO_INTERRUPT_VECTOR_COUNT] = {0};
 alo_idt_pointer_t alo_idtr = {sizeof(alo_idt) - 1, alo_idt};
