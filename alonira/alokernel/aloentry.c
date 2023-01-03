@@ -17,6 +17,9 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
+    error = gen_log_formatted(GEN_LOG_LEVEL_WARNING, "alonira-entry", "Kernel and dependencies currently contain `%uz` TODOs", ALO_TODO_COUNT);
+    if(error) return error;
+
     return gen_error_attach_backtrace(GEN_ERROR_NOT_IMPLEMENTED, GEN_LINE_NUMBER, "OS not found :^)");
 }
 

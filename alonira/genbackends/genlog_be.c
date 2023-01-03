@@ -49,8 +49,10 @@ gen_error_t* gen_backends_alonira_log(const gen_log_level_t severity, const char
     if(error) return error;
 
     gen_size_t context_length = 0;
-    error = gen_string_length(context, GEN_STRING_NO_BOUNDS, GEN_LOG_CONTEXT_PAD, &context_length);
+    error = gen_string_length(context, GEN_STRING_NO_BOUNDS, GEN_STRING_NO_BOUNDS, &context_length);
     if(error) return error;
+
+    if(context_length > GEN_LOG_CONTEXT_PAD) return gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "Context string `%t` length (`%uz`) exceeded `GEN_LOG_CONTEXT_PAD` (`%uz`)", context, context_length, GEN_LOG_CONTEXT_PAD);
 
     error = gen_memory_set((void*) gen_backends_alonira_internal_log_buffer, sizeof(gen_backends_alonira_internal_log_buffer), sizeof(gen_backends_alonira_internal_log_buffer), 0);
     if(error) return error;

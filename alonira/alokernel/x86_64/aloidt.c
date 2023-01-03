@@ -22,8 +22,6 @@ gen_error_t* alo_idt_install(void) {
 	// clang-format off
 	GEN_ASM_BLOCK(
         GEN_ASM(lidtq %[idtr])
-
-        GEN_ASM(sti),
     :: [idtr] "m" (alo_idtr) :);
 	// clang-format on
 

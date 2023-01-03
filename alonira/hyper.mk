@@ -29,7 +29,7 @@ test_hyper:
 clean_hyper:
 	@$(ECHO) "$(ACTION_PREFIX)"
 	-$(CMAKE) --build $(HYPER_CMAKE_CACHE) -- clean
-	-$(RM) $(HYPER_CMAKE_CACHE)
+	-$(RMDIR) $(HYPER_CMAKE_CACHE)
 	-$(RM) $(HYPER_INSTALL)
 	-$(RM) $(HYPER_OUT)
 	@$(ECHO) "$(ACTION_SUFFIX)"

@@ -45,8 +45,8 @@ static const char* alo_interrupts_internal_exception_names[] = {
 // NOTE: Please never modify this from the exception stub.
 GEN_THREAD_LOCAL static alo_exception_frame_t alo_interrupts_internal_exception_frame;
 
-ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES extern void alo_interrupts_internal_exception_stub(void);
-ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES GEN_USED void alo_interrupts_internal_exception_stub(void) {
+GEN_NORETURN ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES extern void alo_interrupts_internal_exception_stub(void);
+GEN_NORETURN ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES GEN_USED void alo_interrupts_internal_exception_stub(void) {
     GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_interrupts_internal_exception_stub, GEN_FILE_NAME);
     if(error) gen_error_abort_with_error(error, "alonira-interrupts");
 
@@ -62,6 +62,9 @@ ALO_INTERRUPT_HANDLER_CALLABLE_ATTRIBUTES GEN_USED void alo_interrupts_internal_
 
     error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-interrupts", "carry: %uz parity: %uz adjust: %uz zero: %uz sign: %uz trap: %uz interrupt: %uz direction: %uz overflow: %uz privilege: %uz nested task: %uz resume: %uz v8086: %uz alignment check: %uz vinterrupt: %uz vinterrupt pending: %uz cpuid usable: %uz", (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.carry, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.parity, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.adjust, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.zero, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.sign, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.trap, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.interrupt, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.direction, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.overflow, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.privilege, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.nested_task, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.resume, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.v8086, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.alignment_check, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.vinterrupt, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.vinterrupt_pending, (alo_register_t) alo_interrupts_internal_exception_frame.registers.rflags.cpuid_usable);
     if(error) gen_error_abort_with_error(error, "alonira-interrupts");
+
+    // TODO: Convert exeception to Genstone error
+    gen_error_abort();
 }
 
 GEN_NAKED static void alo_interrupts_internal_exception_handler_divide_by_zero              (void) { ALO_INTERRUPTS_ISR_BODY(ALO_INTERRUPT_VECTOR_EXCEPTION_DIVIDE_BY_ZERO              , alo_interrupts_internal_exception_frame, alo_interrupts_internal_exception_stub, ALO_INTERRUPTS_NO_ERROR_CODE); }
