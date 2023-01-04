@@ -8,7 +8,7 @@
 
 #include "alocpu.h"
 #include "alogdt.h"
-#include "aloarchinterrupts.h"
+#include "alointerrupts.h"
 
 typedef enum {
     ALO_IDT_GATE_TYPE_INTERRUPT = 0xE,

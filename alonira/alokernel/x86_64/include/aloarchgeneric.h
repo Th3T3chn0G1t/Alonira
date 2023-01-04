@@ -6,11 +6,9 @@
 
 #include <gencommon.h>
 
-#include "aloboot.h"
-
-#define ALO_BOOT_BLOCK GEN_ASM_BLOCK(GEN_ASM(cli))
+#include <aloboot.h>
 
 extern GEN_NORETURN void alo_hang(void);
-extern gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE);
+extern gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict out_boot_info);
 
 #endif

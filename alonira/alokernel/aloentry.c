@@ -5,13 +5,15 @@
 #include <genlog.h>
 
 #include <aloarchgeneric.h>
-#include <aloboot.h>
+#include "include/aloboot.h"
 
 static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_main, GEN_FILE_NAME);
     if(error) return error;
 
-    error = alo_arch_generic_init(ALO_BOOT_PASSTHROUGH);
+    alo_boot_info_t boot_info = {0};
+
+    error = alo_arch_generic_init(ALO_BOOT_PASSTHROUGH, &boot_info);
     if(error) return error;
 
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
