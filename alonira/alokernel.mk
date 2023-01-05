@@ -2,7 +2,7 @@ KERNEL_CFLAGS += -DGEN_THREAD_LOCAL=""
 
 ALO_KERNEL_CFLAGS += -I$(ALONIRA_DIR)/alonira/alokernel/include -I$(ALONIRA_DIR)/alonira/alokernel/$(KERNEL_TARGET)/include
 
-ALO_TODO_COUNT := $(shell $(CAT) $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME)  "*.c") $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME) "*.h") | $(GREP) "TODO:" | $(LINECOUNT))
+ALO_TODO_COUNT := $(shell $(CAT) $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME)  "*.c") $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME) "*.h") | $(GREP) "TODO:" | $(LINECOUNT) | $(MKNUMERIC))
 
 ALO_KERNEL_CFLAGS += -DALO_TODO_COUNT=$(ALO_TODO_COUNT)
 ALO_KERNEL_CFLAGS += -Wno-reserved-identifier # We're a kernel - I think we can safely say we're allowed use reserved identifiers ;^)
