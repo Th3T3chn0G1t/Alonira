@@ -337,6 +337,7 @@ typedef struct {
 
 #define ALO_INTERRUPTS_ISR_BODY(exception_vector, frame, stub, ...) \
     GEN_ASM_BLOCK( \
+        GEN_ASM(cli) \
         /* Exception Entry Frame */ \
         GEN_ASM(__VA_ARGS__) \
         GEN_ASM(popq %[rip]) \

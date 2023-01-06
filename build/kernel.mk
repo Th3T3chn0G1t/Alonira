@@ -12,6 +12,9 @@ ifeq ($(HOST), WINDOWS)
 endif
 
 KERNEL_CFLAGS += -static -mcmodel=kernel -ffreestanding -fno-builtin -fno-pic -mno-red-zone -mno-stack-arg-probe -fno-strict-aliasing -fno-threadsafe-statics
+ifeq ($(SANITIZE),ENABLED)
+	KERNEL_CFLAGS = -fsanitize=$(SANITIZERS)
+endif
 
 # TODO: Work out $(GLOBAL_LFLAGS) - perhaps there's a way to isolate clang's tooldriver?
 %$(KERNEL_ELF_SUFFIX):

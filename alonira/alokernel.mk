@@ -6,7 +6,7 @@ ALO_TODO_COUNT := $(shell $(CAT) $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME)  "
 
 ALO_KERNEL_CFLAGS += -DALO_TODO_COUNT=$(ALO_TODO_COUNT)
 ALO_KERNEL_CFLAGS += -Wno-reserved-identifier # We're a kernel - I think we can safely say we're allowed use reserved identifiers ;^)
-ALO_KERNEL_CFLAGS += -Wno-gnu-binary-literal
+ALO_KERNEL_CFLAGS += -Wno-gnu-binary-literal -Wno-c++-compat -Wno-gnu-empty-struct
 
 ALO_KERNEL_CFLAGS += -Wno-dollar-in-identifier-extension # TODO: Remove once clang fixes this
 

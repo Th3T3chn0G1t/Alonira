@@ -7,18 +7,6 @@
 #include <gencommon.h>
 
 typedef struct GEN_PACKED {
-    char signature[4];
-    gen_uint32_t length;
-    gen_uint8_t revision;
-    gen_uint8_t checksum;
-    char oem_id[6];
-    char oem_table_id[8];
-    gen_uint32_t oem_revision;
-    gen_uint32_t creator_id;
-    gen_uint32_t creator_revision;
-} alo_acpi_system_descriptor_header_t;
-
-typedef struct GEN_PACKED {
     char signature[8];
     gen_uint8_t checksum;
     char oem_id[6];
