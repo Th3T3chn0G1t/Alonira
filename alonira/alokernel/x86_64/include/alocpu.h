@@ -102,4 +102,46 @@ static GEN_FORCE_INLINE gen_uint8_t alo_port_in_byte(const gen_uint16_t port) {
     return out_value;
 }
 
+typedef union GEN_PACKED {
+    struct GEN_PACKED {
+        gen_bool_t protected_mode : 1;
+        gen_bool_t await_coprocessor : 1;
+        gen_bool_t emulate_coprocessor : 1;
+        gen_bool_t task_switched : 1;
+        gen_bool_t reserved0 : 1;
+        gen_bool_t coprocessor_exceptions : 1;
+        gen_uint16_t reserved1 : 10;
+        gen_bool_t write_protect : 1;
+        gen_bool_t reserved2 : 1;
+        gen_bool_t alignment_check : 1;
+        gen_uint16_t reserved3 : 10;
+        gen_bool_t reserved4 : 1;
+        gen_bool_t cache_disable : 1;
+        gen_bool_t paging_enable : 1;
+        gen_uint32_t reserved5;
+    };
+    alo_register_t cr0;
+} alo_register_cr0_t;
+
+typedef union GEN_PACKED {
+    union {
+        struct GEN_PACKED {
+            gen_uint16_t pcid : 12;
+
+            gen_uint64_t table_address : 40;
+            gen_uint16_t reserved0 : 12;
+        } pcid;
+        struct GEN_PACKED {
+            gen_uint8_t reserved0 : 3;
+            gen_bool_t table_writethrough : 1;
+            gen_bool_t table_cacheable : 1;
+            gen_uint8_t reserved1 : 7;
+
+            gen_uint64_t table_address : 40;
+            gen_uint16_t reserved2 : 12;
+        } no_pcid;
+    };
+    alo_register_t cr3;
+} alo_register_cr3_t;
+
 #endif
