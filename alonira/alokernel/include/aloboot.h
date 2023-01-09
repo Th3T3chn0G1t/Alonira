@@ -39,6 +39,7 @@ typedef struct {
     gen_uintptr_t kernel_size;
 
     alo_physical_memory_range_t physical_memory_ranges[ALO_BOOT_MEMORY_RANGE_MAX];
+    gen_size_t physical_memory_range_count;
 
     char command_line[ALO_BOOT_COMMAND_LINE_MAX + 1];
 } alo_boot_info_t;

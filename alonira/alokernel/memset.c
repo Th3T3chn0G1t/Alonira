@@ -4,7 +4,7 @@
 #include <gencommon.h>
 #include <genmemory.h>
 
-// This is neccesary because `= {0}` can cause the compiler to generate calls to `memset`.
+// This is necessary because `= {0}` can cause the compiler to generate calls to `memset`.
 extern GEN_USED void* memset(void* const address, const int value, const unsigned long count);
 GEN_USED void* memset(void* const address, const int value, const unsigned long count) {
     GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) memset, GEN_FILE_NAME);

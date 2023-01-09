@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#ifndef ALO_KERNEL_CPU_H
-#define ALO_KERNEL_CPU_H
+#ifndef ALO_KERNEL_X86_64_CPU_H
+#define ALO_KERNEL_X86_64_CPU_H
 
 #include <gencommon.h>
 
@@ -143,5 +143,34 @@ typedef union GEN_PACKED {
     };
     alo_register_t cr3;
 } alo_register_cr3_t;
+
+typedef union GEN_PACKED {
+    union GEN_PACKED {
+        gen_bool_t v8086_virtual_interrupts : 1;
+        gen_bool_t protected_mode_virtual_interrupts : 1;
+        gen_bool_t privileged_rdts : 1;
+        gen_bool_t debug_extensions : 1;
+        gen_bool_t page_size_extension : 1;
+        gen_bool_t physical_address_extension : 1;
+        gen_bool_t machine_check : 1;
+        gen_bool_t page_global : 1;
+        gen_bool_t performance_monitoring : 1;
+        gen_bool_t legacy_sse : 1;
+        gen_bool_t simd_fault : 1;
+        gen_bool_t restrict_privileged_instructions : 1;
+        gen_bool_t level_5_paging : 1;
+        gen_uint8_t reserved0 : 3;
+        gen_bool_t privileged_hidden_segments : 1;
+        gen_bool_t pcid : 1;
+        gen_bool_t xsave : 1;
+        gen_bool_t reserved1 : 1;
+        gen_bool_t restrict_privileged_execution : 1;
+        gen_bool_t restrict_privileged_access : 1;
+        gen_bool_t protection_keys : 1;
+        gen_bool_t control_flow_enforcement : 1;
+        gen_uint64_t reserved2 : 40;
+    };
+    alo_register_t cr4;
+} alo_register_cr4_t;
 
 #endif

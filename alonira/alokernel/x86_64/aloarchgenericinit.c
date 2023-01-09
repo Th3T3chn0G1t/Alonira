@@ -38,6 +38,7 @@ gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const re
     error = alo_idt_install();
     if(error) return error;
 
+    // TODO: PIC
     // GEN_ASM_BLOCK(GEN_ASM(sti));
 
     alo_rdsp_descriptor_t* rdsp = GEN_NULL;
@@ -45,6 +46,7 @@ gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const re
 
     out_boot_info->protocol_version = (gen_version_t) {boot_data->protocol_major, boot_data->protocol_minor, 0};
 
+    // TODO: Bump this out somewhere
     struct ultra_attribute_header* attribute = boot_data->attributes;
     for(gen_size_t i = 0; i < boot_data->attribute_count; ++i) {
         switch(attribute->type) {
@@ -127,6 +129,8 @@ gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const re
 
                 if(entries > ALO_BOOT_MEMORY_RANGE_MAX) return gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "Memory map contained too many entries (`%uz`), max is `%uz`", entries, ALO_BOOT_MEMORY_RANGE_MAX);
 
+                out_boot_info->physical_memory_range_count = entries;
+
                 for(gen_size_t j = 0; j < entries; ++j) {
                     struct ultra_memory_map_entry* entry = &memory_map->entries[j];
 
@@ -143,8 +147,8 @@ gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const re
                         case ULTRA_MEMORY_TYPE_KERNEL_STACK: GEN_FALLTHROUGH;
                         case ULTRA_MEMORY_TYPE_KERNEL_BINARY: type = ALO_PHYSICAL_MEMORY_TYPE_KERNEL; break;
                     }
-
-                    out_boot_info->physical_memory_ranges[i] = (alo_physical_memory_range_t) {type, entry->physical_address, entry->size};
+                    
+                    out_boot_info->physical_memory_ranges[j] = (alo_physical_memory_range_t) {type, entry->physical_address, entry->size};
                 }
 
                 break;
@@ -184,6 +188,8 @@ gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const re
 
         attribute = ULTRA_NEXT_ATTRIBUTE(attribute);
     }
+
+
 
     return GEN_NULL;
 }
