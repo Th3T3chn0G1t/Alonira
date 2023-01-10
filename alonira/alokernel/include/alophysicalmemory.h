@@ -21,11 +21,34 @@ typedef struct {
     gen_size_t size;
 } alo_physical_memory_range_t;
 
+#ifndef ALO_PHYSICAL_BITMAP_MAX_FREE
+#define ALO_PHYSICAL_BITMAP_MAX_FREE 16
+#endif
+
+#define ALO_PHYSICAL_PAGE_SIZE 4096
+#define ALO_PHYSICAL_ROUND_TO_NEAREST_PAGE(x) ((((x) + ALO_PHYSICAL_PAGE_SIZE - 1) / ALO_PHYSICAL_PAGE_SIZE) * ALO_PHYSICAL_PAGE_SIZE)
+
 typedef struct {
-    gen_uint8_t* bitmap;
+    alo_physical_memory_range_t ranges[ALO_PHYSICAL_BITMAP_MAX_FREE];
+    gen_size_t ranges_count;
 } alo_physical_allocator_t;
 
+typedef struct {
+    void* address;
+    // TODO: Re-enable when need to implement `alo_physical_allocator_return`
+//    gen_size_t from_range;
+//    gen_size_t index;
+} alo_physical_allocated_page_t;
+
+typedef struct GEN_PACKED {
+    gen_size_t total;
+    gen_size_t free;
+    gen_size_t header_page_count;
+    gen_uint8_t bitmap[];
+} alo_physical_allocator_header_t;
+
 extern gen_error_t* alo_physical_allocator_init(const alo_physical_memory_range_t* const restrict physical_memory_ranges, const gen_size_t ranges_count, alo_physical_allocator_t* const restrict out_physical_allocator);
-extern gen_error_t* alo_physical_allocator_request(const alo_physical_allocator_t* const restrict physical_allocator, const gen_size_t count, gen_uintptr_t* const restrict out_physical);
+extern gen_error_t* alo_physical_allocator_request(const alo_physical_allocator_t* const restrict physical_allocator, const gen_size_t count, alo_physical_allocated_page_t* const restrict out_physical);
+//extern gen_error_t* alo_physical_allocator_return(const alo_physical_allocator_t* const restrict physical_allocator, const alo_physical_allocated_page_t* const restrict physical);
 
 #endif
