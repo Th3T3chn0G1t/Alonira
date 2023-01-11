@@ -3,6 +3,7 @@
 
 #include <gencommon.h>
 #include <genlog.h>
+#include <genstring.h>
 
 #include <aloarchgeneric.h>
 #include "include/aloboot.h"
