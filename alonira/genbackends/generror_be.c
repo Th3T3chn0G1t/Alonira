@@ -2,7 +2,7 @@
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+genstone@pm.me>
 
 #include <gencommon.h>
-#include <aloarchgeneric.h>
+#include <alokernel.h>
 
 #include "include/generror_be.h"
 

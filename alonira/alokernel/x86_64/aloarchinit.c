@@ -6,8 +6,9 @@
 #include <genmemory.h>
 #include <genstring.h>
 
-#include "include/aloarchgeneric.h"
-#include "include/aloarchgenericboot.h"
+#include <aloarch.h>
+
+#include "include/exposed/aloarchboot.h"
 
 #include "include/alogdt.h"
 #include "include/aloidt.h"
@@ -17,8 +18,8 @@
 
 #include "include/aloserial.h"
 
-gen_error_t* alo_arch_generic_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict out_boot_info) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_generic_init, GEN_FILE_NAME);
+gen_error_t* alo_arch_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict out_boot_info) {
+    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_init, GEN_FILE_NAME);
     if(error) return error;
 
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-archgenericinit", "Alonira (x86_64) initializing - hold onto your hats...");

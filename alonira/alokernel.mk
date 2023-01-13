@@ -1,6 +1,6 @@
 KERNEL_CFLAGS += -DGEN_THREAD_LOCAL=""
 
-ALO_KERNEL_CFLAGS += -I$(ALONIRA_DIR)/alonira/alokernel/include -I$(ALONIRA_DIR)/alonira/alokernel/$(KERNEL_TARGET)/include
+ALO_KERNEL_CFLAGS += -I$(ALONIRA_DIR)/alonira/alokernel/include -I$(ALONIRA_DIR)/alonira/alokernel/$(KERNEL_TARGET)/include -I$(ALONIRA_DIR)/alonira/alokernel/$(KERNEL_TARGET)/include/exposed
 
 ALO_TODO_COUNT := $(shell $(CAT) $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME)  "*.c") $(shell $(FIND) $(ALONIRA_DIR) $(FIND_FNAME) "*.h") | $(GREP) "TODO:" | $(LINECOUNT) | $(MKNUMERIC))
 

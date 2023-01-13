@@ -3,7 +3,7 @@
 
 #include <gencommon.h>
 
-#include "include/aloarchgeneric.h"
+#include <alokernel.h>
 
 GEN_NORETURN void alo_hang(void) {
     GEN_ASM_BLOCK(GEN_ASM(cli));

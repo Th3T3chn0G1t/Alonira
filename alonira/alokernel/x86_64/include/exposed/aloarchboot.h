@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
-#ifndef ALO_KERNEL_X86_64_ARCH_GENERIC_BOOT_H
-#define ALO_KERNEL_X86_64_ARCH_GENERIC_BOOT_H
+#ifndef ALO_KERNEL_X86_64_ARCH_BOOT_H
+#define ALO_KERNEL_X86_64_ARCH_BOOT_H
 
 #include <gencommon.h>
 #include <genversion.h>

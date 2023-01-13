@@ -7,7 +7,7 @@
 #include <gencommon.h>
 #include <genversion.h>
 
-#include <aloarchgenericboot.h>
+#include <aloarchboot.h>
 
 #include "alofilesystem.h"
 #include "alodisk.h"

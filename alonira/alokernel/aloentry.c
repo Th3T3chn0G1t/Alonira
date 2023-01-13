@@ -5,7 +5,7 @@
 #include <genlog.h>
 #include <genstring.h>
 
-#include <aloarchgeneric.h>
+#include "include/aloarch.h"
 #include "include/aloboot.h"
 #include "include/alophysicalmemory.h"
 
@@ -15,7 +15,7 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
 
     alo_boot_info_t boot_info = {0};
 
-    error = alo_arch_generic_init(ALO_BOOT_PASSTHROUGH, &boot_info);
+    error = alo_arch_init(ALO_BOOT_PASSTHROUGH, &boot_info);
     if(error) return error;
 
     alo_physical_allocator_t allocator = {0};
