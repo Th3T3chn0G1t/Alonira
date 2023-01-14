@@ -10,6 +10,6 @@
 
 #include "alophysicalmemory.h"
 
-extern gen_error_t* alo_arch_page_map_init(alo_physical_allocator_t* const restrict allocator, alo_page_table_entry_t* const restrict out_top_level);
+extern gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocator, alo_page_table_entry_t* restrict * const restrict top_level, const gen_uintptr_t physical, const gen_uintptr_t virtual);
 
 #endif

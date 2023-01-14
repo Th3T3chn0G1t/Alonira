@@ -24,9 +24,6 @@ gen_error_t* alo_physical_allocator_init(const alo_physical_memory_range_t* cons
             if(out_physical_allocator->ranges_count >= ALO_PHYSICAL_BITMAP_MAX_FREE) return gen_error_attach_backtrace_formatted(GEN_ERROR_TOO_LONG, GEN_LINE_NUMBER, "Number of free ranges (`%uz`) exceeded bitmap limits (`%uz`)", out_physical_allocator->ranges_count, ALO_PHYSICAL_BITMAP_MAX_FREE);
             out_physical_allocator->ranges[out_physical_allocator->ranges_count++] = *range;
 
-            error = gen_memory_set((void*) range->address, range->size, range->size, 0);
-            if(error) return error;
-
             alo_physical_allocator_header_t* header = (alo_physical_allocator_header_t*) range->address;
             gen_size_t range_page_count = range->size / ALO_PHYSICAL_PAGE_SIZE; // This discards any space <4KiB at the end of a region.
             header->header_page_count = ALO_PHYSICAL_ROUND_TO_NEAREST_PAGE(sizeof(alo_physical_allocator_header_t) + (range_page_count / 8)) / ALO_PHYSICAL_PAGE_SIZE;
@@ -60,6 +57,9 @@ gen_error_t* alo_physical_allocator_request(const alo_physical_allocator_t* cons
             for(; (gen_uint8_t) (header->bitmap[next] << bit) & 0b10000000; ++bit) page++;
 
             out_physical->address = (void*) range->address + (page * ALO_PHYSICAL_PAGE_SIZE);
+
+            error = gen_memory_set((void*) out_physical->address, ALO_PHYSICAL_PAGE_SIZE, ALO_PHYSICAL_PAGE_SIZE, 0);
+            if(error) return error;
 
             header->bitmap[next] |= 0b10000000 >> bit;
 
