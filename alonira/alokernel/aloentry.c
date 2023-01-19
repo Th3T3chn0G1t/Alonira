@@ -45,15 +45,20 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
             }
 
             case ALO_PHYSICAL_MEMORY_TYPE_KERNEL: {
-                error = alo_arch_page_map_range(&allocator, &top_level, boot_info.kernel_physical_base, boot_info.kernel_virtual_base, (GEN_UINTPTR_MAX - boot_info.kernel_virtual_base) / ALO_PHYSICAL_PAGE_SIZE);
+                error = alo_arch_page_map_range(&allocator, &top_level, boot_info.kernel_physical_base, boot_info.kernel_virtual_base, boot_info.kernel_size);
+                if(error) return error;
+                break;
+            }
+            case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_STACK: {
+                error = alo_arch_page_map_range(&allocator, &top_level, boot_info.physical_memory_ranges[i].address, boot_info.kernel_virtual_base + boot_info.physical_memory_ranges[i].address, boot_info.physical_memory_ranges[i].size / ALO_PHYSICAL_PAGE_SIZE);
                 if(error) return error;
                 break;
             }
         }
     }
 
-    error = alo_arch_page_flush(top_level);
-    if(error) return error;
+//    error = alo_arch_page_flush(top_level);
+//    if(error) return error;
 
     return GEN_NULL;
 }

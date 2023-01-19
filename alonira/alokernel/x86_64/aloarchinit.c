@@ -145,10 +145,24 @@ gen_error_t* alo_arch_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict o
                         case ULTRA_MEMORY_TYPE_NVS: type = ALO_PHYSICAL_MEMORY_TYPE_RESERVED; break;
                         case ULTRA_MEMORY_TYPE_LOADER_RECLAIMABLE: type = ALO_PHYSICAL_MEMORY_TYPE_RECLAIMABLE; break;
                         case ULTRA_MEMORY_TYPE_MODULE: type = ALO_PHYSICAL_MEMORY_TYPE_KERNEL_MODULE; break;
-                        case ULTRA_MEMORY_TYPE_KERNEL_STACK: GEN_FALLTHROUGH;
+                        case ULTRA_MEMORY_TYPE_KERNEL_STACK: type = ALO_PHYSICAL_MEMORY_TYPE_KERNEL_STACK; break;
                         case ULTRA_MEMORY_TYPE_KERNEL_BINARY: type = ALO_PHYSICAL_MEMORY_TYPE_KERNEL; break;
                     }
-                    
+
+                    const char* name = GEN_NULL;
+                    switch(type) {
+                        case ALO_PHYSICAL_MEMORY_TYPE_NOT_PRESENT: name = "ALO_PHYSICAL_MEMORY_TYPE_NOT_PRESENT"; break;
+                        case ALO_PHYSICAL_MEMORY_TYPE_FREE: name = "ALO_PHYSICAL_MEMORY_TYPE_FREE"; break;
+                        case ALO_PHYSICAL_MEMORY_TYPE_RECLAIMABLE: name = "ALO_PHYSICAL_MEMORY_TYPE_RECLAIMABLE"; break;
+                        case ALO_PHYSICAL_MEMORY_TYPE_RESERVED: name = "ALO_PHYSICAL_MEMORY_TYPE_RESERVED"; break;
+                        case ALO_PHYSICAL_MEMORY_TYPE_KERNEL: name = "ALO_PHYSICAL_MEMORY_TYPE_KERNEL"; break;
+                        case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_STACK: name = "ALO_PHYSICAL_MEMORY_TYPE_KERNEL_STACK"; break;
+                        case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_MODULE: name = "ALO_PHYSICAL_MEMORY_TYPE_KERNEL_MODULE"; break;
+                    }
+
+                    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-archgenericinit", "Memory map entry `%t`: %p -> %p (%uz pages)", name, entry->physical_address, entry->physical_address + entry->size, entry->size / ALO_PHYSICAL_PAGE_SIZE);
+                    if(error) return error;
+
                     out_boot_info->physical_memory_ranges[j] = (alo_physical_memory_range_t) {type, entry->physical_address, entry->size};
                 }
 
