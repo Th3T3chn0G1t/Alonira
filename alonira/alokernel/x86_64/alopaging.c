@@ -30,6 +30,9 @@ gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocato
     if(physical & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`physical` (%p) was not on a page boundary", physical);
     if(virtual & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`virtual` (%p) was not on a page boundary", virtual);
 
+//    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-paging", "Mapping %p -> %p", virtual, physical);
+//    if(error) return error;
+
     if(!*top_level) {
         alo_physical_allocated_t allocated = {0};
         error = alo_physical_allocator_request(allocator, &allocated);
@@ -86,7 +89,7 @@ gen_error_t* alo_arch_page_map_range(alo_physical_allocator_t* const restrict al
     if(error) return error;
 
     for(gen_size_t i = 0; i < count; ++i) {
-        error = alo_arch_page_map(allocator, top_level, physical + count * ALO_PHYSICAL_PAGE_SIZE, virtual + i * ALO_PHYSICAL_PAGE_SIZE);
+        error = alo_arch_page_map(allocator, top_level, physical + i * ALO_PHYSICAL_PAGE_SIZE, virtual + i * ALO_PHYSICAL_PAGE_SIZE);
         if(error) return error;
     }
 
