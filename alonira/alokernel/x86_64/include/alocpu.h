@@ -124,28 +124,20 @@ typedef union GEN_PACKED {
 } alo_register_cr0_t;
 
 typedef union GEN_PACKED {
-    union {
-        struct GEN_PACKED {
-            gen_uint16_t pcid : 12;
+    struct GEN_PACKED {
+        gen_uint8_t reserved0 : 3;
+        gen_bool_t table_writethrough : 1;
+        gen_bool_t table_cacheable : 1;
+        gen_uint8_t reserved1 : 7;
 
-            gen_uint64_t table_address : 40;
-            gen_uint16_t reserved0 : 12;
-        } pcid;
-        struct GEN_PACKED {
-            gen_uint8_t reserved0 : 3;
-            gen_bool_t table_writethrough : 1;
-            gen_bool_t table_cacheable : 1;
-            gen_uint8_t reserved1 : 7;
-
-            gen_uint64_t table_address : 40;
-            gen_uint16_t reserved2 : 12;
-        } no_pcid;
+        gen_uint64_t table_address : 40;
+        gen_uint16_t reserved2 : 12;
     };
     alo_register_t cr3;
 } alo_register_cr3_t;
 
 typedef union GEN_PACKED {
-    union GEN_PACKED {
+    struct GEN_PACKED {
         gen_bool_t v8086_virtual_interrupts : 1;
         gen_bool_t protected_mode_virtual_interrupts : 1;
         gen_bool_t privileged_rdts : 1;

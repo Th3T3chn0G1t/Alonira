@@ -30,7 +30,29 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     if(error) return error;
 
     alo_page_table_entry_t* top_level = GEN_NULL;
-    error = alo_arch_page_map(&allocator, &top_level, boot_info.physical_memory_ranges[0].address, boot_info.physical_memory_ranges[0].address);
+    for(gen_size_t i = 0; i < boot_info.physical_memory_range_count; ++i) {
+        switch(boot_info.physical_memory_ranges[i].type) {
+            case ALO_PHYSICAL_MEMORY_TYPE_NOT_PRESENT: GEN_FALLTHROUGH;
+            case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_MODULE: return gen_error_attach_backtrace(GEN_ERROR_UNKNOWN, GEN_LINE_NUMBER, "how");
+
+            case ALO_PHYSICAL_MEMORY_TYPE_RESERVED: continue;
+
+            case ALO_PHYSICAL_MEMORY_TYPE_FREE: GEN_FALLTHROUGH;
+            case ALO_PHYSICAL_MEMORY_TYPE_RECLAIMABLE: {
+                error = alo_arch_page_map_range(&allocator, &top_level, boot_info.physical_memory_ranges[i].address, boot_info.physical_memory_ranges[i].address, boot_info.physical_memory_ranges[i].size / ALO_PHYSICAL_PAGE_SIZE);
+                if(error) return error;
+                break;
+            }
+
+            case ALO_PHYSICAL_MEMORY_TYPE_KERNEL: {
+                error = alo_arch_page_map_range(&allocator, &top_level, boot_info.kernel_physical_base, boot_info.kernel_virtual_base, (GEN_UINTPTR_MAX - boot_info.kernel_virtual_base) / ALO_PHYSICAL_PAGE_SIZE);
+                if(error) return error;
+                break;
+            }
+        }
+    }
+
+    error = alo_arch_page_flush(top_level);
     if(error) return error;
 
     return GEN_NULL;

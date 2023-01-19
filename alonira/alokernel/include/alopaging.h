@@ -11,5 +11,8 @@
 #include "alophysicalmemory.h"
 
 extern gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocator, alo_page_table_entry_t* restrict * const restrict top_level, const gen_uintptr_t physical, const gen_uintptr_t virtual);
+extern gen_error_t* alo_arch_page_map_range(alo_physical_allocator_t* const restrict allocator, alo_page_table_entry_t* restrict * const restrict top_level, const gen_uintptr_t physical, const gen_uintptr_t virtual, const gen_size_t count);
+
+extern gen_error_t* alo_arch_page_flush(const alo_page_table_entry_t* const restrict top_level);
 
 #endif

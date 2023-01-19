@@ -18,7 +18,7 @@ typedef enum {
     ALO_INTERRUPT_VECTOR_EXCEPTION_OVERFLOW,
     ALO_INTERRUPT_VECTOR_EXCEPTION_BOUND_RANGE_EXCEEDED,
     ALO_INTERRUPT_VECTOR_EXCEPTION_INVALID_OPCODE,
-    ALO_INTERRUPT_VECTOR_EXCEPTION_DEVICE_NOT_AVILABLE,
+    ALO_INTERRUPT_VECTOR_EXCEPTION_DEVICE_NOT_AVAILABLE,
     ALO_INTERRUPT_VECTOR_EXCEPTION_DOUBLE_FAULT,
     ALO_INTERRUPT_VECTOR_EXCEPTION_COPROCESSOR_SEGMENT_OVERRUN,
     ALO_INTERRUPT_VECTOR_EXCEPTION_INVALID_TSS,
@@ -315,7 +315,6 @@ typedef struct {
             alo_interrupts_segment_error_t general_protection_fault; // Segment selector else 0
             alo_interrupts_page_error_t page_fault;
             gen_uint32_t alignment_check; // Always 0
-            // TODO: See table at bottom of this file.
             gen_uint32_t vmm_communication; // `VM_EXIT` code
             gen_uint32_t security; // Always 1
         };
@@ -403,73 +402,3 @@ extern gen_error_t* alo_interrupts_install_exception_handlers(void);
 extern gen_error_t* alo_interrupts_install_irq_handlers(void);
 
 #endif
-
-/*
-0h-Fh VMEXIT_CR[0-15]_READ read of CR 0 through 15, respectively
-10h-1Fh VMEXIT_CR[0-15]_WRITE write of CR 0 through 15, respectively
-20h-2Fh VMEXIT_DR[0-15]_READ read of DR 0 through 15, respectively
-30h-3Fh VMEXIT_DR[0-15]_WRITE write of DR 0 through 15, respectively
-40h-5Fh VMEXIT_EXCP[0-31] exception vector 0-31, respectively
-60h VMEXIT_INTR physical INTR (maskable interrupt)
-61h VMEXIT_NMI physical NMI
-62h VMEXIT_SMI physical SMI (the EXITINFO1 field provides more information)
-63h VMEXIT_INIT physical INIT
-64h VMEXIT_VINTR virtual INTR
-65h VMEXIT_CR0_SEL_WRITE write of CR0 that changed any bits other than CR0.TS or CR0.MP
-66h VMEXIT_IDTR_READ read of IDTR
-67h VMEXIT_GDTR_READ read of GDTR
-68h VMEXIT_LDTR_READ read of LDTR
-69h VMEXIT_TR_READ read of TR
-6Ah VMEXIT_IDTR_WRITE write of IDTR
-6Bh VMEXIT_GDTR_WRITE write of GDTR
-6Ch VMEXIT_LDTR_WRITE write of LDTR
-6Dh VMEXIT_TR_WRITE write of TR
-6Eh VMEXIT_RDTSC RDTSC instruction
-6Fh VMEXIT_RDPMC RDPMC instruction
-70h VMEXIT_PUSHF PUSHF instruction
-71h VMEXIT_POPF POPF instruction
-72h VMEXIT_CPUID CPUID instruction
-73h VMEXIT_RSM RSM instruction
-74h VMEXIT_IRET IRET instruction
-75h VMEXIT_SWINT software interrupt (INTn instructions)
-76h VMEXIT_INVD INVD instruction
-77h VMEXIT_PAUSE PAUSE instruction
-78h VMEXIT_HLT HLT instruction[AMD Public Use]
-79h VMEXIT_INVLPG INVLPG instructions
-7Ah VMEXIT_INVLPGA INVLPGA instruction
-7Bh VMEXIT_IOIO IN or OUT accessing protected port (the EXITINFO1 field provides more information)
-7Ch VMEXIT_MSR RDMSR or WRMSR access to protected MSR
-7Dh VMEXIT_TASK_SWITCH task switch
-7Eh VMEXIT_FERR_FREEZE FP legacy handling enabled, and processor is frozen in an x87/mmx instruction waiting for an interrupt
-7Fh VMEXIT_SHUTDOWN Shutdown
-80h VMEXIT_VMRUN VMRUN instruction
-81h VMEXIT_VMMCALL VMMCALL instruction
-82h VMEXIT_VMLOAD VMLOAD instruction
-83h VMEXIT_VMSAVE VMSAVE instruction
-84h VMEXIT_STGI STGI instruction
-85h VMEXIT_CLGI CLGI instruction
-86h VMEXIT_SKINIT SKINIT instruction
-87h VMEXIT_RDTSCP RDTSCP instruction
-88h VMEXIT_ICEBP ICEBP instruction
-89h VMEXIT_WBINVD WBINVD or WBNOINVD instruction
-8Ah VMEXIT_MONITOR MONITOR or MONITORX instruction
-8Bh VMEXIT_MWAIT MWAIT or MWAITX instruction
-8Ch VMEXIT_MWAIT_CONDITIONAL MWAIT or MWAITX instruction, if monitor hardware is armed.
-8Eh VMEXIT_RDPRU RDPRU instruction
-8Dh VMEXIT_XSETBV XSETBV instruction
-8Fh VMEXIT_EFER_WRITE_TRAP Write of EFER MSR (occurs after guest instruction finishes)
-90h-9Fh VMEXIT_CR[0-15]_WRITE_TRAP Write of CR0-15, respectively (occurs after guest instruction finishes)
-A0h VMEXIT_INVLPGB INVLPGB instruction
-A1h VMEXIT_INVLPGB_ILLEGAL Illegal INVLPGB instruction
-A2h VMEXIT_INVPCID INVPCID instruction
-A3h VMEXIT_MCOMMIT MCOMMIT instruction
-A4h VMEXIT_TLBSYNC TLBSYNC instruction
-400h VMEXIT_NPF Nested paging: host-level page fault occurred (EXITINFO1 contains fault error code; EXITINFO2 contains the guest physical address causing the fault.)
-401h AVIC_INCOMPLETE_IPI AVIC—Virtual IPI delivery not completed. See "AVIC IPI Delivery Not Completed" on page 582 for EXITINFO1-2 definitions.
-402h AVIC_NOACCEL AVIC—Attempted access by guest to vAPIC register not handled by AVIC hardware. See "AVIC Access to Un-accelerated vAPIC register" on page 583 for EXITINFO1-2 definitions.
-403h VMEXIT_VMGEXIT VMGEXIT instruction
-F000_000h Unused Reserved for Host
--1 VMEXIT_INVALID Invalid guest state in VMCB
--2 VMEXIT_BUSY BUSY bit was set in the encrypted VMSA (see "Interrupt Injection Restrictions" on page 617).
--3 VMEXIT_IDLE_REQUIRED The sibling thread is not in an idle state (see "Side-Channel Protection" on page 618)
-*/
