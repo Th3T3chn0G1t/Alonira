@@ -6,6 +6,7 @@
 
 #include <gencommon.h>
 
-extern GEN_NORETURN void alo_debug_vm_shutdown(void);
+extern GEN_NORETURN void alo_debug_vm_shutdown_bochs(void);
+extern GEN_NORETURN void alo_debug_vm_shutdown_qemu(void);
 
 #endif

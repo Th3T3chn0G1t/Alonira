@@ -57,8 +57,8 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
         }
     }
 
-//    error = alo_arch_page_flush(top_level);
-//    if(error) return error;
+    error = alo_arch_page_flush(top_level);
+    if(error) return error;
 
     return GEN_NULL;
 }

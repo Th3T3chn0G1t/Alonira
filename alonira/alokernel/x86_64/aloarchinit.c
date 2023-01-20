@@ -10,13 +10,13 @@
 
 #include "include/exposed/aloarchboot.h"
 
+#include "include/aloarchcommon.h"
+
 #include "include/alogdt.h"
 #include "include/aloidt.h"
 #include "include/alotss.h"
 
 #include "include/aloacpi.h"
-
-#include "include/aloserial.h"
 
 gen_error_t* alo_arch_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict out_boot_info) {
     GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_init, GEN_FILE_NAME);
@@ -26,9 +26,6 @@ gen_error_t* alo_arch_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict o
     if(error) return error;
 
     if(magic != ULTRA_MAGIC) return gen_error_attach_backtrace_formatted(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "Invalid boot magic `%ui`, expected `%ui`", magic, ULTRA_MAGIC);
-
-    error = alo_serial_set(ALO_SERIAL_COM1, 9600, ALO_SERIAL_DATA_WIDTH_8, ALO_SERIAL_STOP_BIT_1, ALO_SERIAL_PARITY_NONE, ALO_SERIAL_INTERRUPT_NONE);
-    if(error) return error;
 
     error = alo_gdt_install();
     if(error) return error;
@@ -203,8 +200,6 @@ gen_error_t* alo_arch_init(ALO_BOOT_SIGNATURE, alo_boot_info_t* const restrict o
 
         attribute = ULTRA_NEXT_ATTRIBUTE(attribute);
     }
-
-
 
     return GEN_NULL;
 }

@@ -278,4 +278,12 @@ GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_out_of_bou
     error = gen_error_attach_backtrace_formatted(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_error_abort_with_error(error, "alonira-ubsan");
 }
+
+GEN_DONT_SANITIZE_UNDEFINED GEN_USED GEN_NORETURN void __ubsan_handle_load_invalid_value(const __ubsan_invalid_value_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict value) {
+	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) __ubsan_handle_load_invalid_value, GEN_FILE_NAME);
+    if(error) gen_error_abort_with_error(error, "alonira-ubsan");
+
+    error = gen_error_attach_backtrace_formatted(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
+    gen_error_abort_with_error(error, "alonira-ubsan");
+}
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
