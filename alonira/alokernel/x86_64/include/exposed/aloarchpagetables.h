@@ -27,6 +27,7 @@ typedef struct {
 } alo_page_table_internal_common_entry_t;
 
 typedef union GEN_PACKED {
+    gen_uint64_t raw;
     alo_page_table_internal_common_entry_t common;
     alo_page_table_internal_common_entry_t level4;
     alo_page_table_internal_common_entry_t level3;
@@ -61,5 +62,6 @@ typedef enum {
 } alo_page_table_level_t;
 
 #define ALO_PAGE_TABLE_ENTRY_COUNT (ALO_PHYSICAL_PAGE_SIZE / sizeof(alo_page_table_entry_t))
+#define ALO_HIGHER_HALF 0xFFFF800000000000
 
 #endif

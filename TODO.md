@@ -10,6 +10,6 @@
 | - KMods
 -~
 | Main Filesystem (CAB)
-| - /Alo
-|    - /Init
+| - /alo
+|    - /init.cbe
 -~
