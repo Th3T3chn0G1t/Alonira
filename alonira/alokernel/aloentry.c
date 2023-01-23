@@ -41,17 +41,38 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
             case ALO_PHYSICAL_MEMORY_TYPE_RECLAIMABLE: {
                 error = alo_arch_page_map_range(&allocator, &top_level, boot_info.physical_memory_ranges[i].address, boot_info.physical_memory_ranges[i].address, boot_info.physical_memory_ranges[i].size / ALO_PHYSICAL_PAGE_SIZE);
                 if(error) return error;
+
+                gen_uintptr_t physical = 0;
+                error = alo_arch_translate_address(&top_level, boot_info.physical_memory_ranges[i].address, &physical);
+                if(error) return error;
+
+                gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "", "Software traversed: %p -> %p", boot_info.physical_memory_ranges[i].address, physical);
+
                 break;
             }
 
             case ALO_PHYSICAL_MEMORY_TYPE_KERNEL: {
                 error = alo_arch_page_map_range(&allocator, &top_level, boot_info.kernel_physical_base, boot_info.kernel_virtual_base, boot_info.kernel_size);
                 if(error) return error;
+
+                gen_uintptr_t physical = 0;
+                error = alo_arch_translate_address(&top_level, boot_info.kernel_virtual_base, &physical);
+                if(error) return error;
+
+                gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "", "Software traversed: %p -> %p", boot_info.kernel_virtual_base, physical);
+
                 break;
             }
             case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_STACK: {
                 error = alo_arch_page_map_range(&allocator, &top_level, boot_info.physical_memory_ranges[i].address, boot_info.kernel_virtual_base + boot_info.physical_memory_ranges[i].address, boot_info.physical_memory_ranges[i].size / ALO_PHYSICAL_PAGE_SIZE);
                 if(error) return error;
+
+                gen_uintptr_t physical = 0;
+                error = alo_arch_translate_address(&top_level, boot_info.kernel_virtual_base + boot_info.physical_memory_ranges[i].address, &physical);
+                if(error) return error;
+
+                gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "", "Software traversed: %p -> %p", boot_info.kernel_virtual_base + boot_info.physical_memory_ranges[i].address, physical);
+
                 break;
             }
         }

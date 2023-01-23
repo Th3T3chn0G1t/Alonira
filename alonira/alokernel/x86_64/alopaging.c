@@ -30,46 +30,61 @@ gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocato
     if(physical & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`physical` (%p) was not on a page boundary", physical);
     if(virtual & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`virtual` (%p) was not on a page boundary", virtual);
 
-//    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-paging", "Mapping %p -> %p", virtual, physical);
-//    if(error) return error;
-
+    gen_size_t index = 0;
+    alo_physical_allocated_t allocated = {0};
     if(!*top_level) {
-        alo_physical_allocated_t allocated = {0};
         error = alo_physical_allocator_request(allocator, &allocated);
         if(error) return error;
 
         *top_level = allocated.address;
     }
 
-    gen_size_t index = 0;
     error = alo_arch_page_map_internal_address_to_level_index(virtual, ALO_PAGE_TABLE_LEVEL4, &index);
     if(error) return error;
+    alo_page_table_entry_t* level4 = &(*top_level)[index];
 
-    alo_page_table_entry_t* table = &(*top_level)[index];
-
-    for(gen_size_t i = ALO_PAGE_TABLE_LEVEL4; i - 1; --i) {
-        if(!table->common.present) {
-            alo_physical_allocated_t allocated = {0};
-            error = alo_physical_allocator_request(allocator, &allocated);
-            if(error) return error;
-
-            gen_uintptr_t address = (gen_uintptr_t) allocated.address >> 12;
-            table->common.address = address;
-
-            table->common.present = gen_true;
-            table->common.writeable = gen_true;
-        }
-
-        error = alo_arch_page_map_internal_address_to_level_index(virtual, (alo_page_table_level_t) i, &index);
+    if(!level4->level4.present) {
+        error = alo_physical_allocator_request(allocator, &allocated);
         if(error) return error;
 
-        gen_uintptr_t addr = table->common.address << 12;
-        table = &((alo_page_table_entry_t*) addr)[index];
+        level4->level4.address = (gen_uintptr_t) allocated.address >> 12;
+        level4->level4.present = gen_true;
+        level4->level4.writeable = gen_true;
     }
 
-    table->level1.address = physical >> 12;
-    table->level1.present = gen_true;
-    table->level1.writeable = gen_true;
+    error = alo_arch_page_map_internal_address_to_level_index(virtual, ALO_PAGE_TABLE_LEVEL3, &index);
+    if(error) return error;
+    alo_page_table_entry_t* level3 = &((alo_page_table_entry_t*) ((gen_uintptr_t) level4->level4.address << 12))[index];
+
+    if(!level3->level3.present) {
+        error = alo_physical_allocator_request(allocator, &allocated);
+        if(error) return error;
+
+        level3->level3.address = (gen_uintptr_t) allocated.address >> 12;
+        level3->level3.present = gen_true;
+        level3->level3.writeable = gen_true;
+    }
+
+    error = alo_arch_page_map_internal_address_to_level_index(virtual, ALO_PAGE_TABLE_LEVEL2, &index);
+    if(error) return error;
+    alo_page_table_entry_t* level2 = &((alo_page_table_entry_t*) ((gen_uintptr_t) level3->level3.address << 12))[index];
+
+    if(!level2->level2.present) {
+        error = alo_physical_allocator_request(allocator, &allocated);
+        if(error) return error;
+
+        level2->level2.address = (gen_uintptr_t) allocated.address >> 12;
+        level2->level2.present = gen_true;
+        level2->level2.writeable = gen_true;
+    }
+
+    error = alo_arch_page_map_internal_address_to_level_index(virtual, ALO_PAGE_TABLE_LEVEL1, &index);
+    if(error) return error;
+    alo_page_table_entry_t* level1 = &((alo_page_table_entry_t*) ((gen_uintptr_t) level2->level2.address << 12))[index];
+
+    level1->level1.address = physical >> 12;
+    level1->level1.present = gen_true;
+    level1->level1.writeable = gen_true;
 
     return GEN_NULL;
 }
@@ -136,3 +151,44 @@ gen_error_t* alo_arch_page_flush(const alo_page_table_entry_t* const restrict to
 
     return GEN_NULL;
 }
+
+/*
+ *     if(!*top_level) {
+           alo_physical_allocated_t allocated = {0};
+           error = alo_physical_allocator_request(allocator, &allocated);
+           if(error) return error;
+
+           *top_level = allocated.address;
+       }
+
+       gen_size_t index = 0;
+       error = alo_arch_page_map_internal_address_to_level_index(virtual, ALO_PAGE_TABLE_LEVEL4, &index);
+       if(error) return error;
+
+       alo_page_table_entry_t* table = &(*top_level)[index];
+
+       for(gen_size_t i = ALO_PAGE_TABLE_LEVEL4; i - 1; --i) {
+           if(!table->common.present) {
+               alo_physical_allocated_t allocated = {0};
+               error = alo_physical_allocator_request(allocator, &allocated);
+               if(error) return error;
+
+               gen_uintptr_t address = (gen_uintptr_t) allocated.address >> 12;
+               table->common.address = address;
+
+               table->common.present = gen_true;
+               table->common.writeable = gen_true;
+           }
+
+           error = alo_arch_page_map_internal_address_to_level_index(virtual, (alo_page_table_level_t) i - 1, &index);
+           if(error) return error;
+
+           gen_uintptr_t addr = table->common.address << 12;
+           table = &((alo_page_table_entry_t*) addr)[index];
+       }
+
+       table->level1.address = physical >> 12;
+       table->level1.present = gen_true;
+       table->level1.writeable = gen_true;
+
+ */
