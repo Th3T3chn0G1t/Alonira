@@ -9,8 +9,8 @@ include $(GENSTONE_DIR)/build/common.mk
 include $(ALONIRA_DIR)/build/kernel.mk
 
 MODULES = $(GENSTONE_DIR)/genstone/gentests.mk $(GENSTONE_DIR)/genstone/gencore.mk $(GENSTONE_DIR)/genstone/genbackends.mk
-MODULES += $(CIONOM_DIR)/implementation/cionom.mk
-MODULES += $(ALONIRA_DIR)/alonira/kernel_gencore.mk
+MODULES += $(CIONOM_DIR)/implementation/cionom.mk $(ALONIRA_DIR)/alonira/tanai.mk
+MODULES += $(ALONIRA_DIR)/alonira/kernel_gencore.mk $(ALONIRA_DIR)/alonira/kernel_tanai.mk
 ifeq ($(BOOT_PROTOCOL),ULTRA)
 	MODULES += $(ALONIRA_DIR)/alonira/hyper.mk
 endif
