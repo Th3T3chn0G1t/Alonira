@@ -27,7 +27,6 @@ typedef struct {
 #endif
 
 #define ALO_PHYSICAL_PAGE_SIZE 4096
-#define ALO_PHYSICAL_ROUND_TO_NEAREST_PAGE(x) ((((x) + ALO_PHYSICAL_PAGE_SIZE - 1) / ALO_PHYSICAL_PAGE_SIZE) * ALO_PHYSICAL_PAGE_SIZE)
 
 typedef struct {
     alo_physical_memory_range_t ranges[ALO_PHYSICAL_BITMAP_MAX_FREE];
