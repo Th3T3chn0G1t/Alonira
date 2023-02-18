@@ -5,4 +5,6 @@
 - `%[formatter]` to specify formatter function to which *pointer* will be passed
 - Pass Makefiles through preprocessor to select kernel or usermode version to reduce code duplication
 - Implement CAB filesystem
-- Genstone `ftruncate`
+- `ftruncate` abstraction
+- Generic intrusive linked list lib
+- Generic bitbuddy lib
