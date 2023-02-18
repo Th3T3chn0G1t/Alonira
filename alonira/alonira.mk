@@ -4,14 +4,10 @@ ALONIRA_OUT = $(ALONIRA_DIR)/alonira.iso
 $(ALONIRA_OUT): $(ALO_KERNEL) $(wildcard $(ALONIRA_DIR)/boot/*)
 ifeq ($(BOOT_PROTOCOL),ULTRA)
 $(ALONIRA_OUT): BOOTLOADER_MBR = $(HYPER_OUT)
-# Unneccesary for non-hybrid
-#$(ALONIRA_OUT): BOOTLOADER_INSTALL = $(HYPER_INSTALL)
-$(ALONIRA_OUT): BOOTLOADER_INSTALL = \#
 $(ALONIRA_OUT): $(HYPER_OUT) $(HYPER_INSTALL)
 endif
 	@$(ECHO) "$(ACTION_PREFIX)"
 	$(XORRISO) -as mkisofs -b $(subst $(ALONIRA_DIR)/boot,,$(BOOTLOADER_MBR)) -no-emul-boot -boot-load-size 4 -boot-info-table $(ALONIRA_DIR)/boot -o $@
-	$(BOOTLOADER_INSTALL) $@
 	@$(ECHO) "$(ACTION_SUFFIX)"
 
 .PHONY: run
