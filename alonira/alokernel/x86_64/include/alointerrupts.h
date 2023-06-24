@@ -398,7 +398,7 @@ typedef struct {
         [exception_vector] "n" (exception_vector) \
     :)
 
-extern gen_error_t* alo_interrupts_install_exception_handlers(void);
-extern gen_error_t* alo_interrupts_install_irq_handlers(void);
+gen_error_t* alo_interrupts_install_exception_handlers(void);
+gen_error_t* alo_interrupts_install_irq_handlers(void);
 
 #endif

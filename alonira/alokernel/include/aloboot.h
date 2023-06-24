@@ -5,7 +5,6 @@
 #define ALO_KERNEL_BOOT_H
 
 #include <gencommon.h>
-#include <genversion.h>
 
 #include <aloarchboot.h>
 
@@ -28,8 +27,7 @@
 typedef struct {
     alo_arch_boot_info_t arch_info;
 
-    gen_version_t protocol_version;
-    gen_version_t loader_version;
+    // TODO: Boot loader/protocol version
     char loader_name[ALO_BOOT_LOADER_NAME_MAX];
 
     alo_file_location_t kernel_location;

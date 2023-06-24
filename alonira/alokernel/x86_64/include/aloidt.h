@@ -43,6 +43,6 @@ typedef struct GEN_PACKED {
 extern alo_idt_entry_t alo_idt[ALO_INTERRUPT_VECTOR_COUNT];
 extern alo_idt_pointer_t alo_idtr;
 
-extern gen_error_t* alo_idt_install(void);
+gen_error_t* alo_idt_install(void);
 
 #endif

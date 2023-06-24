@@ -5,6 +5,3 @@
 	path = alonira/vendor/Hyper
     ignore = untracked
 	url = https://github.com/UltraOS/Hyper
-[submodule "alonira/vendor/Cionom"]
-	path = alonira/vendor/Cionom
-	url = https://github.com/Th3T3chn0G1t/Cionom

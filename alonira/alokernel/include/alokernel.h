@@ -6,6 +6,11 @@
 
 #include <gencommon.h>
 
-extern GEN_NORETURN void alo_hang(void);
+GEN_NORETURN void alo_hang(void);
+
+void alo_memset(void* const restrict p, const gen_size_t size, const int c);
+void alo_memcpy(
+        void* const restrict a, void* const restrict b,
+        const gen_size_t size);
 
 #endif

@@ -5,14 +5,14 @@
 #define ALO_KERNEL_X86_64_ARCH_BOOT_H
 
 #include <gencommon.h>
-#include <genversion.h>
 
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_BEGIN)
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_IGNORE("-Weverything"))
 #include <ultra_protocol.h>
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)
 
-#define ALO_BOOT_SIGNATURE GEN_MAYBE_UNUSED struct ultra_boot_context* boot_data, GEN_MAYBE_UNUSED const unsigned int magic
+#define ALO_BOOT_SIGNATURE struct ultra_boot_context* boot_data, \
+                                const unsigned int magic
 #define ALO_BOOT_PASSTHROUGH boot_data, magic
 #define ALO_BOOT_BLOCK GEN_ASM_BLOCK(GEN_ASM(cli))
 

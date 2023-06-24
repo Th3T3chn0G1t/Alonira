@@ -11,8 +11,8 @@
 #include "include/aloelf.h"
 
 static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) gen_main, GEN_FILE_NAME);
-    if(error) return error;
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error;
 
     alo_boot_info_t boot_info = {0};
 
@@ -26,14 +26,11 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     error = gen_log(GEN_LOG_LEVEL_INFO, "alonira-entry", "Hello, Alonira!");
     if(error) return error;
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_WARNING, "alonira-entry", "Kernel and dependencies currently contain `%uz` TODOs", ALO_TODO_COUNT);
-    if(error) return error;
-
     alo_page_table_entry_t* top_level = GEN_NULL;
     for(gen_size_t i = 0; i < boot_info.physical_memory_range_count; ++i) {
         switch(boot_info.physical_memory_ranges[i].type) {
             case ALO_PHYSICAL_MEMORY_TYPE_NOT_PRESENT: GEN_FALLTHROUGH;
-            case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_MODULE: return gen_error_attach_backtrace(GEN_ERROR_UNKNOWN, GEN_LINE_NUMBER, "how");
+            case ALO_PHYSICAL_MEMORY_TYPE_KERNEL_MODULE: return gen_error_attach_backtrace(GEN_ERROR_UNKNOWN, GEN_LINE_STRING, "how");
 
             case ALO_PHYSICAL_MEMORY_TYPE_RESERVED: continue;
 
@@ -46,7 +43,8 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
                 error = alo_arch_translate_address(&top_level, boot_info.physical_memory_ranges[i].address, &physical);
                 if(error) return error;
 
-                gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "", "Software traversed: %p -> %p", boot_info.physical_memory_ranges[i].address, physical);
+                error = gen_log(GEN_LOG_LEVEL_DEBUG, "", "Free/Reclaimable Software traversed: %p -> %p", boot_info.physical_memory_ranges[i].address, physical);
+                if(error) return error;
 
                 break;
             }
@@ -59,7 +57,8 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
                 error = alo_arch_translate_address(&top_level, boot_info.kernel_virtual_base, &physical);
                 if(error) return error;
 
-                gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "", "Software traversed: %p -> %p", boot_info.kernel_virtual_base, physical);
+                error = gen_log(GEN_LOG_LEVEL_DEBUG, "", "Kernel Software traversed: %p -> %p", boot_info.kernel_virtual_base, physical);
+                if(error) return error;
 
                 break;
             }
@@ -71,7 +70,8 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
                 error = alo_arch_translate_address(&top_level, ALO_HIGHER_HALF + boot_info.physical_memory_ranges[i].address, &physical);
                 if(error) return error;
 
-                gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "", "Software traversed: %p -> %p", ALO_HIGHER_HALF + boot_info.physical_memory_ranges[i].address, physical);
+                error = gen_log(GEN_LOG_LEVEL_DEBUG, "", "Stack Software traversed: %p -> %p", ALO_HIGHER_HALF + boot_info.physical_memory_ranges[i].address, physical);
+                if(error) return error;
 
                 break;
             }
@@ -81,19 +81,16 @@ static gen_error_t* gen_main(ALO_BOOT_SIGNATURE) {
     error = alo_arch_page_flush(top_level);
     if(error) return error;
 
-    return GEN_NULL;
+    return gen_error_attach_backtrace(GEN_ERROR_INVALID_CONTROL, GEN_LINE_STRING, "Reached end of kernel control flow");
 }
 
-extern GEN_NORETURN GEN_USED void _start(ALO_BOOT_SIGNATURE);
+GEN_NORETURN GEN_USED void _start(ALO_BOOT_SIGNATURE);
 GEN_NORETURN GEN_USED void _start(ALO_BOOT_SIGNATURE) {
     ALO_BOOT_BLOCK;
 
-	GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) _start, GEN_FILE_NAME);
-	if(error) gen_error_abort_with_error(error,"alonira-entry");
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error = gen_main(ALO_BOOT_PASSTHROUGH);
 
-    error = gen_main(ALO_BOOT_PASSTHROUGH);
-    if(error) gen_error_abort_with_error(error, "alonira-entry");
-
-    error = gen_error_attach_backtrace(GEN_ERROR_INVALID_CONTROL, GEN_LINE_NUMBER, "Reached end of `_start`");
-    gen_error_abort_with_error(error, "alonira-entry");
+    gen_log(GEN_LOG_LEVEL_FATAL, "alonira-entry", "%e", error);
+    gen_error_abort();
 }

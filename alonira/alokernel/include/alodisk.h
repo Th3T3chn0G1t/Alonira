@@ -13,6 +13,14 @@ typedef enum {
     ALO_DRIVE_TYPE_ISOFS
 } alo_drive_type_t;
 
+// TODO: Taken from Ultra, probably move into Genstone
+typedef struct {
+    uint32_t data1;
+    uint16_t data2;
+    uint16_t data3;
+    uint8_t  data4[8];
+} alo_guid_t;
+
 typedef struct {
     alo_drive_type_t type;
     union {
@@ -20,7 +28,7 @@ typedef struct {
             gen_size_t index;
         } mbr;
         struct {
-            gen_guid_t guid;
+            alo_guid_t guid;
         } gpt;
         struct {
             gen_size_t index;
@@ -35,7 +43,7 @@ typedef struct {
             gen_size_t index;
         } mbr;
         struct {
-            gen_guid_t guid;
+            alo_guid_t guid;
         } gpt;
         struct {} iso;
     };

@@ -114,6 +114,6 @@ extern alo_gdt_entry_t alo_gdt[ALO_GDT_INDEX_COUNT];
 extern const alo_segment_selector_t alo_gdt_selectors[ALO_GDT_INDEX_COUNT];
 extern const alo_gdt_pointer_t alo_gdtr;
 
-extern gen_error_t* alo_gdt_install(void);
+gen_error_t* alo_gdt_install(void);
 
 #endif

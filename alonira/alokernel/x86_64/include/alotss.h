@@ -35,6 +35,6 @@ typedef struct GEN_PACKED {
 
 extern alo_tss_t alo_tss;
 
-extern gen_error_t* alo_tss_install(void);
+gen_error_t* alo_tss_install(void);
 
 #endif

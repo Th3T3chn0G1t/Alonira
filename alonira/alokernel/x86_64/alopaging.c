@@ -11,10 +11,10 @@
 #include "include/alocpu.h"
 
 static gen_error_t* alo_arch_page_map_internal_address_to_level_index(const gen_uintptr_t address, const alo_page_table_level_t level, gen_size_t* const restrict out_index) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_page_map_internal_address_to_level_index, GEN_FILE_NAME);
-    if(error) return error;
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error;
 
-	if(!out_index) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`out_index` was GEN_NULL");
+	if(!out_index) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`out_index` was GEN_NULL");
 
     *out_index = (address >> (12 + 9 * (level - 1))) & 0b111111111;
 
@@ -22,13 +22,13 @@ static gen_error_t* alo_arch_page_map_internal_address_to_level_index(const gen_
 }
 
 gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocator, alo_page_table_entry_t* restrict * const restrict top_level, const gen_uintptr_t physical, const gen_uintptr_t virtual) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_page_map, GEN_FILE_NAME);
-    if(error) return error;
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error;
 
-	if(!allocator) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`allocator` was GEN_NULL");
-	if(!top_level) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`top_level` was GEN_NULL");
-    if(physical & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`physical` (%p) was not on a page boundary", physical);
-    if(virtual & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`virtual` (%p) was not on a page boundary", virtual);
+	if(!allocator) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`allocator` was GEN_NULL");
+	if(!top_level) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`top_level` was GEN_NULL");
+    if(physical & 0b111111111111) return gen_error_attach_backtrace(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_STRING, "`physical` (%p) was not on a page boundary", physical);
+    if(virtual & 0b111111111111) return gen_error_attach_backtrace(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_STRING, "`virtual` (%p) was not on a page boundary", virtual);
 
     if(!*top_level) {
        alo_physical_allocated_t allocated = {0};
@@ -44,7 +44,7 @@ gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocato
 
     alo_page_table_entry_t* table = &(*top_level)[index];
 
-    for(gen_size_t i = ALO_PAGE_TABLE_LEVEL4; i - 1; --i) {
+    for(gen_size_t i = ALO_PAGE_TABLE_LEVEL4 + 1; i > 0; --i) {
        if(!table->common.present) {
            alo_physical_allocated_t allocated = {0};
            error = alo_physical_allocator_request(allocator, &allocated);
@@ -72,15 +72,15 @@ gen_error_t* alo_arch_page_map(alo_physical_allocator_t* const restrict allocato
 }
 
 gen_error_t* alo_arch_page_map_range(alo_physical_allocator_t* const restrict allocator, alo_page_table_entry_t* restrict * const restrict top_level, const gen_uintptr_t physical, const gen_uintptr_t virtual, const gen_size_t count) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_page_map_range, GEN_FILE_NAME);
-    if(error) return error;
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error;
 
-    if(!allocator) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`allocator` was GEN_NULL");
-    if(!top_level) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`top_level` was GEN_NULL");
-    if(physical & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`physical` (%p) was not on a page boundary", physical);
-    if(virtual & 0b111111111111) return gen_error_attach_backtrace_formatted(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_NUMBER, "`virtual` (%p) was not on a page boundary", virtual);
+    if(!allocator) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`allocator` was GEN_NULL");
+    if(!top_level) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`top_level` was GEN_NULL");
+    if(physical & 0b111111111111) return gen_error_attach_backtrace(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_STRING, "`physical` (%p) was not on a page boundary", physical);
+    if(virtual & 0b111111111111) return gen_error_attach_backtrace(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_STRING, "`virtual` (%p) was not on a page boundary", virtual);
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-paging", "Mapping range of %uz pages %p -> %p", count, virtual, physical);
+    error = gen_log(GEN_LOG_LEVEL_DEBUG, "alonira-paging", "Mapping range of %uz pages %p -> %p", count, virtual, physical);
     if(error) return error;
 
     for(gen_size_t i = 0; i < count; ++i) {
@@ -92,8 +92,8 @@ gen_error_t* alo_arch_page_map_range(alo_physical_allocator_t* const restrict al
 }
 
 gen_error_t* alo_arch_translate_address(alo_page_table_entry_t* restrict * const restrict top_level, const gen_uintptr_t virtual, gen_uintptr_t* const restrict out_physical) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_translate_address, GEN_FILE_NAME);
-    if(error) return error;
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error;
 
     gen_size_t index = 0;
     error = alo_arch_page_map_internal_address_to_level_index(virtual, ALO_PAGE_TABLE_LEVEL4, &index);
@@ -101,7 +101,7 @@ gen_error_t* alo_arch_translate_address(alo_page_table_entry_t* restrict * const
 
     alo_page_table_entry_t* table = &(*top_level)[index];
 
-    for(gen_size_t i = ALO_PAGE_TABLE_LEVEL4; i - 1; --i) {
+    for(gen_size_t i = ALO_PAGE_TABLE_LEVEL4 + 1; i > 0; --i) {
         error = alo_arch_page_map_internal_address_to_level_index(virtual, (alo_page_table_level_t) i - 1, &index);
         if(error) return error;
 
@@ -115,15 +115,15 @@ gen_error_t* alo_arch_translate_address(alo_page_table_entry_t* restrict * const
 }
 
 gen_error_t* alo_arch_page_flush(const alo_page_table_entry_t* const restrict top_level) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) alo_arch_page_map_range, GEN_FILE_NAME);
-    if(error) return error;
+    gen_tooling_push(GEN_FUNCTION_NAME, GEN_FILE_NAME);
+    GEN_TOOLING_AUTO gen_error_t* error;
 
-    if(!top_level) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_NUMBER, "`top_level` was GEN_NULL");
+    if(!top_level) return gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`top_level` was GEN_NULL");
 
     alo_register_cr3_t cr3 = {0};
     cr3.table_address = (gen_uintptr_t) top_level >> 12;
 
-    error = gen_log_formatted(GEN_LOG_LEVEL_DEBUG, "alonira-paging", "Reloading CR3 w/ %p (L4 @ %p), kiss your caches goodbye...", cr3.cr3, top_level);
+    error = gen_log(GEN_LOG_LEVEL_DEBUG, "alonira-paging", "Reloading CR3 w/ %p (L4 @ %p), kiss your caches goodbye...", cr3.cr3, top_level);
     if(error) return error;
 
     GEN_ASM_BLOCK(

@@ -2,16 +2,17 @@
 // Copyright (C) 2022 Emily "TTG" Banerjee <prs.ttg+alonira@pm.me>
 
 #include <gencommon.h>
-#include <genmemory.h>
 
-// This is necessary because `= {0}` can cause the compiler to generate calls to `memset`.
-extern GEN_USED void* memset(void* const address, const int value, const unsigned long count);
-GEN_USED void* memset(void* const address, const int value, const unsigned long count) {
-    GEN_TOOLING_AUTO gen_error_t* error = gen_tooling_push(GEN_FUNCTION_NAME, (void*) memset, GEN_FILE_NAME);
-    if(error) gen_error_abort_with_error(error, "alonira-memset");
+GEN_USED void alo_memset(
+        void* const restrict p, const gen_size_t size, const int c) {
 
-    error = gen_memory_set(address, GEN_MEMORY_NO_BOUNDS, count, (unsigned char) value);
-    if(error) gen_error_abort_with_error(error, "alonira-memset");
+    // TODO: Faster arch-specific impl/maybe move to Genstone
+    for(gen_size_t i = 0; i < size; ++i) ((char*) p)[i] = (char) c;
+}
 
-    return address;
+GEN_USED void* memset(
+        void* const p, const int c, const unsigned long size) {
+
+    alo_memset(p, size, c);
+    return p;
 }

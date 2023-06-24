@@ -55,7 +55,7 @@ typedef union GEN_PACKED {
 } alo_page_table_entry_t;
 
 typedef enum {
-    ALO_PAGE_TABLE_LEVEL1 = 1,
+    ALO_PAGE_TABLE_LEVEL1 = 0,
     ALO_PAGE_TABLE_LEVEL2,
     ALO_PAGE_TABLE_LEVEL3,
     ALO_PAGE_TABLE_LEVEL4

@@ -1,20 +1,30 @@
-GIT ?= git
-CMAKE ?= cmake
-
 GENSTONE_DIR = alonira/vendor/Genstone
-CIONOM_DIR = alonira/vendor/Cionom
 ALONIRA_DIR = .
 
-include $(GENSTONE_DIR)/build/common.mk
-include $(ALONIRA_DIR)/build/kernel.mk
+PLATFORM_DIR = $(ALONIRA_DIR)/build
+PLATFORM = alonira
 
-MODULES = $(GENSTONE_DIR)/genstone/gentests.mk $(GENSTONE_DIR)/genstone/gencore.mk $(GENSTONE_DIR)/genstone/genbackends.mk
-MODULES += $(CIONOM_DIR)/implementation/cionom.mk $(ALONIRA_DIR)/alonira/tanai.mk
-MODULES += $(ALONIRA_DIR)/alonira/kernel_gencore.mk $(ALONIRA_DIR)/alonira/kernel_tanai.mk
+include $(ALONIRA_DIR)/build/config.mk
+include $(GENSTONE_DIR)/build/common.mk
+
+GENSTONE_DIAGNOSTIC_CFLAGS += -Wno-reserved-identifier -Wno-gnu-empty-struct
+GENSTONE_DIAGNOSTIC_CFLAGS += -Wno-gnu-binary-literal -Wno-c++-compat
+GENSTONE_DIAGNOSTIC_CFLAGS += -Wno-gnu-pointer-arith -Wno-cast-align
+# TODO: Remove once clang fixes this
+GENSTONE_DIAGNOSTIC_CFLAGS += -Wno-dollar-in-identifier-extension
+
+GLOBAL_LFLAGS := $(filter-out -flto,$(GLOBAL_LFLAGS))
+GLOBAL_LFLAGS := $(filter-out -fsanitize=undefined,$(GLOBAL_LFLAGS))
+
+MODULES = $(GENSTONE_DIR)/genstone/gencore.mk \
+			$(GENSTONE_DIR)/genstone/genbackends.mk
+
 ifeq ($(BOOT_PROTOCOL),ULTRA)
 	MODULES += $(ALONIRA_DIR)/alonira/hyper.mk
 endif
-MODULES += $(ALONIRA_DIR)/alonira/alokernel.mk $(ALONIRA_DIR)/alonira/alonira.mk $(ALONIRA_DIR)/alonira/genbackends_alonira.mk
+
+MODULES += $(ALONIRA_DIR)/alonira/alokernel.mk \
+			$(ALONIRA_DIR)/alonira/alonira.mk \
 
 TARGETS = $(notdir $(subst .mk,,$(MODULES)))
 CLEAN_TARGETS = $(addprefix clean_,$(TARGETS)) clean_common
@@ -33,5 +43,4 @@ clean: $(CLEAN_TARGETS)
 test: all $(TEST_TARGETS)
 
 $(ALONIRA_DIR)/lib:
-	@$(ECHO) "$(ACTION_PREFIX)$(MKDIR) $@$(ACTION_SUFFIX)"
-	-@$(MKDIR) $@
+	-$(MKDIR) $@
