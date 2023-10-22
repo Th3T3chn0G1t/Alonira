@@ -92,5 +92,5 @@ GEN_NORETURN GEN_USED void _start(ALO_BOOT_SIGNATURE) {
     GEN_TOOLING_AUTO gen_error_t* error = gen_main(ALO_BOOT_PASSTHROUGH);
 
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-entry", "%e", error);
-    gen_error_abort();
+    gen_abort();
 }

@@ -164,7 +164,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_type_mismatch_v1(const __u
 
     error = gen_error_attach_backtrace(GEN_ERROR_WRONG_OBJECT_TYPE, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
 	gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const __ubsan_alignment_assumption_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict pointer, GEN_UNUSED const __ubsan_value* const restrict alignment, GEN_UNUSED const __ubsan_value* const restrict offset) {
@@ -173,7 +173,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_alignment_assumption(const
 
     error = gen_error_attach_backtrace(GEN_ERROR_BAD_ALIGNMENT, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 
 	// alogf(FATAL, "From %s:%u:%u", data->from.filename, data->from.line, data->from.column);
 	// const gen_uintptr_t real_pointer = (gen_uintptr_t) pointer->value - (gen_uintptr_t) offset->value;
@@ -189,7 +189,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_overflow(const __ubsan_ove
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 
 	// if(data) 
 	// if(data->type->type_info & 1);
@@ -204,7 +204,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_mul_overflow(const __ubsan
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 
 	// __ubsan_handle_overflow(data, left, '*', (size_t) right->value);
 }
@@ -215,7 +215,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_add_overflow(const __ubsan
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 
 	// __ubsan_handle_overflow(data, left, '+', (size_t) right->value);
 }
@@ -226,7 +226,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_sub_overflow(const __ubsan
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 
 	// __ubsan_handle_overflow(data, left, '-', (size_t) right->value);
 }
@@ -237,7 +237,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_divrem_overflow(const __ub
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __ubsan_pointer_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict base, GEN_UNUSED const __ubsan_value* const restrict result) {
@@ -246,7 +246,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_pointer_overflow(const __u
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_negate_overflow(const __ubsan_overflow_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict old) {
@@ -255,7 +255,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_negate_overflow(const __ub
 
     error = gen_error_attach_backtrace(GEN_ERROR_TOO_LONG, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ubsan_invalid_builtin_data* const restrict data) {
@@ -264,7 +264,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_invalid_builtin(const __ub
 
     error = gen_error_attach_backtrace(GEN_ERROR_UNKNOWN, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const __ubsan_shift_out_of_bounds_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict left, GEN_UNUSED const __ubsan_value* const restrict right) {
@@ -273,7 +273,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_shift_out_of_bounds(const 
 
     error = gen_error_attach_backtrace(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const __ubsan_unreachable_data* const restrict data) {
@@ -282,7 +282,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_builtin_unreachable(const 
 
     error = gen_error_attach_backtrace(GEN_ERROR_INVALID_CONTROL, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsan_out_of_bounds_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict offset) {
@@ -291,7 +291,7 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_out_of_bounds(const __ubsa
 
     error = gen_error_attach_backtrace(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 
 ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_load_invalid_value(const __ubsan_invalid_value_data* const restrict data, GEN_UNUSED const __ubsan_value* const restrict value) {
@@ -300,6 +300,6 @@ ALO_NOUBSAN GEN_USED GEN_NORETURN void __ubsan_handle_load_invalid_value(const _
 
     error = gen_error_attach_backtrace(GEN_ERROR_INVALID_PARAMETER, GEN_LINE_STRING, "`%t` tripped %t:%ui:%ui", GEN_FUNCTION_NAME, data->at.filename, data->at.line, data->at.column);
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira-ubsan", "%e", error);
-	gen_error_abort();
+	gen_abort();
 }
 GEN_PRAGMA(GEN_PRAGMA_DIAGNOSTIC_REGION_END)

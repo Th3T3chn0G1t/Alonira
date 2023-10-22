@@ -13,5 +13,5 @@ GEN_USED GEN_NORETURN void __stack_chk_fail(void) {
 
     error = gen_error_attach_backtrace(GEN_ERROR_OUT_OF_BOUNDS, GEN_LINE_STRING, "Stack smashing detected");
     gen_log(GEN_LOG_LEVEL_FATAL, "alonira", "%e", error);
-    gen_error_abort();
+    gen_abort();
 }
